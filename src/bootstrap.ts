@@ -1,10 +1,12 @@
 import Echo from 'laravel-echo';
 import parseDomain from 'parse-domain';
 
+if (window.location.hostname === 'localhost' && process.env.REACT_APP_DOMAIN) {
+  window.location.hostname = process.env.REACT_APP_DOMAIN;
+}
 let domainData: any = parseDomain(window.location.hostname, {
   customTlds: ['local', 'localhost']
 });
-console.log('domainData', domainData);
 
 let domain = domainData.domain + '.' + domainData.tld;
 
@@ -12,7 +14,6 @@ declare global {
   interface Window {
     Echo: any;
     io: any;
-    sellerDomainURL: string;
     FB: any;
   }
 }
@@ -43,5 +44,3 @@ let echoConfig = {
 // }
 
 // window.Echo = new Echo(echoConfig);
-
-window.sellerDomainURL = 'seller.' + domain;

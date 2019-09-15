@@ -79,11 +79,9 @@ export function shopCategoryQuery(fragment: DocumentNode): DocumentNode {
 
 // ['Annotation Ignore Below For generate tsQuery tool']
 
-export namespace ShopCategoryFragments {
-  export interface ShopCategorySelect {
-    id: string;
-    title: string;
-  }
+export interface IShopCategoryFragmentShopCategorySelect {
+  id: string;
+  title: string;
 }
 
 export let shopCategoryFragments: any = {

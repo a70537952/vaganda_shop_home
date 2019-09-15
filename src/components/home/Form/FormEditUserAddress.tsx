@@ -16,7 +16,7 @@ import { userFragments, useUserQuery } from '../../../graphql/query/UserQuery';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserAddressMutation } from '../../../graphql/mutation/userMutation/UpdateUserAddressMutation';
 import {
-  UserAddressFragments,
+  IUserAddressFragmentFormEditUserAddress,
   userAddressFragments,
   useUserAddressQuery
 } from '../../../graphql/query/UserAddressQuery';
@@ -81,7 +81,7 @@ export default function FormEditUserAddress(props: IProps) {
   });
 
   const { loading, data } = useUserAddressQuery<
-    UserAddressFragments.FormEditUserAddress
+    IUserAddressFragmentFormEditUserAddress
   >(userAddressFragments.FormEditUserAddress, {
     fetchPolicy: 'no-cache',
     onCompleted: data => {

@@ -271,7 +271,7 @@ class Header extends React.Component<
                           context.user.shop_admins.length !== 0 && (
                             <MenuItem
                               component={'a'}
-                              href={'//' + sellerDomainURL}
+                              href={'//' + process.env.REACT_APP_SELLER_DOMAIN}
                             >
                               {t('my shop')}
                             </MenuItem>
@@ -307,7 +307,8 @@ class Header extends React.Component<
                           onClick={() => {
                             if (this.props.cookies) {
                               this.props.cookies.remove(
-                                process.env.REACT_APP_COOKIE_API_TOKEN_KEY,
+                                process.env.REACT_APP_COOKIE_API_TOKEN_KEY ||
+                                  'api_token',
                                 {
                                   domain:
                                     '.' + process.env.REACT_APP_COOKIE_DOMAIN,

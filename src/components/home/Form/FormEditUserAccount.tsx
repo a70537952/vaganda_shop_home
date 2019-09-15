@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import {
-  UserFragments,
+  IUserFragmentFormEditUserAccount,
   userFragments,
   useUserQuery
 } from '../../../graphql/query/UserQuery';
@@ -116,7 +116,7 @@ export default function FormEditUserAccount(props: IProps) {
     }
   );
 
-  const { loading, data } = useUserQuery<UserFragments.FormEditUserAccount>(
+  const { loading, data } = useUserQuery<IUserFragmentFormEditUserAccount>(
     userFragments.FormEditUserAccount,
     {
       fetchPolicy: 'no-cache',

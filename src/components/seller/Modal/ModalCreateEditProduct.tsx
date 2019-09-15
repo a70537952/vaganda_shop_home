@@ -30,7 +30,7 @@ import { withRouter } from 'react-router-dom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { AppContext } from '../../../contexts/seller/Context';
 import {
-  ProductFragments,
+  IProductFragmentModalCreateEditProduct,
   productFragments,
   productQuery,
   ProductVars
@@ -305,7 +305,7 @@ class ModalCreateEditProduct extends React.Component<
       );
 
       let { data } = await this.props.client.query<
-        { product: WithPagination<ProductFragments.ModalCreateEditProduct> },
+        { product: WithPagination<IProductFragmentModalCreateEditProduct> },
         ProductVars
       >({
         query: productQuery(productFragments.ModalCreateEditProduct),

@@ -24,6 +24,7 @@ import update from 'immutability-helper';
 import ModalAddUserOrderDetailComment from '../Modal/ModalAddUserOrderDetailComment';
 import ImagesCarousel from '../../ImagesCarousel';
 import StarRating from '../../_rating/StarRating';
+import DefaultImage from '../../../image/default-image.jpg';
 
 interface IProps extends StyledComponentProps {
   userOrderDetail?: any;
@@ -81,7 +82,7 @@ class UserOrderDetailCard extends React.Component<
       userOrderDetail.product &&
       userOrderDetail.product.product_image.length
         ? userOrderDetail.product.product_image[0].image_medium
-        : '/images/default-image.jpg';
+        : DefaultImage;
 
     return (
       <AppContext.Consumer>

@@ -26,6 +26,7 @@ import RemovableImage from '../../RemovableImage';
 import Image from '../../Image';
 import AddIcon from '@material-ui/icons/Add';
 import StarRating from '../../_rating/StarRating';
+import DefaultImage from '../../../image/default-image.jpg';
 
 let addUserOrderDetailCommentFields: any;
 let t: any;
@@ -343,7 +344,7 @@ class ModalAddUserOrderDetailComment extends React.Component<
       userOrderDetail.product &&
       userOrderDetail.product.product_image.length
         ? userOrderDetail.product.product_image[0].image_medium
-        : '/images/default-image.jpg';
+        : DefaultImage;
 
     return (
       <AppContext.Consumer>

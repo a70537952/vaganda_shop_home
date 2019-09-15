@@ -47,9 +47,9 @@ export class AccountEdit extends React.Component<
       tabs.push(homePath('accountEditPassword'));
     }
 
-    let tabIndex = tabs.indexOf(location.pathname);
+    let tabIndex = tabs.indexOf(this.props.location.pathname);
     this.state = {
-      location: location.pathname,
+      location: this.props.location.pathname,
       tabs: tabs,
       value: tabIndex !== -1 ? tabIndex : 0
     };
@@ -57,7 +57,7 @@ export class AccountEdit extends React.Component<
 
   static getDerivedStateFromProps(props: any, state: IState) {
     if (props.location.pathname !== state.location.pathname) {
-      let tabIndex = state.tabs.indexOf(location.pathname);
+      let tabIndex = state.tabs.indexOf(props.location.pathname);
       if (tabIndex === -1) {
         props.history.push(state.tabs[0]);
       }

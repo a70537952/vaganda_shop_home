@@ -117,19 +117,17 @@ export function productCategoryQuery(fragment: DocumentNode): DocumentNode {
 
 // ['Annotation Ignore Below For generate tsQuery tool']
 
-export namespace ProductCategoryFragments {
-  export interface ProductCategorySelect {
+export interface IProductCategoryFragmentProductCategorySelect {
+  id: string;
+  title: string;
+  child_category: {
     id: string;
     title: string;
     child_category: {
       id: string;
       title: string;
-      child_category: {
-        id: string;
-        title: string;
-      };
     };
-  }
+  };
 }
 
 export let productCategoryFragments: any = {

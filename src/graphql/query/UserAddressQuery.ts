@@ -150,17 +150,15 @@ export function userAddressQuery(fragment: DocumentNode): DocumentNode {
 
 // ['Annotation Ignore Below For generate tsQuery tool']
 
-export namespace UserAddressFragments {
-  export interface FormEditUserAddress {
-    id: string;
-    address_1: string;
-    address_2: string;
-    address_3: string;
-    city: string;
-    state: string;
-    postal_code: string;
-    country: string;
-  }
+export interface IUserAddressFragmentFormEditUserAddress {
+  id: string;
+  address_1: string;
+  address_2: string;
+  address_3: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
 }
 
 export let userAddressFragments: any = {

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Select from './Select';
 import { PropTypes } from '@material-ui/core';
 import {
-  ShopAdminRoleFragments,
+  IShopAdminRoleFragmentShopAdminRoleSelect,
   shopAdminRoleFragments,
   useShopAdminRoleQuery
 } from '../../graphql/query/ShopAdminRoleQuery';
@@ -38,7 +38,7 @@ export default function ShopAdminRoleSelect(props: IProps) {
   } = props;
 
   const { loading, data } = useShopAdminRoleQuery<
-    ShopAdminRoleFragments.ShopAdminRoleSelect
+    IShopAdminRoleFragmentShopAdminRoleSelect
   >(shopAdminRoleFragments.ShopAdminRoleSelect, {
     variables: {
       sort_title: 'asc',
@@ -51,7 +51,7 @@ export default function ShopAdminRoleSelect(props: IProps) {
     onChange(value, shopAdminRoles.find((role: any) => role.id === value));
   }, [value]);
 
-  let shopAdminRoles: ShopAdminRoleFragments.ShopAdminRoleSelect[] = [];
+  let shopAdminRoles: IShopAdminRoleFragmentShopAdminRoleSelect[] = [];
 
   if (!loading && data) {
     shopAdminRoles = data.shopAdminRole.items;

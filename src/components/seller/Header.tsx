@@ -172,7 +172,8 @@ class Header extends React.Component<
                           onClick={() => {
                             if (this.props.cookies) {
                               this.props.cookies.remove(
-                                process.env.REACT_APP_COOKIE_API_TOKEN_KEY,
+                                process.env.REACT_APP_COOKIE_API_TOKEN_KEY ||
+                                  'api_token',
                                 {
                                   domain:
                                     '.' + process.env.REACT_APP_COOKIE_DOMAIN,

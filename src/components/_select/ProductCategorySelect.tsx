@@ -18,7 +18,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { useTranslation } from 'react-i18next';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import {
-  ProductCategoryFragments,
+  IProductCategoryFragmentProductCategorySelect,
   productCategoryFragments,
   useProductCategoryQuery
 } from '../../graphql/query/ProductCategoryQuery';
@@ -73,12 +73,12 @@ export default function ProductCategorySelect(props: IProps) {
   const { onChange, disabled, margin, fullWidth, error, helperText } = props;
 
   const { loading, data } = useProductCategoryQuery<
-    ProductCategoryFragments.ProductCategorySelect
+    IProductCategoryFragmentProductCategorySelect
   >(productCategoryFragments.ProductCategorySelect, {
     variables: { parent_category_id_is_null: true, sort_title: 'asc' }
   });
 
-  let productCategories: ProductCategoryFragments.ProductCategorySelect[] = [];
+  let productCategories: IProductCategoryFragmentProductCategorySelect[] = [];
 
   useEffect(() => {
     syncSelectedCategory(value);

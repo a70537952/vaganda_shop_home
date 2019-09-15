@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
 import { useSignUpUserMutation } from '../../../graphql/mutation/authMutation/SignUpUserMutation';
 import {
-  UserFragments,
+  IUserFragmentFormSignUp,
   userFragments,
   userQuery
 } from '../../../graphql/query/UserQuery';
@@ -139,7 +139,7 @@ export default function FormSignUp(props: IProps) {
   function isUsernameValid() {
     if (signUp.username.value !== '') {
       return client
-        .query<{ user: WithPagination<UserFragments.FormSignUp> }>({
+        .query<{ user: WithPagination<IUserFragmentFormSignUp> }>({
           query: userQuery(userFragments.FormSignUp),
           variables: { username: signUp.username.value }
         })
@@ -166,7 +166,7 @@ export default function FormSignUp(props: IProps) {
   function isEmailValid() {
     if (signUp.email.value !== '') {
       return client
-        .query<{ user: WithPagination<UserFragments.FormSignUp> }>({
+        .query<{ user: WithPagination<IUserFragmentFormSignUp> }>({
           query: userQuery(userFragments.FormSignUp),
           variables: { email: signUp.email.value }
         })

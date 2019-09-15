@@ -2,7 +2,7 @@ import Select from './Select';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  ShopCategoryFragments,
+  IShopCategoryFragmentShopCategorySelect,
   shopCategoryFragments,
   useShopCategoryQuery
 } from '../../graphql/query/ShopCategoryQuery';
@@ -24,7 +24,7 @@ export default function ShopCategorySelect(props: IProps) {
   const { t } = useTranslation();
 
   const { loading, data } = useShopCategoryQuery<
-    ShopCategoryFragments.ShopCategorySelect
+    IShopCategoryFragmentShopCategorySelect
   >(shopCategoryFragments.ShopCategorySelect, {
     variables: { sort_title: 'asc' }
   });
@@ -41,7 +41,7 @@ export default function ShopCategorySelect(props: IProps) {
     onChange
   } = props;
 
-  let shopCategories: ShopCategoryFragments.ShopCategorySelect[] = [];
+  let shopCategories: IShopCategoryFragmentShopCategorySelect[] = [];
 
   if (!loading && data) {
     shopCategories = data.shopCategory;

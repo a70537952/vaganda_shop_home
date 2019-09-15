@@ -99,25 +99,24 @@ export function shopProductCategoryQuery(fragment: DocumentNode): DocumentNode {
 
 // ['Annotation Ignore Below For generate tsQuery tool']
 
-export namespace ShopProductCategoryFragments {
-  export interface ProductCategory {
-    id: string;
-    shop_id: string;
-    title: string;
-    created_at: string;
-    updated_at: string;
-    product_count: string;
-  }
-
-  export interface ModalCreateEditShopProductCategory {
-    id: string;
-    shop_id: string;
-    title: string;
-    created_at: string;
-    updated_at: string;
-    product_count: string;
-  }
+export interface IShopProductCategoryFragmentProductCategory {
+  id: string;
+  shop_id: string;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  product_count: string;
 }
+
+export interface IShopProductCategoryFragmentModalCreateEditShopProductCategory {
+  id: string;
+  shop_id: string;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  product_count: string;
+}
+
 export let shopProductCategoryFragments: any = {
   ProductCategory: gql`
     fragment fragment on ShopProductCategory {

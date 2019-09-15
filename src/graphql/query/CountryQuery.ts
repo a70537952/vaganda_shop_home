@@ -70,11 +70,9 @@ export function countryQuery(fragment: DocumentNode): DocumentNode {
 
 // ['Annotation Ignore Below For generate tsQuery tool']
 
-export namespace CountryFragments {
-  export interface CountrySelect {
-    id: string;
-    name: string;
-  }
+export interface ICountryFragmentCountrySelect {
+  id: string;
+  name: string;
 }
 
 export let countryFragments: any = {

@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import ProductCard from './ProductCard';
 import {
-  ProductFragments,
+  IProductFragmentProductList,
   productFragments,
   productQuery,
   ProductVars
@@ -166,7 +166,7 @@ class ProductList extends React.Component<
         )}
         <Grid container item xs={12}>
           <Query<
-            { product: WithPagination<ProductFragments.ProductList> },
+            { product: WithPagination<IProductFragmentProductList> },
             ProductVars
           >
             query={productQuery(productFragments.ProductList)}
@@ -195,7 +195,7 @@ class ProductList extends React.Component<
                 return null;
               }
 
-              let products: ProductFragments.ProductList[] = data.product.items;
+              let products: IProductFragmentProductList[] = data.product.items;
 
               return (
                 <InfiniteScroll

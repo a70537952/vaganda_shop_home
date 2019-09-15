@@ -413,7 +413,7 @@ class CreateShop extends React.Component<
   }
 
   createShopCompletedHandler(data: any) {
-    window.location.replace('//' + sellerDomainURL);
+    window.location.replace('//' + process.env.REACT_APP_SELLER_DOMAIN);
   }
 
   async createShopErrorHandler(error: any) {

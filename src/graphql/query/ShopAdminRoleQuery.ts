@@ -114,20 +114,18 @@ export function shopAdminRoleQuery(fragment: DocumentNode): DocumentNode {
 
 // ['Annotation Ignore Below For generate tsQuery tool']
 
-export namespace ShopAdminRoleFragments {
-  export interface SellerAdminRole {
-    id: string;
-    title: string;
-    permission: string;
-    is_shop_owner_role: number;
-    created_at: string;
-  }
-  export interface ShopAdminRoleSelect {
-    id: string;
-    title: string;
-    permission: string;
-    is_shop_owner_role: number;
-  }
+export interface IShopAdminRoleFragmentSellerAdminRole {
+  id: string;
+  title: string;
+  permission: string;
+  is_shop_owner_role: number;
+  created_at: string;
+}
+export interface IShopAdminRoleFragmentShopAdminRoleSelect {
+  id: string;
+  title: string;
+  permission: string;
+  is_shop_owner_role: number;
 }
 
 export let shopAdminRoleFragments: any = {

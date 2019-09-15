@@ -4,8 +4,8 @@ import Select from './Select';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@material-ui/lab';
 import {
-  CountryPhoneCodeFragments,
   countryPhoneCodeFragments,
+  ICountryPhoneCodeFragmentCountryPhoneCodeSelect,
   useCountryPhoneCodeQuery
 } from '../../graphql/query/CountryPhoneCodeQuery';
 
@@ -26,7 +26,7 @@ export default function CountryPhoneCodeSelect(props: IProps) {
   const { t } = useTranslation();
 
   const { loading, data } = useCountryPhoneCodeQuery<
-    CountryPhoneCodeFragments.CountryPhoneCodeSelect
+    ICountryPhoneCodeFragmentCountryPhoneCodeSelect
   >(countryPhoneCodeFragments.CountryPhoneCodeSelect, {
     variables: { sort_name: 'asc' }
   });
@@ -43,7 +43,7 @@ export default function CountryPhoneCodeSelect(props: IProps) {
     onChange
   } = props;
 
-  let countryPhoneCodes: CountryPhoneCodeFragments.CountryPhoneCodeSelect[] = [];
+  let countryPhoneCodes: ICountryPhoneCodeFragmentCountryPhoneCodeSelect[] = [];
 
   if (!loading && data) {
     countryPhoneCodes = data.countryPhoneCode;

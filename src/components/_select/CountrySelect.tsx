@@ -2,10 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { PropTypes } from '@material-ui/core';
 import Select from './Select';
-import Skeleton from '@material-ui/lab/Skeleton';
 import {
-  CountryFragments,
   countryFragments,
+  ICountryFragmentCountrySelect,
   useCountryQuery
 } from '../../graphql/query/CountryQuery';
 
@@ -25,7 +24,7 @@ interface IProps {
 export default function CountrySelect(props: IProps) {
   const { t } = useTranslation();
 
-  const { loading, data } = useCountryQuery<CountryFragments.CountrySelect>(
+  const { loading, data } = useCountryQuery<ICountryFragmentCountrySelect>(
     countryFragments.CountrySelect,
     {
       variables: { sort_name: 'asc' }
@@ -45,7 +44,7 @@ export default function CountrySelect(props: IProps) {
     extraOptions
   } = props;
 
-  let countries: CountryFragments.CountrySelect[] = [];
+  let countries: ICountryFragmentCountrySelect[] = [];
 
   if (!loading && data) {
     countries = data.country;

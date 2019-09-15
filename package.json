@@ -117,5 +117,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "devDependencies": {
+    "@google-cloud/translate": "^4.1.3"
   }
 }

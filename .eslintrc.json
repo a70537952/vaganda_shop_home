@@ -1,0 +1,13 @@
+{
+
+    "extends": ["react-app", "shared-config"],
+    "rules": {
+      "no-namespace": 0
+    },
+    "overrides": [asd
+      {
+        "files": ["**/*.ts?(x)"]
+      }
+    ]
+
+}

@@ -4,6 +4,19 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### Using HTTPS in Development
+**Windows (cmd.exe)**
+
+**`set HTTPS=true&&npm start`**
+
+**Windows (Powershell)**
+
+**`($env:HTTPS = "true") -and (npm start)`**
+
+**Linux, macOS (Bash)**
+
+**`HTTPS=true npm start`**
+
 ### `npm start`
 
 Runs the app in the development mode.<br>

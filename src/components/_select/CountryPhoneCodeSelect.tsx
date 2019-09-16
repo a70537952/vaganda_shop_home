@@ -4,8 +4,8 @@ import Select from './Select';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@material-ui/lab';
 import { useCountryPhoneCodeQuery } from '../../graphql/query/CountryPhoneCodeQuery';
-import { countryPhoneCodeFragments } from '../../graphql/fragment/CountryPhoneCodeFragment';
-import { ICountryPhoneCodeFragmentCountryPhoneCodeSelect } from '../../graphql/fragmentInterface/CountryPhoneCodeFragmentInterface';
+import { countryPhoneCodeFragments } from '../../graphql/fragment/query/CountryPhoneCodeFragment';
+import { ICountryPhoneCodeFragmentCountryPhoneCodeSelect } from '../../graphql/fragment/interface/CountryPhoneCodeFragmentInterface';
 
 interface IProps {
   onChange: (value: unknown) => void;

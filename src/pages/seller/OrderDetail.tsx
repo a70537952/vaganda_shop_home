@@ -23,7 +23,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import USER_ORDER_DETAIL from '../../constant/USER_ORDER_DETAIL';
 import { userOrderDetailQuery } from '../../graphql/query/UserOrderDetailQuery';
-import { userOrderDetailFragments } from '../../graphql/fragment/UserOrderDetailFragment';
+import { userOrderDetailFragments } from '../../graphql/fragment/query/UserOrderDetailFragment';
 
 interface IProps {
   classes: any;

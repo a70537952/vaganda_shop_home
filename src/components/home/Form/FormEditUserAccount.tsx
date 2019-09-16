@@ -22,8 +22,8 @@ import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { useUpdateUserInfoMutation } from '../../../graphql/mutation/userMutation/UpdateUserInfoMutation';
 import { useChangeUserAvatarMutation } from '../../../graphql/mutation/userMutation/ChangeUserAvatarMutation';
 import { useRemoveUserAvatarMutation } from '../../../graphql/mutation/userMutation/RemoveUserAvatarMutation';
-import { IUserFragmentFormEditUserAccount } from '../../../graphql/fragmentInterface/UserFragmentInterface';
-import { userFragments } from '../../../graphql/fragment/UserFragment';
+import { IUserFragmentFormEditUserAccount } from '../../../graphql/fragment/interface/UserFragmentInterface';
+import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 
 interface IProps {
   userId: string;

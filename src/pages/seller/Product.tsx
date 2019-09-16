@@ -38,7 +38,7 @@ import { homePath } from '../../utils/RouteUtil';
 import LaunchIcon from '@material-ui/icons/Launch';
 import ImagesCarousel from '../../components/ImagesCarousel';
 import Image from '../../components/Image';
-import { productFragments } from '../../graphql/fragment/ProductFragment';
+import { productFragments } from '../../graphql/fragment/query/ProductFragment';
 
 interface IProps {
   classes: any;

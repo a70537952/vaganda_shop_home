@@ -19,8 +19,8 @@ import Button from '@material-ui/core/Button';
 import { sellerPath } from '../../utils/RouteUtil';
 import { userOrderDetailCommentQuery } from '../../graphql/query/UserOrderDetailCommentQuery';
 import { userOrderDetailQuery } from '../../graphql/query/UserOrderDetailQuery';
-import { userOrderDetailCommentFragments } from '../../graphql/fragment/UserOrderDetailCommentFragment';
-import { userOrderDetailFragments } from '../../graphql/fragment/UserOrderDetailFragment';
+import { userOrderDetailCommentFragments } from '../../graphql/fragment/query/UserOrderDetailCommentFragment';
+import { userOrderDetailFragments } from '../../graphql/fragment/query/UserOrderDetailFragment';
 
 interface IProps {
   classes: any;

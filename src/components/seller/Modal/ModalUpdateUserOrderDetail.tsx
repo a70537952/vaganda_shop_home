@@ -26,7 +26,7 @@ import USER_ORDER_DETAIL from '../../../constant/USER_ORDER_DETAIL';
 import ImagesCarousel from '../../ImagesCarousel';
 import Image from '../../Image';
 import StarRating from '../../_rating/StarRating';
-import { userOrderDetailFragments } from '../../../graphql/fragment/UserOrderDetailFragment';
+import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOrderDetailFragment';
 
 let orderDetailFields: any;
 let t: any;

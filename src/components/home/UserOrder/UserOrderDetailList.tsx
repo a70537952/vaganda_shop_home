@@ -10,7 +10,7 @@ import UserOrderDetailCard from './UserOrderDetailCard';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { userOrderDetailQuery } from '../../../graphql/query/UserOrderDetailQuery';
-import { userOrderDetailFragments } from '../../../graphql/fragment/UserOrderDetailFragment';
+import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOrderDetailFragment';
 
 let t;
 

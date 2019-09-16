@@ -17,8 +17,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import withWidth from '@material-ui/core/withWidth';
 import { WithWidth } from '@material-ui/core/withWidth/withWidth';
 import { WithPagination } from '../../../graphql/query/Query';
-import { productFragments } from '../../../graphql/fragment/ProductFragment';
-import { IProductFragmentProductList } from '../../../graphql/fragmentInterface/ProductFragmentInterface';
+import { productFragments } from '../../../graphql/fragment/query/ProductFragment';
+import { IProductFragmentProductList } from '../../../graphql/fragment/interface/ProductFragmentInterface';
 
 let t;
 

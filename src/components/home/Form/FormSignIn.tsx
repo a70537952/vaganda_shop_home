@@ -17,9 +17,9 @@ import { AppContext } from '../../../contexts/home/Context';
 import { useFacebookSignInMutation } from '../../../graphql/mutation/authMutation/FacebookSignInMutation';
 import { useCookies } from 'react-cookie';
 import { getCookieKey, getCookieOption } from '../../../utils/CookieUtil';
-import { resendVerifyUserEmailMutationFragments } from '../../../graphql/fragmentMutation/ResendVerifyUserEmailMutationFragment';
-import { signInUserMutationFragments } from '../../../graphql/fragmentMutation/SignInUserMutationFragment';
-import { facebookSignInMutationFragments } from '../../../graphql/fragmentMutation/FacebookSignInMutationFragment';
+import { resendVerifyUserEmailMutationFragments } from '../../../graphql/fragment/mutation/ResendVerifyUserEmailMutationFragment';
+import { signInUserMutationFragments } from '../../../graphql/fragment/mutation/SignInUserMutationFragment';
+import { facebookSignInMutationFragments } from '../../../graphql/fragment/mutation/FacebookSignInMutationFragment';
 
 interface IProps {
   onForgotPasswordClick: () => void;

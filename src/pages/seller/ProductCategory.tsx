@@ -20,7 +20,7 @@ import gql from 'graphql-tag';
 import { RouteComponentProps } from 'react-router';
 import ModalCreateEditShopProductCategory from '../../components/seller/Modal/ModalCreateEditShopProductCategory';
 import { shopProductCategoryQuery } from '../../graphql/query/ShopProductCategoryQuery';
-import { shopProductCategoryFragments } from '../../graphql/fragment/ShopProductCategoryFragment';
+import { shopProductCategoryFragments } from '../../graphql/fragment/query/ShopProductCategoryFragment';
 
 interface IProps {
   classes: any;

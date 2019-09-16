@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserPasswordMutation } from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
-import { updateUserPasswordMutationFragments } from '../../../graphql/fragmentMutation/UpdateUserPasswordMutationFragment';
+import { updateUserPasswordMutationFragments } from '../../../graphql/fragment/mutation/UpdateUserPasswordMutationFragment';
 
 interface IProps {
   userId: string;

@@ -16,9 +16,9 @@ import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserAddressMutation } from '../../../graphql/mutation/userMutation/UpdateUserAddressMutation';
 import { useUserAddressQuery } from '../../../graphql/query/UserAddressQuery';
-import { IUserAddressFragmentFormEditUserAddress } from '../../../graphql/fragmentInterface/UserAddressFragmentInterface';
-import { userAddressFragments } from '../../../graphql/fragment/UserAddressFragment';
-import { userFragments } from '../../../graphql/fragment/UserFragment';
+import { IUserAddressFragmentFormEditUserAddress } from '../../../graphql/fragment/interface/UserAddressFragmentInterface';
+import { userAddressFragments } from '../../../graphql/fragment/query/UserAddressFragment';
+import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 
 interface IProps {
   userId: string;

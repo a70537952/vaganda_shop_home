@@ -21,8 +21,8 @@ import { useProductCategoryQuery } from '../../graphql/query/ProductCategoryQuer
 import { PropTypes, useMediaQuery } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { IProductCategoryFragmentProductCategorySelect } from '../../graphql/fragmentInterface/ProductCategoryFragmentInterface';
-import { productCategoryFragments } from '../../graphql/fragment/ProductCategoryFragment';
+import { IProductCategoryFragmentProductCategorySelect } from '../../graphql/fragment/interface/ProductCategoryFragmentInterface';
+import { productCategoryFragments } from '../../graphql/fragment/query/ProductCategoryFragment';
 
 interface IProps {
   onChange: (value: unknown) => void;

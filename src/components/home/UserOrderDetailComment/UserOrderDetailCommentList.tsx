@@ -13,7 +13,7 @@ import LazyLoad from 'react-lazyload';
 import Pagination from '../../Pagination';
 import StarRating from '../../_rating/StarRating';
 import { userOrderDetailCommentQuery } from '../../../graphql/query/UserOrderDetailCommentQuery';
-import { userOrderDetailCommentFragments } from '../../../graphql/fragment/UserOrderDetailCommentFragment';
+import { userOrderDetailCommentFragments } from '../../../graphql/fragment/query/UserOrderDetailCommentFragment';
 
 let t;
 

@@ -20,8 +20,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { useUpdateUserContactMutation } from '../../../graphql/mutation/userMutation/UpdateUserContactMutation';
-import { IUserFragmentFormEditUserContact } from '../../../graphql/fragmentInterface/UserFragmentInterface';
-import { userFragments } from '../../../graphql/fragment/UserFragment';
+import { IUserFragmentFormEditUserContact } from '../../../graphql/fragment/interface/UserFragmentInterface';
+import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 
 interface IProps {
   userId: string;

@@ -12,7 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import withWidth from '@material-ui/core/withWidth';
 import { WithWidth } from '@material-ui/core/withWidth/withWidth';
 import { shopQuery } from '../../../graphql/query/ShopQuery';
-import { shopFragments } from '../../../graphql/fragment/ShopFragment';
+import { shopFragments } from '../../../graphql/fragment/query/ShopFragment';
 
 let t;
 

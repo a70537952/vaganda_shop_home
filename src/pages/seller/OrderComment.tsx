@@ -19,7 +19,7 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import Image from '../../components/Image';
 import ImagesCarousel from '../../components/ImagesCarousel';
 import StarRating from '../../components/_rating/StarRating';
-import { userOrderDetailCommentFragments } from '../../graphql/fragment/UserOrderDetailCommentFragment';
+import { userOrderDetailCommentFragments } from '../../graphql/fragment/query/UserOrderDetailCommentFragment';
 
 interface IProps {
   classes: any;

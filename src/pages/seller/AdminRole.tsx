@@ -24,7 +24,7 @@ import { shopAdminRoleQuery } from '../../graphql/query/ShopAdminRoleQuery';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import gql from 'graphql-tag';
 import { RouteComponentProps } from 'react-router';
-import { shopAdminRoleFragments } from '../../graphql/fragment/ShopAdminRoleFragment';
+import { shopAdminRoleFragments } from '../../graphql/fragment/query/ShopAdminRoleFragment';
 
 interface IProps {
   classes: any;

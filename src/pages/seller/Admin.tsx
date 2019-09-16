@@ -20,7 +20,7 @@ import { AppContext } from '../../contexts/seller/Context';
 import gql from 'graphql-tag';
 import { RouteComponentProps } from 'react-router';
 import { shopAdminQuery } from '../../graphql/query/ShopAdminQuery';
-import { shopAdminFragments } from '../../graphql/fragment/ShopAdminFragment';
+import { shopAdminFragments } from '../../graphql/fragment/query/ShopAdminFragment';
 
 interface IProps {
   classes: any;

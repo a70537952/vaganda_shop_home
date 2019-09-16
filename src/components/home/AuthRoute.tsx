@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
-import { AppContext } from '../../contexts/home/Context';
+import { AppContext } from '../../contexts/Context';
 import { RouteComponentProps } from 'react-router';
 
 const RedirectToLogin: any = withRouter(

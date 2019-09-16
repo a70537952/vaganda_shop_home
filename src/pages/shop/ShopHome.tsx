@@ -1,6 +1,6 @@
 import React from 'react';
-import HomeHelmet from '../../../components/home/HomeHelmet';
-import { AppContext } from '../../../contexts/home/Context';
+import HomeHelmet from '../../components/home/HomeHelmet';
+import { AppContext } from '../../contexts/Context';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import { withStyles, withTheme } from '@material-ui/core/styles';
@@ -8,8 +8,8 @@ import { RouteComponentProps } from 'react-router';
 import gql from 'graphql-tag';
 import Grid from '@material-ui/core/Grid';
 import { Query } from 'react-apollo';
-import ShopNotFound from '../../../components/home/Shop/ShopNotFound';
-import ShopCard from '../../../components/home/Shop/ShopCard';
+import ShopNotFound from '../../components/home/Shop/ShopNotFound';
+import ShopCard from '../../components/home/Shop/ShopCard';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -18,10 +18,10 @@ import ListIcon from '@material-ui/icons/List';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ProductList from '../../../components/home/Product/ProductList';
+import ProductList from '../../components/home/Product/ProductList';
 import Skeleton from '@material-ui/lab/Skeleton';
-import ShopStatistics from '../../../components/home/Shop/ShopStatistics';
-import Image from '../../../components/Image';
+import ShopStatistics from '../../components/home/Shop/ShopStatistics';
+import Image from '../../components/Image';
 
 interface IProps {
   classes: any;

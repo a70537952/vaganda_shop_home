@@ -9,14 +9,14 @@ import { withSnackbar, WithSnackbarProps } from 'notistack';
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import { Link, withRouter } from 'react-router-dom';
-import HomeHelmet from '../../components/home/HomeHelmet';
-import { AppContext } from '../../contexts/home/Context';
-import FormUtil from './../../utils/FormUtil';
+import HomeHelmet from '../components/home/HomeHelmet';
+import { AppContext } from '../contexts/Context';
+import FormUtil from '../utils/FormUtil';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import gql from 'graphql-tag';
 import { RouteComponentProps } from 'react-router';
-import { homePath } from '../../utils/RouteUtil';
+import { homePath } from '../utils/RouteUtil';
 
 let resetPasswordFields: any;
 let t: any;

@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useState } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { AppContext } from '../../../contexts/home/Context';
+import { AppContext } from '../../../contexts/Context';
 import CountrySelect from '../../_select/CountrySelect';
 import FormUtil, { Fields } from '../../../utils/FormUtil';
 import { useTranslation } from 'react-i18next';

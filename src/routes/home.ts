@@ -1,13 +1,13 @@
 import Error404 from '../components/home/Error404';
-import AccountEdit from '../pages/home/AccountEdit';
-import CreateShop from '../pages/home/CreateShop';
-import Home from '../pages/home/Home';
-import ResetPassword from '../pages/home/ResetPassword';
-import ShopHome from '../pages/home/shop/ShopHome';
-import Search from '../pages/home/Search';
-import Product from '../pages/home/Product';
-import UserCart from '../pages/home/UserCart';
-import MyOrder from '../pages/home/MyOrder';
+import AccountEdit from '../pages/AccountEdit';
+import CreateShop from '../pages/CreateShop';
+import Home from '../pages/Home';
+import ResetPassword from '../pages/ResetPassword';
+import ShopHome from '../pages/shop/ShopHome';
+import Search from '../pages/Search';
+import Product from '../pages/Product';
+import UserCart from '../pages/UserCart';
+import MyOrder from '../pages/MyOrder';
 
 export default <any>{
   home: {

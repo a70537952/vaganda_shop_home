@@ -2,7 +2,7 @@ import Modal from '../../_modal/Modal';
 import { withStyles } from '@material-ui/core/styles/index';
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { AppContext } from '../../../contexts/home/Context';
+import { AppContext } from '../../../contexts/Context';
 import FormEditUserAccount from '../Form/FormEditUserAccount';
 
 let t: (key: string) => string;

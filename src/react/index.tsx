@@ -9,13 +9,12 @@ import ReactDOM from 'react-dom';
 import './i18n'; //must import i18n
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
-import Header from '../../components/home/Header';
-import Footer from '../../components/home/Footer';
-import { AppContext } from '../../contexts/home/Context';
-import apolloClient from '../../apolloClient';
+import Header from '../components/home/Header';
+import Footer from '../components/home/Footer';
+import { AppContext } from '../contexts/Context';
+import apolloClient from '../apolloClient';
 import gql from 'graphql-tag';
 import { CookiesProvider } from 'react-cookie';
-import '../../sass/home.scss';
 
 function Index() {
   const { t } = useTranslation();

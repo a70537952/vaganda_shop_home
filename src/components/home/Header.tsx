@@ -14,7 +14,7 @@ import classnames from 'classnames';
 import update from 'immutability-helper';
 import React from 'react';
 import { Link, Route, Switch, withRouter } from 'react-router-dom';
-import { AppContext } from '../../contexts/home/Context';
+import { AppContext } from '../../contexts/Context';
 import homeRoutes from '../../routes/home';
 import UserAvatar from './../UserAvatar';
 import AuthRoute from './AuthRoute';

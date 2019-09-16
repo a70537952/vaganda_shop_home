@@ -7,7 +7,7 @@ import { withSnackbar, WithSnackbarProps } from 'notistack';
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import { AppContext } from '../../../contexts/home/Context';
+import { AppContext } from '../../../contexts/Context';
 import FormForgotPassword from '../Form/FormForgotPassword';
 import FormSignIn from '../Form/FormSignIn';
 import FormSignUp from '../Form/FormSignUp';

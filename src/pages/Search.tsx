@@ -1,13 +1,13 @@
 import React from 'react';
-import HomeHelmet from '../../components/home/HomeHelmet';
-import { AppContext } from '../../contexts/home/Context';
+import HomeHelmet from '../components/home/HomeHelmet';
+import { AppContext } from '../contexts/Context';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { RouteComponentProps } from 'react-router';
 import Grid from '@material-ui/core/Grid';
-import ProductList from '../../components/home/Product/ProductList';
-import ShopList from '../../components/home/Shop/ShopList';
+import ProductList from '../components/home/Product/ProductList';
+import ShopList from '../components/home/Shop/ShopList';
 
 let t;
 

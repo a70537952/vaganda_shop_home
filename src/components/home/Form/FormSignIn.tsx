@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
 import { useSignInUserMutation } from '../../../graphql/mutation/authMutation/SignInUserMutation';
 import { useResendVerifyUserEmailMutation } from '../../../graphql/mutation/authMutation/ResendVerifyUserEmailMutation';
-import { AppContext } from '../../../contexts/home/Context';
+import { AppContext } from '../../../contexts/Context';
 import { useFacebookSignInMutation } from '../../../graphql/mutation/authMutation/FacebookSignInMutation';
 import { useCookies } from 'react-cookie';
 import { getCookieKey, getCookieOption } from '../../../utils/CookieUtil';

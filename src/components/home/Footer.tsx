@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { AppContext } from '../../contexts/home/Context';
+import { AppContext } from '../../contexts/Context';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
 

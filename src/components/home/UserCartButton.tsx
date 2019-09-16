@@ -13,7 +13,7 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
-import { AppContext } from '../../contexts/home/Context';
+import { AppContext } from '../../contexts/Context';
 import { homePath } from '../../utils/RouteUtil';
 import Image from '../Image';
 import ProductTitle from '../ProductTitle';

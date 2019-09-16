@@ -2,12 +2,12 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-xhr-backend';
 import { initReactI18next } from 'react-i18next';
-import enGlobal from '../../lang/en/global.json';
-import enSeller from '../../lang/en/seller.json';
-import enPermission from '../../lang/en/permission.json';
-import zhGlobal from '../../lang/zh/global.json';
-import zhSeller from '../../lang/zh/seller.json';
-import zhPermission from '../../lang/zh/permission.json';
+import enGlobal from '../lang/en/global.json';
+import enHome from '../lang/en/home.json';
+import enPermission from '../lang/en/permission.json';
+import zhGlobal from '../lang/zh/global.json';
+import zhHome from '../lang/zh/home.json';
+import zhPermission from '../lang/zh/permission.json';
 
 // not like to use this?
 // have a look at the Quick start guide
@@ -16,12 +16,12 @@ import zhPermission from '../../lang/zh/permission.json';
 const resources = {
   en: {
     global: enGlobal,
-    seller: enSeller,
+    home: enHome,
     permission: enPermission
   },
   zh: {
     global: zhGlobal,
-    seller: zhSeller,
+    home: zhHome,
     permission: zhPermission
   }
 };
@@ -42,8 +42,8 @@ i18n
     resources: resources,
     fallbackLng: 'en',
     debug: false,
-    ns: ['seller', 'global', 'permission'],
-    defaultNS: 'seller',
+    ns: ['home', 'global', 'permission'],
+    defaultNS: 'home',
     keySeparator: '::',
     nsSeparator: '$$',
     initImmediate: false,

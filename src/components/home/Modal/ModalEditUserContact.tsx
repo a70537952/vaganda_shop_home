@@ -6,7 +6,7 @@ import { withSnackbar, WithSnackbarProps } from 'notistack';
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import { AppContext } from '../../../contexts/home/Context';
+import { AppContext } from '../../../contexts/Context';
 import { RouteComponentProps } from 'react-router';
 import FormEditUserContact from '../Form/FormEditUserContact';
 

@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { AppContext } from '../../../contexts/home/Context';
+import { AppContext } from '../../../contexts/Context';
 import Helmet from '../../Helmet';
 import { withTranslation } from 'react-i18next';
 import { homePath } from '../../../utils/RouteUtil';

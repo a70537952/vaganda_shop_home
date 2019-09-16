@@ -4,21 +4,19 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import HomeIcon from '@material-ui/icons/Home';
-import InfoIcon from '@material-ui/icons/Info';
-import PhoneIcon from '@material-ui/icons/Phone';
-import LockIcon from '@material-ui/icons/Lock';
+import DoneIcon from '@material-ui/icons/Done';
+import CancelIcon from '@material-ui/icons/Cancel';
 import React from 'react';
 import { NavLink, Route, withRouter } from 'react-router-dom';
-import HomeHelmet from '../../components/home/HomeHelmet';
-import FormEditUserAccount from '../../components/home/Form/FormEditUserAccount';
-import FormEditUserAddress from '../../components/home/Form/FormEditUserAddress';
-import FormEditUserContact from '../../components/home/Form/FormEditUserContact';
-import FormEditUserPassword from '../../components/home/Form/FormEditUserPassword';
-import { AppContext } from '../../contexts/home/Context';
+import HomeHelmet from '../components/home/HomeHelmet';
+import { AppContext } from '../contexts/Context';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
-import { homePath } from '../../utils/RouteUtil';
+import { homePath } from '../utils/RouteUtil';
+import UserOrderDetailList from '../components/home/UserOrder/UserOrderDetailList';
+import USER_ORDER_DETAIL from '../constant/USER_ORDER_DETAIL';
 
 interface IProps {
   classes: any;
@@ -31,21 +29,18 @@ interface IState {
   value: number;
 }
 
-export class AccountEdit extends React.Component<
+export class MyOrder extends React.Component<
   IProps & RouteComponentProps & WithTranslation,
   IState
 > {
   constructor(props: IProps & RouteComponentProps & WithTranslation) {
     super(props);
     let tabs = [
-      homePath('accountEdit'),
-      homePath('accountEditAddress'),
-      homePath('accountEditContact')
+      homePath('myOrderShip'),
+      homePath('myOrderReceive'),
+      homePath('myOrderComplete'),
+      homePath('myOrderCancel')
     ];
-
-    if (this.props.context.user.is_sign_up_user) {
-      tabs.push(homePath('accountEditPassword'));
-    }
 
     let tabIndex = tabs.indexOf(this.props.location.pathname);
     this.state = {
@@ -79,12 +74,8 @@ export class AccountEdit extends React.Component<
       <AppContext.Consumer>
         {(context: any) => (
           <React.Fragment>
-            <HomeHelmet
-              title={t('edit profile')}
-              description={context.user.description}
-              ogImage={context.user.user_info.avatar_large}
-            />
-            <div className={classes.root} id={'accountEdit'}>
+            <HomeHelmet title={t('my order')} description={t('my order')} />
+            <div className={classes.root}>
               <Paper square>
                 <Tabs
                   value={value}
@@ -100,35 +91,35 @@ export class AccountEdit extends React.Component<
                   <Tab
                     {...({
                       component: NavLink,
-                      to: homePath('accountEdit')
+                      to: homePath('myOrderShip')
                     } as any)}
-                    label={t('info')}
-                    icon={<InfoIcon />}
+                    label={t('to ship')}
+                    icon={<LocalShippingIcon />}
                   />
                   <Tab
                     {...({
                       component: NavLink,
-                      to: homePath('accountEditAddress')
+                      to: homePath('myOrderReceive')
                     } as any)}
-                    label={t('address')}
+                    label={t('to receive')}
                     icon={<HomeIcon />}
                   />
                   <Tab
                     {...({
                       component: NavLink,
-                      to: homePath('accountEditContact')
+                      to: homePath('myOrderComplete')
                     } as any)}
-                    label={t('contact')}
-                    icon={<PhoneIcon />}
+                    label={t('completed')}
+                    icon={<DoneIcon />}
                   />
                   {context.user.is_sign_up_user && (
                     <Tab
                       {...({
                         component: NavLink,
-                        to: homePath('accountEditPassword')
+                        to: homePath('myOrderCancel')
                       } as any)}
-                      label={t('password')}
-                      icon={<LockIcon />}
+                      label={t('cancelled')}
+                      icon={<CancelIcon />}
                     />
                   )}
                 </Tabs>
@@ -142,60 +133,63 @@ export class AccountEdit extends React.Component<
               >
                 <Fade in={value === 0}>
                   <Grid
+                    container
                     item
                     xs={12}
-                    sm={8}
-                    md={6}
-                    lg={4}
-                    xl={3}
+                    md={10}
+                    justify="center"
                     style={{ display: value === 0 ? 'inherit' : 'none' }}
                   >
-                    {value === 0 && (
-                      <Route
-                        path={homePath('accountEdit')}
-                        render={() => (
-                          <FormEditUserAccount userId={context.user.id} />
-                        )}
-                      />
-                    )}
+                    <Route
+                      path={homePath('myOrderShip')}
+                      render={() => (
+                        <UserOrderDetailList
+                          variables={{
+                            user_id: context.user.id,
+                            order_detail_status:
+                              USER_ORDER_DETAIL.ORDER_DETAIL_STATUS.PAID
+                          }}
+                        />
+                      )}
+                    />
                   </Grid>
                 </Fade>
                 <Fade in={value === 1}>
                   <Grid
+                    container
                     item
-                    xs={8}
-                    sm={6}
-                    md={4}
-                    lg={4}
-                    xl={4}
+                    xs={12}
+                    md={10}
+                    justify="center"
                     style={{ display: value === 1 ? 'inherit' : 'none' }}
                   >
                     {value === 1 && (
-                      <Route
-                        path={homePath('accountEditAddress')}
-                        render={() => (
-                          <FormEditUserAddress userId={context.user.id} />
-                        )}
+                      <UserOrderDetailList
+                        variables={{
+                          user_id: context.user.id,
+                          order_detail_status:
+                            USER_ORDER_DETAIL.ORDER_DETAIL_STATUS.SHIPPED
+                        }}
                       />
                     )}
                   </Grid>
                 </Fade>
                 <Fade in={value === 2}>
                   <Grid
+                    container
                     item
-                    xs={8}
-                    sm={6}
-                    md={4}
-                    lg={4}
-                    xl={4}
+                    xs={12}
+                    md={10}
+                    justify="center"
                     style={{ display: value === 2 ? 'inherit' : 'none' }}
                   >
                     {value === 2 && (
-                      <Route
-                        path={homePath('accountEditContact')}
-                        render={() => (
-                          <FormEditUserContact userId={context.user.id} />
-                        )}
+                      <UserOrderDetailList
+                        variables={{
+                          user_id: context.user.id,
+                          order_detail_status:
+                            USER_ORDER_DETAIL.ORDER_DETAIL_STATUS.RECEIVED
+                        }}
                       />
                     )}
                   </Grid>
@@ -203,20 +197,20 @@ export class AccountEdit extends React.Component<
                 {Boolean(context.user.is_sign_up_user) && (
                   <Fade in={value === 3}>
                     <Grid
+                      container
                       item
-                      xs={8}
-                      sm={6}
-                      md={4}
-                      lg={4}
-                      xl={4}
+                      xs={12}
+                      md={10}
+                      justify="center"
                       style={{ display: value === 3 ? 'inherit' : 'none' }}
                     >
                       {value === 3 && (
-                        <Route
-                          path={homePath('accountEditPassword')}
-                          render={() => (
-                            <FormEditUserPassword userId={context.user.id} />
-                          )}
+                        <UserOrderDetailList
+                          variables={{
+                            user_id: context.user.id,
+                            order_detail_status:
+                              USER_ORDER_DETAIL.ORDER_DETAIL_STATUS.CANCELLED
+                          }}
                         />
                       )}
                     </Grid>
@@ -239,4 +233,4 @@ export default withStyles(theme => ({
   tabContent: {
     marginTop: '35px'
   }
-}))(withTranslation()(withRouter(AccountEdit)));
+}))(withTranslation()(withRouter(MyOrder)));

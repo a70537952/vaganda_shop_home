@@ -1,6 +1,6 @@
 import React from 'react';
-import HomeHelmet from '../../components/home/HomeHelmet';
-import { AppContext } from '../../contexts/home/Context';
+import HomeHelmet from '../components/home/HomeHelmet';
+import { AppContext } from '../contexts/Context';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';

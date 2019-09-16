@@ -19,10 +19,8 @@ import SellerReactTable from '../../components/seller/SellerReactTable';
 import { AppContext } from '../../contexts/seller/Context';
 import gql from 'graphql-tag';
 import { RouteComponentProps } from 'react-router';
-import {
-  shopAdminFragments,
-  shopAdminQuery
-} from '../../graphql/query/ShopAdminQuery';
+import { shopAdminQuery } from '../../graphql/query/ShopAdminQuery';
+import { shopAdminFragments } from '../../graphql/fragment/ShopAdminFragment';
 
 interface IProps {
   classes: any;

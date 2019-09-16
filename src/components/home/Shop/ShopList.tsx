@@ -11,7 +11,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withWidth from '@material-ui/core/withWidth';
 import { WithWidth } from '@material-ui/core/withWidth/withWidth';
-import { shopFragments, shopQuery } from '../../../graphql/query/ShopQuery';
+import { shopQuery } from '../../../graphql/query/ShopQuery';
+import { shopFragments } from '../../../graphql/fragment/ShopFragment';
 
 let t;
 

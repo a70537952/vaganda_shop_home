@@ -18,7 +18,7 @@ import { Mutation, Query, withApollo, WithApolloClient } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { AppContext } from '../../../contexts/seller/Context';
-import { shopAdminRoleFragments } from '../../../graphql/query/ShopAdminRoleQuery';
+import { shopAdminRoleFragments } from '../../../graphql/fragment/ShopAdminRoleFragment';
 import FormUtil from '../../../utils/FormUtil';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import gql from 'graphql-tag';

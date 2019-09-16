@@ -16,6 +16,7 @@ import { useResendVerifyUserEmailMutation } from '../../../graphql/mutation/auth
 import { AppContext } from '../../../contexts/home/Context';
 import { useFacebookSignInMutation } from '../../../graphql/mutation/authMutation/FacebookSignInMutation';
 import { useCookies } from 'react-cookie';
+import { getCookieKey, getCookieOption } from '../../../utils/CookieUtil';
 
 interface IProps {
   onForgotPasswordClick: () => void;
@@ -105,11 +106,7 @@ export default function FormSignIn(props: IProps) {
   });
 
   function onSignInCompleted(data: any) {
-    setCookie(
-      process.env.REACT_APP_COOKIE_API_TOKEN_KEY || 'api_token',
-      data.api_token,
-      { domain: '.' + process.env.REACT_APP_COOKIE_DOMAIN, secure: true }
-    );
+    setCookie(getCookieKey('api_token'), data.api_token, getCookieOption());
     window.location.reload();
   }
 

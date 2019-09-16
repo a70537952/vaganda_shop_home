@@ -37,7 +37,7 @@ import ShopAdminRoleSelect from '../../_select/ShopAdminRoleSelect';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
-import { shopAdminFragments } from '../../../graphql/query/ShopAdminQuery';
+import { shopAdminFragments } from '../../../graphql/fragment/ShopAdminFragment';
 
 let shopAdminFields: any;
 let t: any;

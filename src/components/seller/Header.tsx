@@ -34,6 +34,7 @@ import { WithWidth } from '@material-ui/core/withWidth/withWidth';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { homePath, sellerPath } from '../../utils/RouteUtil';
 import { ReactCookieProps, withCookies } from 'react-cookie';
+import { getCookieKey, getCookieOption } from '../../utils/CookieUtil';
 
 interface IProps {
   classes: any;
@@ -172,13 +173,8 @@ class Header extends React.Component<
                           onClick={() => {
                             if (this.props.cookies) {
                               this.props.cookies.remove(
-                                process.env.REACT_APP_COOKIE_API_TOKEN_KEY ||
-                                  'api_token',
-                                {
-                                  domain:
-                                    '.' + process.env.REACT_APP_COOKIE_DOMAIN,
-                                  secure: true
-                                }
+                                getCookieKey('api_token'),
+                                getCookieOption()
                               );
                             }
                             window.location.reload();

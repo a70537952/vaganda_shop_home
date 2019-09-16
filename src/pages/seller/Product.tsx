@@ -19,10 +19,7 @@ import ModalCreateEditProduct from '../../components/seller/Modal/ModalCreateEdi
 import ReactTable from '../../components/seller/ReactTable/ReactTable';
 import SellerReactTable from '../../components/seller/SellerReactTable';
 import { AppContext } from '../../contexts/seller/Context';
-import {
-  productFragments,
-  productQuery
-} from '../../graphql/query/ProductQuery';
+import { productQuery } from '../../graphql/query/ProductQuery';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import gql from 'graphql-tag';
 import { RouteComponentProps } from 'react-router';
@@ -41,6 +38,7 @@ import { homePath } from '../../utils/RouteUtil';
 import LaunchIcon from '@material-ui/icons/Launch';
 import ImagesCarousel from '../../components/ImagesCarousel';
 import Image from '../../components/Image';
+import { productFragments } from '../../graphql/fragment/ProductFragment';
 
 interface IProps {
   classes: any;

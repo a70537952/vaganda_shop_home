@@ -19,7 +19,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import gql from 'graphql-tag';
 import { RouteComponentProps } from 'react-router';
 import TextField from '@material-ui/core/TextField';
-import { shopProductCategoryFragments } from '../../../graphql/query/ShopProductCategoryQuery';
+import { shopProductCategoryFragments } from '../../../graphql/fragment/ShopProductCategoryFragment';
 
 let shopProductCategoryFields: any;
 let t: any;

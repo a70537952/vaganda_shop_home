@@ -22,10 +22,8 @@ import Address from '../../components/Address';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import USER_ORDER_DETAIL from '../../constant/USER_ORDER_DETAIL';
-import {
-  userOrderDetailFragments,
-  userOrderDetailQuery
-} from '../../graphql/query/UserOrderDetailQuery';
+import { userOrderDetailQuery } from '../../graphql/query/UserOrderDetailQuery';
+import { userOrderDetailFragments } from '../../graphql/fragment/UserOrderDetailFragment';
 
 interface IProps {
   classes: any;

@@ -13,12 +13,10 @@ import { useApolloClient } from 'react-apollo';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
 import { useSignUpUserMutation } from '../../../graphql/mutation/authMutation/SignUpUserMutation';
-import {
-  IUserFragmentFormSignUp,
-  userFragments,
-  userQuery
-} from '../../../graphql/query/UserQuery';
+import { userQuery } from '../../../graphql/query/UserQuery';
 import { WithPagination } from '../../../graphql/query/Query';
+import { IUserFragmentFormSignUp } from '../../../graphql/fragmentInterface/UserFragmentInterface';
+import { userFragments } from '../../../graphql/fragment/UserFragment';
 
 interface IProps {
   onLoginClick: () => void;

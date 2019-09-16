@@ -18,14 +18,12 @@ import UserAvatar from '../../UserAvatar';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
-import {
-  IUserFragmentFormEditUserAccount,
-  userFragments,
-  useUserQuery
-} from '../../../graphql/query/UserQuery';
+import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { useUpdateUserInfoMutation } from '../../../graphql/mutation/userMutation/UpdateUserInfoMutation';
 import { useChangeUserAvatarMutation } from '../../../graphql/mutation/userMutation/ChangeUserAvatarMutation';
 import { useRemoveUserAvatarMutation } from '../../../graphql/mutation/userMutation/RemoveUserAvatarMutation';
+import { IUserFragmentFormEditUserAccount } from '../../../graphql/fragmentInterface/UserFragmentInterface';
+import { userFragments } from '../../../graphql/fragment/UserFragment';
 
 interface IProps {
   userId: string;

@@ -29,12 +29,7 @@ import { Mutation, withApollo, WithApolloClient } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { AppContext } from '../../../contexts/seller/Context';
-import {
-  IProductFragmentModalCreateEditProduct,
-  productFragments,
-  productQuery,
-  ProductVars
-} from '../../../graphql/query/ProductQuery';
+import { productQuery, ProductVars } from '../../../graphql/query/ProductQuery';
 import FormUtil from '../../../utils/FormUtil';
 import DiscountUnitSelect from '../../_select/DiscountUnitSelect';
 import LengthHeightWidthSelect from '../../_select/LengthHeightWidthSelect';
@@ -51,6 +46,8 @@ import CountrySelect from '../../_select/CountrySelect';
 import PRODUCT_SHIPPING from '../../../constant/PRODUCT_SHIPPING';
 import { WithPagination } from '../../../graphql/query/Query';
 import axios from '../../../axios';
+import { productFragments } from '../../../graphql/fragment/ProductFragment';
+import { IProductFragmentModalCreateEditProduct } from '../../../graphql/fragmentInterface/ProductFragmentInterface';
 
 let productShippingFields: any;
 let productTypeFields: any;

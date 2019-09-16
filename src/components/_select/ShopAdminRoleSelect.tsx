@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select from './Select';
 import { PropTypes } from '@material-ui/core';
-import {
-  IShopAdminRoleFragmentShopAdminRoleSelect,
-  shopAdminRoleFragments,
-  useShopAdminRoleQuery
-} from '../../graphql/query/ShopAdminRoleQuery';
+import { useShopAdminRoleQuery } from '../../graphql/query/ShopAdminRoleQuery';
+import { IShopAdminRoleFragmentShopAdminRoleSelect } from '../../graphql/fragmentInterface/ShopAdminRoleFragmentInterface';
+import { shopAdminRoleFragments } from '../../graphql/fragment/ShopAdminRoleFragment';
 
 interface IProps {
   onChange: (value: unknown, selectedShopAdminRole: any) => void;

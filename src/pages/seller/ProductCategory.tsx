@@ -19,10 +19,8 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import gql from 'graphql-tag';
 import { RouteComponentProps } from 'react-router';
 import ModalCreateEditShopProductCategory from '../../components/seller/Modal/ModalCreateEditShopProductCategory';
-import {
-  shopProductCategoryFragments,
-  shopProductCategoryQuery
-} from '../../graphql/query/ShopProductCategoryQuery';
+import { shopProductCategoryQuery } from '../../graphql/query/ShopProductCategoryQuery';
+import { shopProductCategoryFragments } from '../../graphql/fragment/ShopProductCategoryFragment';
 
 interface IProps {
   classes: any;

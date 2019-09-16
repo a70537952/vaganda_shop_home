@@ -69,17 +69,3 @@ export function countryQuery(fragment: DocumentNode): DocumentNode {
 }
 
 // ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface ICountryFragmentCountrySelect {
-  id: string;
-  name: string;
-}
-
-export let countryFragments: any = {
-  CountrySelect: gql`
-    fragment fragment on Country {
-      id
-      name
-    }
-  `
-};

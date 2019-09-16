@@ -76,19 +76,3 @@ export function shopCategoryQuery(fragment: DocumentNode): DocumentNode {
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface IShopCategoryFragmentShopCategorySelect {
-  id: string;
-  title: string;
-}
-
-export let shopCategoryFragments: any = {
-  ShopCategorySelect: gql`
-    fragment fragment on ShopCategory {
-      id
-      title
-    }
-  `
-};

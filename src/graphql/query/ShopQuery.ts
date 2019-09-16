@@ -2,7 +2,7 @@ import gql, { disableFragmentWarnings } from 'graphql-tag';
 import { DocumentNode } from 'graphql';
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 
-import { WithPagination, SortField } from './Query';
+import { SortField, WithPagination } from './Query';
 
 disableFragmentWarnings();
 
@@ -108,69 +108,3 @@ export function shopQuery(fragment: DocumentNode): DocumentNode {
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface IShopFragmentShopList {
-  id: string;
-  user_id: string;
-  shop_category_id: string;
-  name: string;
-  has_physical_shop: string;
-  created_at: string;
-  updated_at: string;
-  shop_info: {
-    id: string;
-    summary: string;
-    logo: string;
-    logo_medium: string;
-    logo_large: string;
-    banner: string;
-    banner_medium: string;
-    banner_large: string;
-  };
-  shop_product_category: {
-    id: string;
-    shop_id: string;
-    title: string;
-  };
-  shop_setting: {
-    id: string;
-    title: string;
-    value: string;
-  };
-}
-
-export let shopFragments: any = {
-  ShopList: gql`
-    fragment fragment on Shop {
-      id
-      user_id
-      shop_category_id
-      name
-      has_physical_shop
-      created_at
-      updated_at
-      shop_info {
-        id
-        summary
-        logo
-        logo_medium
-        logo_large
-        banner
-        banner_medium
-        banner_large
-      }
-      shop_product_category {
-        id
-        shop_id
-        title
-      }
-      shop_setting {
-        id
-        title
-        value
-      }
-    }
-  `
-};

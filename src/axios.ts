@@ -1,12 +1,11 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { getCookieKey } from './utils/CookieUtil';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = 'https://api.vagandashop.local/';
 
-let apiToken = Cookies.get(
-  process.env.REACT_APP_COOKIE_API_TOKEN_KEY || 'api_token'
-);
+let apiToken = Cookies.get(getCookieKey('api_token'));
 
 if (apiToken) {
   axios.defaults.headers.Authorization = 'Bearer ' + apiToken;

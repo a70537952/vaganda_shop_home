@@ -15,6 +15,7 @@ import { AppContext } from '../../contexts/home/Context';
 import apolloClient from '../../apolloClient';
 import gql from 'graphql-tag';
 import { CookiesProvider } from 'react-cookie';
+import '../../sass/home.scss';
 
 function Index() {
   const { t } = useTranslation();

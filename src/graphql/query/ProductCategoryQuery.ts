@@ -116,33 +116,3 @@ export function productCategoryQuery(fragment: DocumentNode): DocumentNode {
 }
 
 // ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface IProductCategoryFragmentProductCategorySelect {
-  id: string;
-  title: string;
-  child_category: {
-    id: string;
-    title: string;
-    child_category: {
-      id: string;
-      title: string;
-    };
-  };
-}
-
-export let productCategoryFragments: any = {
-  ProductCategorySelect: gql`
-    fragment fragment on ProductCategory {
-      id
-      title
-      child_category {
-        id
-        title
-        child_category {
-          id
-          title
-        }
-      }
-    }
-  `
-};

@@ -18,12 +18,10 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
-import {
-  IUserFragmentFormEditUserContact,
-  userFragments,
-  useUserQuery
-} from '../../../graphql/query/UserQuery';
+import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { useUpdateUserContactMutation } from '../../../graphql/mutation/userMutation/UpdateUserContactMutation';
+import { IUserFragmentFormEditUserContact } from '../../../graphql/fragmentInterface/UserFragmentInterface';
+import { userFragments } from '../../../graphql/fragment/UserFragment';
 
 interface IProps {
   userId: string;

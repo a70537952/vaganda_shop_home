@@ -2,7 +2,7 @@ import gql, { disableFragmentWarnings } from 'graphql-tag';
 import { DocumentNode } from 'graphql';
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 
-import { WithPagination, SortField } from './Query';
+import { SortField, WithPagination } from './Query';
 
 disableFragmentWarnings();
 
@@ -108,89 +108,3 @@ export function shopAdminQuery(fragment: DocumentNode): DocumentNode {
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface IShopAdminFragmentAdmin {
-  id: string;
-  shop_id: string;
-  user_id: string;
-  user: {
-    id: string;
-    username: string;
-    name: string;
-  };
-  shop_admin_role_id: string;
-  shop_admin_role: {
-    id: string;
-    title: string;
-    is_shop_owner_role: string;
-    permission: string;
-  };
-  created_at: string;
-  updated_at: string;
-}
-export interface IShopAdminFragmentModalCreateEditShopAdmin {
-  id: string;
-  shop_id: string;
-  user_id: string;
-  user: {
-    id: string;
-    username: string;
-    name: string;
-  };
-  shop_admin_role_id: string;
-  shop_admin_role: {
-    id: string;
-    title: string;
-    is_shop_owner_role: string;
-    permission: string;
-  };
-  created_at: string;
-  updated_at: string;
-}
-
-export let shopAdminFragments: any = {
-  Admin: gql`
-    fragment fragment on ShopAdmin {
-      id
-      shop_id
-      user_id
-      user {
-        id
-        username
-        name
-      }
-      shop_admin_role_id
-      shop_admin_role {
-        id
-        title
-        is_shop_owner_role
-        permission
-      }
-      created_at
-      updated_at
-    }
-  `,
-  ModalCreateEditShopAdmin: gql`
-    fragment fragment on ShopAdmin {
-      id
-      shop_id
-      user_id
-      user {
-        id
-        username
-        name
-      }
-      shop_admin_role_id
-      shop_admin_role {
-        id
-        title
-        is_shop_owner_role
-        permission
-      }
-      created_at
-      updated_at
-    }
-  `
-};

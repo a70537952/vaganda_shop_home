@@ -2,7 +2,7 @@ import gql, { disableFragmentWarnings } from 'graphql-tag';
 import { DocumentNode } from 'graphql';
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 
-import { WithPagination, SortField } from './Query';
+import { SortField, WithPagination } from './Query';
 
 disableFragmentWarnings();
 
@@ -96,46 +96,3 @@ export function shopProductCategoryQuery(fragment: DocumentNode): DocumentNode {
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface IShopProductCategoryFragmentProductCategory {
-  id: string;
-  shop_id: string;
-  title: string;
-  created_at: string;
-  updated_at: string;
-  product_count: string;
-}
-
-export interface IShopProductCategoryFragmentModalCreateEditShopProductCategory {
-  id: string;
-  shop_id: string;
-  title: string;
-  created_at: string;
-  updated_at: string;
-  product_count: string;
-}
-
-export let shopProductCategoryFragments: any = {
-  ProductCategory: gql`
-    fragment fragment on ShopProductCategory {
-      id
-      shop_id
-      title
-      created_at
-      updated_at
-      product_count
-    }
-  `,
-  ModalCreateEditShopProductCategory: gql`
-    fragment fragment on ShopProductCategory {
-      id
-      shop_id
-      title
-      created_at
-      updated_at
-      product_count
-    }
-  `
-};

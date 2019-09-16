@@ -14,14 +14,12 @@ import { AppContext } from '../../contexts/seller/Context';
 import { RouteComponentProps } from 'react-router';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import {
-  userOrderDetailCommentFragments,
-  userOrderDetailCommentQuery
-} from '../../graphql/query/UserOrderDetailCommentQuery';
+import { userOrderDetailCommentQuery } from '../../graphql/query/UserOrderDetailCommentQuery';
 import LinesEllipsis from 'react-lines-ellipsis';
 import Image from '../../components/Image';
 import ImagesCarousel from '../../components/ImagesCarousel';
 import StarRating from '../../components/_rating/StarRating';
+import { userOrderDetailCommentFragments } from '../../graphql/fragment/UserOrderDetailCommentFragment';
 
 interface IProps {
   classes: any;

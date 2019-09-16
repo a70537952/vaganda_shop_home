@@ -2,7 +2,7 @@ import gql, { disableFragmentWarnings } from 'graphql-tag';
 import { DocumentNode } from 'graphql';
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 
-import { WithPagination, SortField } from './Query';
+import { SortField, WithPagination } from './Query';
 
 disableFragmentWarnings();
 
@@ -111,39 +111,3 @@ export function shopAdminRoleQuery(fragment: DocumentNode): DocumentNode {
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface IShopAdminRoleFragmentSellerAdminRole {
-  id: string;
-  title: string;
-  permission: string;
-  is_shop_owner_role: number;
-  created_at: string;
-}
-export interface IShopAdminRoleFragmentShopAdminRoleSelect {
-  id: string;
-  title: string;
-  permission: string;
-  is_shop_owner_role: number;
-}
-
-export let shopAdminRoleFragments: any = {
-  SellerAdminRole: gql`
-    fragment fragment on ShopAdminRole {
-      id
-      title
-      permission
-      is_shop_owner_role
-      created_at
-    }
-  `,
-  ShopAdminRoleSelect: gql`
-    fragment fragment on ShopAdminRole {
-      id
-      title
-      permission
-      is_shop_owner_role
-    }
-  `
-};

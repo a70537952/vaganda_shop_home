@@ -12,10 +12,8 @@ import UserOrderDetailCommentCard from './UserOrderDetailCommentCard';
 import LazyLoad from 'react-lazyload';
 import Pagination from '../../Pagination';
 import StarRating from '../../_rating/StarRating';
-import {
-  userOrderDetailCommentFragments,
-  userOrderDetailCommentQuery
-} from '../../../graphql/query/UserOrderDetailCommentQuery';
+import { userOrderDetailCommentQuery } from '../../../graphql/query/UserOrderDetailCommentQuery';
+import { userOrderDetailCommentFragments } from '../../../graphql/fragment/UserOrderDetailCommentFragment';
 
 let t;
 

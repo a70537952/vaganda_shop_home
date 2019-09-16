@@ -2,7 +2,7 @@ import gql, { disableFragmentWarnings } from 'graphql-tag';
 import { DocumentNode } from 'graphql';
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 
-import { WithPagination, SortField } from './Query';
+import { SortField, WithPagination } from './Query';
 
 disableFragmentWarnings();
 
@@ -147,31 +147,3 @@ export function userAddressQuery(fragment: DocumentNode): DocumentNode {
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface IUserAddressFragmentFormEditUserAddress {
-  id: string;
-  address_1: string;
-  address_2: string;
-  address_3: string;
-  city: string;
-  state: string;
-  postal_code: string;
-  country: string;
-}
-
-export let userAddressFragments: any = {
-  FormEditUserAddress: gql`
-    fragment fragment on UserAddress {
-      id
-      address_1
-      address_2
-      address_3
-      city
-      state
-      postal_code
-      country
-    }
-  `
-};

@@ -17,14 +17,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { sellerPath } from '../../utils/RouteUtil';
-import {
-  userOrderDetailCommentFragments,
-  userOrderDetailCommentQuery
-} from '../../graphql/query/UserOrderDetailCommentQuery';
-import {
-  userOrderDetailFragments,
-  userOrderDetailQuery
-} from '../../graphql/query/UserOrderDetailQuery';
+import { userOrderDetailCommentQuery } from '../../graphql/query/UserOrderDetailCommentQuery';
+import { userOrderDetailQuery } from '../../graphql/query/UserOrderDetailQuery';
+import { userOrderDetailCommentFragments } from '../../graphql/fragment/UserOrderDetailCommentFragment';
+import { userOrderDetailFragments } from '../../graphql/fragment/UserOrderDetailFragment';
 
 interface IProps {
   classes: any;

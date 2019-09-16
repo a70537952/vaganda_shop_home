@@ -15,6 +15,7 @@ import { AppContext, IContext } from '../../contexts/seller/Context';
 import apolloClient from '../../apolloClient';
 import gql from 'graphql-tag';
 import { ReactCookieProps } from 'react-cookie/es6/types';
+import '../../sass/seller.scss';
 
 interface IProps {
   cookies?: any;

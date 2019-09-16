@@ -17,14 +17,12 @@ import React, { useEffect, useState } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useTranslation } from 'react-i18next';
 import { makeStyles, useTheme } from '@material-ui/styles';
-import {
-  IProductCategoryFragmentProductCategorySelect,
-  productCategoryFragments,
-  useProductCategoryQuery
-} from '../../graphql/query/ProductCategoryQuery';
+import { useProductCategoryQuery } from '../../graphql/query/ProductCategoryQuery';
 import { PropTypes, useMediaQuery } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import { IProductCategoryFragmentProductCategorySelect } from '../../graphql/fragmentInterface/ProductCategoryFragmentInterface';
+import { productCategoryFragments } from '../../graphql/fragment/ProductCategoryFragment';
 
 interface IProps {
   onChange: (value: unknown) => void;

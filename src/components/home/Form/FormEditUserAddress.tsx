@@ -12,14 +12,13 @@ import CountrySelect from '../../_select/CountrySelect';
 import FormUtil, { Fields } from '../../../utils/FormUtil';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import { userFragments, useUserQuery } from '../../../graphql/query/UserQuery';
+import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserAddressMutation } from '../../../graphql/mutation/userMutation/UpdateUserAddressMutation';
-import {
-  IUserAddressFragmentFormEditUserAddress,
-  userAddressFragments,
-  useUserAddressQuery
-} from '../../../graphql/query/UserAddressQuery';
+import { useUserAddressQuery } from '../../../graphql/query/UserAddressQuery';
+import { IUserAddressFragmentFormEditUserAddress } from '../../../graphql/fragmentInterface/UserAddressFragmentInterface';
+import { userAddressFragments } from '../../../graphql/fragment/UserAddressFragment';
+import { userFragments } from '../../../graphql/fragment/UserFragment';
 
 interface IProps {
   userId: string;

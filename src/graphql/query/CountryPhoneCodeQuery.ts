@@ -90,19 +90,3 @@ export function countryPhoneCodeQuery(fragment: DocumentNode): DocumentNode {
 }
 
 // ['Annotation Ignore Below For generate tsQuery tool']
-
-export interface ICountryPhoneCodeFragmentCountryPhoneCodeSelect {
-  id: string;
-  name: string;
-  phone_code: string;
-}
-
-export let countryPhoneCodeFragments: any = {
-  CountryPhoneCodeSelect: gql`
-    fragment fragment on CountryPhoneCode {
-      id
-      name
-      phone_code
-    }
-  `
-};

@@ -35,5 +35,3 @@ export function shopAdminRolePermissionQuery(
     ${fragment}
 `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserPasswordMutation } from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
+import { updateUserPasswordMutationFragments } from '../../../graphql/fragmentMutation/UpdateUserPasswordMutationFragment';
 
 interface IProps {
   userId: string;
@@ -67,29 +68,32 @@ export default function FormEditUserPassword(props: IProps) {
   const [
     updateUserPasswordMutation,
     { loading: isUpdatingUserPasswordMutation }
-  ] = useUpdateUserPasswordMutation({
-    onCompleted: data => {
-      setUpdateUserPassword(
-        FormUtil.generateResetFieldsStateHook(
-          updateUserPasswordFields,
-          updateUserPassword
-        )
-      );
-      enqueueSnackbar(t('your password has been successfully updated'));
-      if (props.onUpdated) {
-        props.onUpdated();
+  ] = useUpdateUserPasswordMutation(
+    updateUserPasswordMutationFragments.DefaultFragment,
+    {
+      onCompleted: data => {
+        setUpdateUserPassword(
+          FormUtil.generateResetFieldsStateHook(
+            updateUserPasswordFields,
+            updateUserPassword
+          )
+        );
+        enqueueSnackbar(t('your password has been successfully updated'));
+        if (props.onUpdated) {
+          props.onUpdated();
+        }
+      },
+      onError: error => {
+        setUpdateUserPassword(
+          FormUtil.validationErrorHandlerHook(
+            updateUserPasswordFields,
+            error,
+            updateUserPassword
+          ).state
+        );
       }
-    },
-    onError: error => {
-      setUpdateUserPassword(
-        FormUtil.validationErrorHandlerHook(
-          updateUserPasswordFields,
-          error,
-          updateUserPassword
-        ).state
-      );
     }
-  });
+  );
 
   const [updateUserPassword, setUpdateUserPassword] = useState<Fields>(
     FormUtil.generateFieldsState(updateUserPasswordFields)

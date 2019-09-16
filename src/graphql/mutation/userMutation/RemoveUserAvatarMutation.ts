@@ -1,25 +1,33 @@
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import {
-  MutationHookOptions,
-  QueryHookOptions,
-  useMutation
-} from '@apollo/react-hooks';
+import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
-export function useRemoveUserAvatarMutation(
+interface RemoveUserAvatarMutationVars {}
+
+export function useRemoveUserAvatarMutation<TData = any>(
   fragment: DocumentNode,
-  options?: MutationHookOptions
+  options?: MutationHookOptions<
+    { removeUserAvatarMutation: TData },
+    RemoveUserAvatarMutationVars
+  >
 ) {
-  return useMutation(RemoveUserAvatarMutation(fragment), options);
+  return useMutation<
+    { removeUserAvatarMutation: TData },
+    RemoveUserAvatarMutationVars
+  >(RemoveUserAvatarMutation(fragment), options);
 }
 
 export function RemoveUserAvatarMutation(fragment: DocumentNode): DocumentNode {
   return gql`
-    mutation RemoveUserAvatarMutation {
-      removeUserAvatarMutation {
-        ...fragment
-      }
-    }
+    mutation RemoveUserAvatarMutation(
+    
+    ){
+            removeUserAvatarMutation(
+            
+            ){
+             ...fragment
+           }
+        }
     ${fragment}
-  `;
+`;
 }

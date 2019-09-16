@@ -14,6 +14,7 @@ import BRAINTREE_ERROR from '../../constant/BRAINTREE_ERROR';
 import DialogProcessingPayment from '../_dialog/DialogProcessingPayment';
 import { makeStyles } from '@material-ui/styles';
 import { useGetBraintreeClientTokenMutation } from '../../graphql/mutation/braintreeMutation/GetBraintreeClientTokenMutation';
+import { getBraintreeClientTokenMutationFragments } from '../../graphql/fragmentMutation/GetBraintreeClientTokenMutationFragment';
 
 interface IProps {
   isOpen: boolean;
@@ -36,9 +37,9 @@ export default function ModalBraintreePayment(props: IProps) {
   const { t } = useTranslation();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { payButtonText } = props;
-  const [
-    getBraintreeClientTokenMutation
-  ] = useGetBraintreeClientTokenMutation();
+  const [getBraintreeClientTokenMutation] = useGetBraintreeClientTokenMutation(
+    getBraintreeClientTokenMutationFragments.DefaultFragment
+  );
 
   const [modal, setModal] = useState<{
     processingPayment: boolean;
@@ -64,8 +65,10 @@ export default function ModalBraintreePayment(props: IProps) {
 
   async function getBraintreeClientToken() {
     let { data } = await getBraintreeClientTokenMutation();
-    let clientToken = data.getBraintreeClientTokenMutation.clientToken;
-    setBraintreeClientToken(clientToken);
+    if (data) {
+      let clientToken = data.getBraintreeClientTokenMutation.clientToken;
+      setBraintreeClientToken(clientToken);
+    }
   }
 
   function initBraintreePaymentForm() {

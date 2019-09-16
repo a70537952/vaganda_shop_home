@@ -1,16 +1,27 @@
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import {
-  MutationHookOptions,
-  QueryHookOptions,
-  useMutation
-} from '@apollo/react-hooks';
+import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
-export function useSignUpUserMutation(options?: MutationHookOptions) {
-  return useMutation(SignUpUserMutation(), options);
+interface SignUpUserMutationVars {
+  username: String;
+  email: String;
+  password: String;
 }
 
-export function SignUpUserMutation(): DocumentNode {
+export function useSignUpUserMutation<TData = any>(
+  fragment: DocumentNode,
+  options?: MutationHookOptions<
+    { signUpUserMutation: TData },
+    SignUpUserMutationVars
+  >
+) {
+  return useMutation<{ signUpUserMutation: TData }, SignUpUserMutationVars>(
+    SignUpUserMutation(fragment),
+    options
+  );
+}
+
+export function SignUpUserMutation(fragment: DocumentNode): DocumentNode {
   return gql`
     mutation SignUpUserMutation(
       $username: String!
@@ -22,8 +33,9 @@ export function SignUpUserMutation(): DocumentNode {
         email: $email
         password: $password
       ) {
-        id
+        ...fragment
       }
     }
+    ${fragment}
   `;
 }

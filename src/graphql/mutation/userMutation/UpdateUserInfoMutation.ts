@@ -1,16 +1,23 @@
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import {
-  MutationHookOptions,
-  QueryHookOptions,
-  useMutation
-} from '@apollo/react-hooks';
+import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
-export function useUpdateUserInfoMutation(
+interface UpdateUserInfoMutationVars {
+  name: String;
+  gender: number;
+}
+
+export function useUpdateUserInfoMutation<TData = any>(
   fragment: DocumentNode,
-  options?: MutationHookOptions
+  options?: MutationHookOptions<
+    { updateUserInfoMutation: TData },
+    UpdateUserInfoMutationVars
+  >
 ) {
-  return useMutation(UpdateUserInfoMutation(fragment), options);
+  return useMutation<
+    { updateUserInfoMutation: TData },
+    UpdateUserInfoMutationVars
+  >(UpdateUserInfoMutation(fragment), options);
 }
 
 export function UpdateUserInfoMutation(fragment: DocumentNode): DocumentNode {

@@ -1,16 +1,28 @@
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import {
-  MutationHookOptions,
-  QueryHookOptions,
-  useMutation
-} from '@apollo/react-hooks';
+import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
-export function useUpdateUserPasswordMutation(options?: MutationHookOptions) {
-  return useMutation(UpdateUserPasswordMutation(), options);
+interface UpdateUserPasswordMutationVars {
+  currentPassword: String;
+  newPassword: String;
 }
 
-export function UpdateUserPasswordMutation(): DocumentNode {
+export function useUpdateUserPasswordMutation<TData = any>(
+  fragment: DocumentNode,
+  options?: MutationHookOptions<
+    { updateUserPasswordMutation: TData },
+    UpdateUserPasswordMutationVars
+  >
+) {
+  return useMutation<
+    { updateUserPasswordMutation: TData },
+    UpdateUserPasswordMutationVars
+  >(UpdateUserPasswordMutation(fragment), options);
+}
+
+export function UpdateUserPasswordMutation(
+  fragment: DocumentNode
+): DocumentNode {
   return gql`
     mutation UpdateUserPasswordMutation(
       $currentPassword: String!
@@ -20,8 +32,9 @@ export function UpdateUserPasswordMutation(): DocumentNode {
         currentPassword: $currentPassword
         newPassword: $newPassword
       ) {
-        id
+        ...fragment
       }
     }
+    ${fragment}
   `;
 }

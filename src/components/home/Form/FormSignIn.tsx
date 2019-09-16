@@ -17,6 +17,9 @@ import { AppContext } from '../../../contexts/home/Context';
 import { useFacebookSignInMutation } from '../../../graphql/mutation/authMutation/FacebookSignInMutation';
 import { useCookies } from 'react-cookie';
 import { getCookieKey, getCookieOption } from '../../../utils/CookieUtil';
+import { resendVerifyUserEmailMutationFragments } from '../../../graphql/fragmentMutation/ResendVerifyUserEmailMutationFragment';
+import { signInUserMutationFragments } from '../../../graphql/fragmentMutation/SignInUserMutationFragment';
+import { facebookSignInMutationFragments } from '../../../graphql/fragmentMutation/FacebookSignInMutationFragment';
 
 interface IProps {
   onForgotPasswordClick: () => void;
@@ -76,15 +79,18 @@ export default function FormSignIn(props: IProps) {
   const [
     resendVerifyUserEmailMutation,
     { loading: isResendingVerifyUserEmailMutation }
-  ] = useResendVerifyUserEmailMutation({
-    onCompleted: data => {
-      enqueueSnackbar(t('we have send an verify email to your email'));
+  ] = useResendVerifyUserEmailMutation(
+    resendVerifyUserEmailMutationFragments.DefaultFragment,
+    {
+      onCompleted: data => {
+        enqueueSnackbar(t('we have send an verify email to your email'));
+      }
     }
-  });
+  );
   const [
     signInUserMutation,
     { loading: isSigningInUserMutation }
-  ] = useSignInUserMutation({
+  ] = useSignInUserMutation(signInUserMutationFragments.DefaultFragment, {
     onCompleted: data => {
       setSignIn(FormUtil.resetFieldsIsValidHook(signInFields, signIn));
       onSignInCompleted(data.signInUserMutation);
@@ -96,14 +102,17 @@ export default function FormSignIn(props: IProps) {
   const [
     facebookSignInMutation,
     { loading: isFacebookSigningInMutation }
-  ] = useFacebookSignInMutation({
-    onCompleted: data => {
-      onSignInCompleted(data.facebookSignInMutation);
-    },
-    onError: error => {
-      checkSignInField(error);
+  ] = useFacebookSignInMutation(
+    facebookSignInMutationFragments.DefaultFragment,
+    {
+      onCompleted: data => {
+        onSignInCompleted(data.facebookSignInMutation);
+      },
+      onError: error => {
+        checkSignInField(error);
+      }
     }
-  });
+  );
 
   function onSignInCompleted(data: any) {
     setCookie(getCookieKey('api_token'), data.api_token, getCookieOption());

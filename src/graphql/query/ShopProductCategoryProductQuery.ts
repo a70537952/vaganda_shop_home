@@ -95,5 +95,3 @@ export function shopProductCategoryProductQuery(
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']

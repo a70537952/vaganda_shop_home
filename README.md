@@ -17,6 +17,8 @@ In the project directory, you can run:
 
 **`HTTPS=true npm start`**
 
+### `./node_modules/.bin/prettier --single-quote --write "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"`
+**Formatting Code**
 ### `npm start`
 
 Runs the app in the development mode.<br>

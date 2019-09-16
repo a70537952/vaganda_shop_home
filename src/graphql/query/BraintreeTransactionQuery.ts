@@ -182,5 +182,3 @@ export function braintreeTransactionQuery(
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']

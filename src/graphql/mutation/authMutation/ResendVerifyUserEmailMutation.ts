@@ -7,6 +7,7 @@ interface ResendVerifyUserEmailMutationVars {
 }
 
 export function useResendVerifyUserEmailMutation<TData = any>(
+  fragment: DocumentNode,
   options?: MutationHookOptions<
     { resendVerifyUserEmailMutation: TData },
     ResendVerifyUserEmailMutationVars
@@ -15,15 +16,18 @@ export function useResendVerifyUserEmailMutation<TData = any>(
   return useMutation<
     { resendVerifyUserEmailMutation: TData },
     ResendVerifyUserEmailMutationVars
-  >(ResendVerifyUserEmailMutation(), options);
+  >(ResendVerifyUserEmailMutation(fragment), options);
 }
 
-export function ResendVerifyUserEmailMutation(): DocumentNode {
+export function ResendVerifyUserEmailMutation(
+  fragment: DocumentNode
+): DocumentNode {
   return gql`
     mutation ResendVerifyUserEmailMutation($email: String) {
       resendVerifyUserEmailMutation(email: $email) {
-        id
+        ...fragment
       }
     }
+    ${fragment}
   `;
 }

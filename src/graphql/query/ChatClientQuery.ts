@@ -2,7 +2,7 @@ import gql, { disableFragmentWarnings } from 'graphql-tag';
 import { DocumentNode } from 'graphql';
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 
-import { SortField, WithPagination } from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -144,5 +144,3 @@ export function chatClientQuery(fragment: DocumentNode): DocumentNode {
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']

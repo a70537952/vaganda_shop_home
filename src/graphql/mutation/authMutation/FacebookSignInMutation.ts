@@ -9,6 +9,7 @@ interface FacebookSignInMutationVars {
 }
 
 export function useFacebookSignInMutation<TData = any>(
+  fragment: DocumentNode,
   options?: MutationHookOptions<
     { facebookSignInMutation: TData },
     FacebookSignInMutationVars
@@ -17,10 +18,10 @@ export function useFacebookSignInMutation<TData = any>(
   return useMutation<
     { facebookSignInMutation: TData },
     FacebookSignInMutationVars
-  >(FacebookSignInMutation(), options);
+  >(FacebookSignInMutation(fragment), options);
 }
 
-export function FacebookSignInMutation(): DocumentNode {
+export function FacebookSignInMutation(fragment: DocumentNode): DocumentNode {
   return gql`
     mutation FacebookSignInMutation(
       $facebookID: String!
@@ -32,9 +33,9 @@ export function FacebookSignInMutation(): DocumentNode {
         email: $email
         name: $name
       ) {
-        id
-        api_token
+        ...fragment
       }
     }
+    ${fragment}
   `;
 }

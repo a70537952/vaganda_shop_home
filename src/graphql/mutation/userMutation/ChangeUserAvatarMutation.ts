@@ -1,16 +1,22 @@
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import {
-  MutationHookOptions,
-  QueryHookOptions,
-  useMutation
-} from '@apollo/react-hooks';
+import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
-export function useChangeUserAvatarMutation(
+interface ChangeUserAvatarMutationVars {
+  userAvatar: File;
+}
+
+export function useChangeUserAvatarMutation<TData = any>(
   fragment: DocumentNode,
-  options?: MutationHookOptions
+  options?: MutationHookOptions<
+    { changeUserAvatarMutation: TData },
+    ChangeUserAvatarMutationVars
+  >
 ) {
-  return useMutation(ChangeUserAvatarMutation(fragment), options);
+  return useMutation<
+    { changeUserAvatarMutation: TData },
+    ChangeUserAvatarMutationVars
+  >(ChangeUserAvatarMutation(fragment), options);
 }
 
 export function ChangeUserAvatarMutation(fragment: DocumentNode): DocumentNode {

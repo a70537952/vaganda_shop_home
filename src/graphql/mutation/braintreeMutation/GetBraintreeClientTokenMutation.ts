@@ -1,23 +1,35 @@
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import {
-  MutationHookOptions,
-  QueryHookOptions,
-  useMutation
-} from '@apollo/react-hooks';
+import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
-export function useGetBraintreeClientTokenMutation(
-  options?: MutationHookOptions
+interface GetBraintreeClientTokenMutationVars {}
+
+export function useGetBraintreeClientTokenMutation<TData = any>(
+  fragment: DocumentNode,
+  options?: MutationHookOptions<
+    { getBraintreeClientTokenMutation: TData },
+    GetBraintreeClientTokenMutationVars
+  >
 ) {
-  return useMutation(GetBraintreeClientTokenMutation(), options);
+  return useMutation<
+    { getBraintreeClientTokenMutation: TData },
+    GetBraintreeClientTokenMutationVars
+  >(GetBraintreeClientTokenMutation(fragment), options);
 }
 
-export function GetBraintreeClientTokenMutation(): DocumentNode {
+export function GetBraintreeClientTokenMutation(
+  fragment: DocumentNode
+): DocumentNode {
   return gql`
-    mutation GetBraintreeClientTokenMutation {
-      getBraintreeClientTokenMutation {
-        clientToken
-      }
-    }
-  `;
+    mutation GetBraintreeClientTokenMutation(
+    
+    ){
+            getBraintreeClientTokenMutation(
+            
+            ){
+             ...fragment
+           }
+        }
+    ${fragment}
+`;
 }

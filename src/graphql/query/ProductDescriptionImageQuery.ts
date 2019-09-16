@@ -126,5 +126,3 @@ export function productDescriptionImageQuery(
     ${fragment}
   `;
 }
-
-// ['Annotation Ignore Below For generate tsQuery tool']

@@ -255,8 +255,6 @@
   "no comment yet": "还没有评论",
   "with image": "有图片",
   "{{score}} out of {{total_score}}": "{{score}} (满分{{total_score}})",
-  "rows per page:": "每页行数：",
-  "{{from}} - {{to}} of {{count}}": "{{from}} - {{to}} 共 {{count}}",
   "sending": "发送中",
   "click here to resend": "点击此处重新发送",
   "you have not verified your account. to complete the process of verify your account, please log in to your email account and find the email we have sent you.": "您尚未验证自己的帐户。要完成验证帐户的过程，请登录到您的电子邮件帐户，然后找到我们发送给您的电子邮件。",

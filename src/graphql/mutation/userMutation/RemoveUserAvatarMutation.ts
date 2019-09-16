@@ -19,15 +19,11 @@ export function useRemoveUserAvatarMutation<TData = any>(
 
 export function RemoveUserAvatarMutation(fragment: DocumentNode): DocumentNode {
   return gql`
-    mutation RemoveUserAvatarMutation(
-    
-    ){
-            removeUserAvatarMutation(
-            
-            ){
-             ...fragment
-           }
-        }
+    mutation RemoveUserAvatarMutation {
+      removeUserAvatarMutation {
+        ...fragment
+      }
+    }
     ${fragment}
-`;
+  `;
 }

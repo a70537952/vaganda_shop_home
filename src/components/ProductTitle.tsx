@@ -1,4 +1,3 @@
-import { withStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -18,51 +17,40 @@ interface IProps extends StyledComponentProps {
   align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
 }
 
-class ProductTitle extends React.Component<IProps, Readonly<any>> {
-  render() {
-    let {
-      classes,
-      className,
-      product,
-      color,
-      align,
-      gutterBottom,
-      variant,
-      withLink,
-      display
-    } = this.props;
-    classes = classes || {};
+export default function ProductTitle(props: IProps) {
+  const {
+    className,
+    product,
+    color,
+    align,
+    gutterBottom,
+    variant,
+    withLink,
+    display
+  } = props;
 
-    let productLink: any = {
-      ...((withLink && product && product.id
-        ? {
-            component: Link,
-            to: homePath('product', { productId: product.id })
-          }
-        : {}) as any)
-    };
+  let productLink: any = {
+    ...((withLink && product && product.id
+      ? {
+          component: Link,
+          to: homePath('product', { productId: product.id })
+        }
+      : {}) as any)
+  };
 
-    return (
-      <Typography
-        variant={variant}
-        className={classNames(className, classes.productTitle, {
-          pointer: withLink
-        })}
-        gutterBottom={gutterBottom}
-        color={color}
-        align={align}
-        display={display}
-        {...productLink}
-      >
-        {product.title}
-      </Typography>
-    );
-  }
+  return (
+    <Typography
+      variant={variant}
+      className={classNames(className, {
+        pointer: withLink
+      })}
+      gutterBottom={gutterBottom}
+      color={color}
+      align={align}
+      display={display}
+      {...productLink}
+    >
+      {product.title}
+    </Typography>
+  );
 }
-
-export default withStyles(theme => ({
-  productTitle: {},
-  pointer: {
-    cursor: 'pointer'
-  }
-}))(ProductTitle);

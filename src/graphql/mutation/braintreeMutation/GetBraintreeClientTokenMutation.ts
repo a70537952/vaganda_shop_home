@@ -21,15 +21,11 @@ export function GetBraintreeClientTokenMutation(
   fragment: DocumentNode
 ): DocumentNode {
   return gql`
-    mutation GetBraintreeClientTokenMutation(
-    
-    ){
-            getBraintreeClientTokenMutation(
-            
-            ){
-             ...fragment
-           }
-        }
+    mutation GetBraintreeClientTokenMutation {
+      getBraintreeClientTokenMutation {
+        ...fragment
+      }
+    }
     ${fragment}
-`;
+  `;
 }

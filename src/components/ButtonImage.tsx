@@ -1,11 +1,10 @@
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
 import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import DoneIcon from '@material-ui/icons/Done';
 
 interface IProps extends StyledComponentProps {
-  classes: any;
   image: any;
   width?: string;
   height?: string;
@@ -14,48 +13,7 @@ interface IProps extends StyledComponentProps {
   onClick?: () => void;
 }
 
-class ButtonImage extends React.Component<IProps, Readonly<any>> {
-  render() {
-    let {
-      classes,
-      image,
-      width,
-      isSelected,
-      onClick,
-      title,
-      height
-    } = this.props;
-
-    return (
-      <ButtonBase
-        title={title}
-        focusRipple
-        key={image.id}
-        className={classes.image}
-        focusVisibleClassName={classes.focusVisible}
-        style={{
-          width: width || '80px',
-          height: height || '45px'
-        }}
-        onClick={onClick}
-      >
-        <span
-          className={classes.imageSrc}
-          style={{
-            backgroundImage: `url('${image.image_small}')`
-          }}
-        />
-
-        {isSelected && <span className={classes.imageBackdrop} />}
-        <span className={classes.imageButton}>
-          {isSelected && <DoneIcon className={classes.selectedIcon} />}
-        </span>
-      </ButtonBase>
-    );
-  }
-}
-
-export default withStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   image: {
     position: 'relative'
   },
@@ -102,4 +60,35 @@ export default withStyles(theme => ({
     borderWidth: '3px',
     borderRadius: '50%'
   }
-}))(ButtonImage);
+}));
+
+export default function ButtonImage(props: IProps) {
+  const classes = useStyles();
+  const { image, width, isSelected, onClick, title, height } = props;
+
+  return (
+    <ButtonBase
+      title={title}
+      focusRipple
+      key={image.id}
+      className={classes.image}
+      style={{
+        width: width || '80px',
+        height: height || '45px'
+      }}
+      onClick={onClick}
+    >
+      <span
+        className={classes.imageSrc}
+        style={{
+          backgroundImage: `url('${image.image_small}')`
+        }}
+      />
+
+      {isSelected && <span className={classes.imageBackdrop} />}
+      <span className={classes.imageButton}>
+        {isSelected && <DoneIcon className={classes.selectedIcon} />}
+      </span>
+    </ButtonBase>
+  );
+}

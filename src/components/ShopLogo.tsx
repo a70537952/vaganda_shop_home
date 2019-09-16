@@ -1,5 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Store from '@material-ui/icons/Store';
 import classnames from 'classnames';
 import React from 'react';
@@ -19,58 +19,54 @@ interface IProps extends StyledComponentProps {
     | 'logo_extra';
 }
 
-class ShopLogo extends React.Component<IProps, Readonly<any>> {
-  render() {
-    let { classes, className, shop, withLink, imageSize } = this.props;
-    classes = classes || {};
-
-    let shopLink: any = {
-      ...(withLink && shop && shop.shop_setting
-        ? {
-            component: Link,
-            to: homePath('shopHome', {
-              account: shop.shop_setting.find(
-                (setting: any) => setting.title === 'account'
-              ).value
-            })
-          }
-        : ({} as any))
-    };
-
-    let logoClass = classnames(classes.logo, className);
-    let imageKey = imageSize || 'logo_medium';
-
-    return (
-      <React.Fragment>
-        {shop ? (
-          <React.Fragment>
-            {shop.shop_info &&
-            shop.shop_info.logo &&
-            shop.shop_info[imageKey] ? (
-              <Avatar
-                src={shop.shop_info[imageKey]}
-                className={logoClass}
-                {...shopLink}
-              />
-            ) : (
-              <Avatar className={logoClass} {...shopLink}>
-                {shop.name[0].toUpperCase()}
-              </Avatar>
-            )}
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <Store className={className} />
-          </React.Fragment>
-        )}
-      </React.Fragment>
-    );
-  }
-}
-
-export default withStyles(theme => ({
+const useStyles = makeStyles({
   logo: {
     width: 30,
     height: 30
   }
-}))(ShopLogo);
+});
+
+export default function ShopLogo(props: IProps) {
+  const classes = useStyles();
+  const { className, shop, withLink, imageSize } = props;
+
+  let shopLink: any = {
+    ...(withLink && shop && shop.shop_setting
+      ? {
+          component: Link,
+          to: homePath('shopHome', {
+            account: shop.shop_setting.find(
+              (setting: any) => setting.title === 'account'
+            ).value
+          })
+        }
+      : ({} as any))
+  };
+
+  let logoClass = classnames(classes.logo, className);
+  let imageKey = imageSize || 'logo_medium';
+
+  return (
+    <React.Fragment>
+      {shop ? (
+        <React.Fragment>
+          {shop.shop_info && shop.shop_info.logo && shop.shop_info[imageKey] ? (
+            <Avatar
+              src={shop.shop_info[imageKey]}
+              className={logoClass}
+              {...shopLink}
+            />
+          ) : (
+            <Avatar className={logoClass} {...shopLink}>
+              {shop.name[0].toUpperCase()}
+            </Avatar>
+          )}
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <Store className={className} />
+        </React.Fragment>
+      )}
+    </React.Fragment>
+  );
+}

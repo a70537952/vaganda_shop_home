@@ -1,11 +1,9 @@
-import { withStyles } from '@material-ui/core/styles';
 import React from 'react';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import { TypographyProps } from '@material-ui/core/Typography';
 import TablePagination from '@material-ui/core/TablePagination';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 interface IProps extends TypographyProps {
-  classes: any;
   total: number;
   rowsPerPage: number;
   changePage: (event: any, page: number) => void;
@@ -13,49 +11,32 @@ interface IProps extends TypographyProps {
   rowsPerPageOptions?: number[];
 }
 
-class Pagination extends React.Component<
-  IProps & WithTranslation,
-  Readonly<any>
-> {
-  render() {
-    let {
-      classes,
-      total,
-      rowsPerPage,
-      t,
-      changePage,
-      page,
-      rowsPerPageOptions
-    } = this.props;
+export default function Pagination(props: IProps) {
+  const { t } = useTranslation();
+  const { total, rowsPerPage, changePage, page, rowsPerPageOptions } = props;
 
-    return (
-      <TablePagination
-        classes={{
-          select: classes.select
-        }}
-        component="div"
-        count={total}
-        rowsPerPage={rowsPerPage}
-        page={page - 1}
-        rowsPerPageOptions={rowsPerPageOptions}
-        backIconButtonProps={{
-          'aria-label': 'Previous Page'
-        }}
-        nextIconButtonProps={{
-          'aria-label': 'Next Page'
-        }}
-        labelRowsPerPage={t('rows per page:')}
-        labelDisplayedRows={({ from, to, count }) =>
-          t('{{from}} - {{to}} of {{count}}', {
-            from,
-            to,
-            count
-          })
-        }
-        onChangePage={changePage}
-      />
-    );
-  }
+  return (
+    <TablePagination
+      component="div"
+      count={total}
+      rowsPerPage={rowsPerPage}
+      page={page - 1}
+      rowsPerPageOptions={rowsPerPageOptions}
+      backIconButtonProps={{
+        'aria-label': 'Previous Page'
+      }}
+      nextIconButtonProps={{
+        'aria-label': 'Next Page'
+      }}
+      labelRowsPerPage={t('global$$rows per page:')}
+      labelDisplayedRows={({ from, to, count }) =>
+        t('global$${{from}} - {{to}} of {{count}}', {
+          from,
+          to,
+          count
+        })
+      }
+      onChangePage={changePage}
+    />
+  );
 }
-
-export default withStyles(theme => ({}))(withTranslation()(Pagination));

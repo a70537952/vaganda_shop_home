@@ -1268,10 +1268,14 @@ class CreateShop extends React.Component<
                                             );
                                           }}
                                         >
-                                          {this.state.shopAddress.latitude
-                                            .value !== '' &&
-                                            this.state.shopAddress.longitude
-                                              .value !== '' && (
+                                          {Boolean(
+                                            this.state.shopAddress.latitude
+                                              .value
+                                          ) &&
+                                            Boolean(
+                                              this.state.shopAddress.longitude
+                                                .value
+                                            ) && (
                                               <GoogleMapMarker
                                                 lat={
                                                   this.state.shopAddress

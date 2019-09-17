@@ -408,5 +408,22 @@ export let userOrderDetailFragments: any = {
       created_at
       updated_at
     }
+  `,
+  ModalAddUserOrderDetailComment: gql`
+    fragment fragment on UserOrderDetail {
+      id
+      user_id
+      product_title
+      product_type_title
+      is_commented
+      product {
+        id
+        product_image {
+          id
+          path
+          image_medium
+        }
+      }
+    }
   `
 };

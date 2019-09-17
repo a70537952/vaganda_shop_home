@@ -8,9 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { AppContext } from '../../../contexts/Context';
-import Helmet from '../../Helmet';
 import { withTranslation } from 'react-i18next';
 import { homePath } from '../../../utils/RouteUtil';
+import HomeHelmet from '../HomeHelmet';
 
 interface IProps {
   t: (key: string) => string;
@@ -25,7 +25,7 @@ class ProductNotFound extends React.Component<IProps, Readonly<any>> {
       <AppContext.Consumer>
         {context => (
           <React.Fragment>
-            <Helmet title={t('product not found')} />
+            <HomeHelmet title={t('product not found')} />
             <Grid
               container
               item

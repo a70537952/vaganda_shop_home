@@ -57,7 +57,7 @@ class UserOrderDetailCard extends React.Component<
         currentIndex: 0
       },
       modal: {
-        addUserOrderDetailComment: false
+        addUserOrderDetailComment: true
       }
     };
   }

@@ -26,7 +26,7 @@ export function UploadProductDescriptionImageMutation(
   return gql`
     mutation UploadProductDescriptionImageMutation(
       $shop_id: String
-      $files: Upload!
+      $files: [Upload]!
     ) {
       uploadProductDescriptionImageMutation(shop_id: $shop_id, files: $files) {
         ...fragment

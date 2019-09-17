@@ -401,3 +401,19 @@ export interface IUserOrderDetailFragmentModalUpdateUserOrderDetail {
   created_at: string;
   updated_at: string;
 }
+
+export interface IUserOrderDetailFragmentModalAddUserOrderDetailComment {
+  id: string;
+  user_id: string;
+  product_title: string;
+  product_type_title: string;
+  is_commented: boolean;
+  product: {
+    id: string;
+    product_image: {
+      id: string;
+      path: string;
+      image_medium: string;
+    }[];
+  };
+}

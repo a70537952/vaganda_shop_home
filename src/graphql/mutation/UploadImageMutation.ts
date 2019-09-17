@@ -21,7 +21,7 @@ export function useUploadImageMutation<TData = any>(
 
 export function UploadImageMutation(fragment: DocumentNode): DocumentNode {
   return gql`
-    mutation UploadImageMutation($images: Upload!) {
+    mutation UploadImageMutation($images: [Upload]!) {
       uploadImageMutation(images: $images) {
         ...fragment
       }

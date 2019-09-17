@@ -140,7 +140,7 @@ function Index() {
                 >
                   <>
                     <Header context={context} />
-                    <Footer context={context} />
+                    <Footer />
                   </>
                 </SnackbarProvider>
               </MuiThemeProvider>

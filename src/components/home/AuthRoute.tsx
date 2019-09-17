@@ -3,17 +3,15 @@ import { Route, withRouter } from 'react-router-dom';
 import { AppContext } from '../../contexts/Context';
 import { RouteComponentProps } from 'react-router';
 
-const RedirectToLogin: any = withRouter(
-  class RedirectToLogin extends React.Component<
-    RouteComponentProps,
-    Readonly<any>
-  > {
-    render() {
-      this.props.history.push('/');
-      return <React.Fragment />;
-    }
-  } as any
-);
+const RedirectToLogin: any = withRouter(class extends React.Component<
+  RouteComponentProps,
+  Readonly<any>
+> {
+  render() {
+    this.props.history.push('/');
+    return <React.Fragment />;
+  }
+} as any);
 
 const AuthRoute: React.FunctionComponent<any> = ({
   component: Component,

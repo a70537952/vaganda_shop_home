@@ -26,7 +26,6 @@ import { IUserFragmentFormEditUserAccount } from '../../../graphql/fragment/inte
 import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 
 interface IProps {
-  userId: string;
   title?: string;
   onUpdated?: () => void;
   className?: any;
@@ -57,7 +56,7 @@ export default function FormEditUserAccount(props: IProps) {
   const classes = useStyles();
   const context = useContext(AppContext);
   const { t } = useTranslation();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   let updateUserInfoFields = [
     { field: 'username' },
     { field: 'name', isCheckEmpty: true, emptyMessage: t('please enter name') },
@@ -118,6 +117,9 @@ export default function FormEditUserAccount(props: IProps) {
     userFragments.FormEditUserAccount,
     {
       fetchPolicy: 'no-cache',
+      variables: {
+        id: context.user.id
+      },
       onCompleted: data => {
         let newUser = data.user.items[0];
         setUpdateUserInfo(

@@ -21,7 +21,6 @@ import { userAddressFragments } from '../../../graphql/fragment/query/UserAddres
 import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 
 interface IProps {
-  userId: string;
   title?: string;
   onUpdated?: () => void;
   className?: any;
@@ -83,6 +82,9 @@ export default function FormEditUserAddress(props: IProps) {
     IUserAddressFragmentFormEditUserAddress
   >(userAddressFragments.FormEditUserAddress, {
     fetchPolicy: 'no-cache',
+    variables: {
+      user_id: context.user.id
+    },
     onCompleted: data => {
       let newUserAddress = data.userAddress.items[0];
       setUpdateUserAddress(

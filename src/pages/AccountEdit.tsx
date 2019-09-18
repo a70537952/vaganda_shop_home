@@ -153,9 +153,7 @@ export class AccountEdit extends React.Component<
                     {value === 0 && (
                       <Route
                         path={homePath('accountEdit')}
-                        render={() => (
-                          <FormEditUserAccount userId={context.user.id} />
-                        )}
+                        render={() => <FormEditUserAccount />}
                       />
                     )}
                   </Grid>
@@ -173,9 +171,7 @@ export class AccountEdit extends React.Component<
                     {value === 1 && (
                       <Route
                         path={homePath('accountEditAddress')}
-                        render={() => (
-                          <FormEditUserAddress userId={context.user.id} />
-                        )}
+                        render={() => <FormEditUserAddress />}
                       />
                     )}
                   </Grid>
@@ -193,9 +189,7 @@ export class AccountEdit extends React.Component<
                     {value === 2 && (
                       <Route
                         path={homePath('accountEditContact')}
-                        render={() => (
-                          <FormEditUserContact userId={context.user.id} />
-                        )}
+                        render={() => <FormEditUserContact />}
                       />
                     )}
                   </Grid>

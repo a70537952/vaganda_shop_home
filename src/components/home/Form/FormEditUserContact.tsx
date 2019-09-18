@@ -9,7 +9,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import EmailIcon from '@material-ui/icons/Email';
 import update from 'immutability-helper';
 import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CountryPhoneCodeSelect from '../../_select/CountryPhoneCodeSelect';
 import FormUtil, { Fields } from '../../../utils/FormUtil';
@@ -22,9 +22,9 @@ import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { useUpdateUserContactMutation } from '../../../graphql/mutation/userMutation/UpdateUserContactMutation';
 import { IUserFragmentFormEditUserContact } from '../../../graphql/fragment/interface/UserFragmentInterface';
 import { userFragments } from '../../../graphql/fragment/query/UserFragment';
+import { AppContext } from '../../../contexts/Context';
 
 interface IProps {
-  userId: string;
   title?: string;
   onUpdated?: () => void;
   className?: any;
@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function FormEditUserContact(props: IProps) {
   const classes = useStyles();
+  const context = useContext(AppContext);
   const { t } = useTranslation();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   let updateUserContactFields = [
@@ -92,6 +93,9 @@ export default function FormEditUserContact(props: IProps) {
     userFragments.FormEditUserContact,
     {
       fetchPolicy: 'no-cache',
+      variables: {
+        id: context.user.id
+      },
       onCompleted: data => {
         let newUser = data.user.items[0];
         setUpdateUserContact(

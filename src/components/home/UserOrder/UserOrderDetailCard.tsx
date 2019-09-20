@@ -21,7 +21,7 @@ import ModalAddUserOrderDetailComment from '../Modal/ModalAddUserOrderDetailComm
 import ImagesCarousel from '../../ImagesCarousel';
 import StarRating from '../../_rating/StarRating';
 import DefaultImage from '../../../image/default-image.jpg';
-import useToast from '../../_hook/useNotification';
+import useToast from '../../_hook/useToast';
 import { useUpdateUserOrderDetailStatusMutation } from '../../../graphql/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutation';
 import { updateUserOrderDetailStatusMutationFragment } from '../../../graphql/fragment/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutationFragment';
 import { IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard } from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';

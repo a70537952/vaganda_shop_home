@@ -28,7 +28,7 @@ import List from '@material-ui/core/List';
 import Menu from '@material-ui/core/Menu';
 import { homePath } from '../../utils/RouteUtil';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
-import UserCartButton from './UserCartButton';
+import UserCartButton from './UserCart/UserCartButton';
 import { ReactCookieProps, withCookies } from 'react-cookie';
 import { getCookieKey, getCookieOption } from '../../utils/CookieUtil';
 
@@ -246,80 +246,90 @@ class Header extends React.Component<
                     </Button>
                   </div>
                 </div>
-                <UserCartButton />
                 {context.user ? (
-                  <div>
-                    <IconButton
-                      aria-owns={
-                        isProfileMenuOpen ? 'material-appbar' : undefined
-                      }
-                      aria-haspopup="true"
-                      onClick={this.handleProfileMenuOpen.bind(this)}
-                      color="inherit"
-                      className={classes.unsetBackground}
-                    >
-                      <UserAvatar user={context.user} />
-                    </IconButton>
-                    <Popover
-                      anchorEl={profileMenuAnchorEl}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-                      open={isProfileMenuOpen}
-                      onClose={this.handleProfileMenuClose.bind(this)}
-                    >
-                      <React.Fragment>
-                        {context.user.shop_admins &&
-                          context.user.shop_admins.length !== 0 && (
-                            <MenuItem
-                              component={'a'}
-                              href={'//' + process.env.REACT_APP_SELLER_DOMAIN}
-                            >
-                              {t('my shop')}
-                            </MenuItem>
-                          )}
-                        <MenuItem
-                          onClick={this.handleProfileMenuClose.bind(this)}
-                          {...({
-                            component: Link,
-                            to: homePath('myOrder')
-                          } as any)}
-                        >
-                          {t('my order')}
-                        </MenuItem>
-                        <MenuItem
-                          onClick={this.handleProfileMenuClose.bind(this)}
-                          {...({
-                            component: Link,
-                            to: homePath('createShop')
-                          } as any)}
-                        >
-                          {t('create shop')}
-                        </MenuItem>
-                        <MenuItem
-                          onClick={this.handleProfileMenuClose.bind(this)}
-                          {...({
-                            component: Link,
-                            to: homePath('accountEdit')
-                          } as any)}
-                        >
-                          {t('account setting')}
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            if (this.props.cookies) {
-                              this.props.cookies.remove(
-                                getCookieKey('api_token'),
-                                getCookieOption()
-                              );
-                            }
-                            window.location.reload();
-                          }}
-                        >
-                          {t('logout')}
-                        </MenuItem>
-                      </React.Fragment>
-                    </Popover>
-                  </div>
+                  <>
+                    <UserCartButton />
+                    <div>
+                      <IconButton
+                        aria-owns={
+                          isProfileMenuOpen ? 'material-appbar' : undefined
+                        }
+                        aria-haspopup="true"
+                        onClick={this.handleProfileMenuOpen.bind(this)}
+                        color="inherit"
+                        className={classes.unsetBackground}
+                      >
+                        <UserAvatar user={context.user} />
+                      </IconButton>
+                      <Popover
+                        anchorEl={profileMenuAnchorEl}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'left'
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'left'
+                        }}
+                        open={isProfileMenuOpen}
+                        onClose={this.handleProfileMenuClose.bind(this)}
+                      >
+                        <React.Fragment>
+                          {context.user.shop_admins &&
+                            context.user.shop_admins.length !== 0 && (
+                              <MenuItem
+                                component={'a'}
+                                href={
+                                  '//' + process.env.REACT_APP_SELLER_DOMAIN
+                                }
+                              >
+                                {t('my shop')}
+                              </MenuItem>
+                            )}
+                          <MenuItem
+                            onClick={this.handleProfileMenuClose.bind(this)}
+                            {...({
+                              component: Link,
+                              to: homePath('myOrder')
+                            } as any)}
+                          >
+                            {t('my order')}
+                          </MenuItem>
+                          <MenuItem
+                            onClick={this.handleProfileMenuClose.bind(this)}
+                            {...({
+                              component: Link,
+                              to: homePath('createShop')
+                            } as any)}
+                          >
+                            {t('create shop')}
+                          </MenuItem>
+                          <MenuItem
+                            onClick={this.handleProfileMenuClose.bind(this)}
+                            {...({
+                              component: Link,
+                              to: homePath('accountEdit')
+                            } as any)}
+                          >
+                            {t('account setting')}
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() => {
+                              if (this.props.cookies) {
+                                this.props.cookies.remove(
+                                  getCookieKey('api_token'),
+                                  getCookieOption()
+                                );
+                              }
+                              window.location.reload();
+                            }}
+                          >
+                            {t('logout')}
+                          </MenuItem>
+                        </React.Fragment>
+                      </Popover>
+                    </div>
+                  </>
                 ) : (
                   <div>
                     <Button

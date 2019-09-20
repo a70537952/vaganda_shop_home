@@ -1,36 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import { AppContext } from '../../contexts/Context';
-import { RouteComponentProps } from 'react-router';
 
-const RedirectToLogin: any = withRouter(class extends React.Component<
-  RouteComponentProps,
-  Readonly<any>
-> {
-  render() {
-    this.props.history.push('/');
-    return <React.Fragment />;
-  }
-} as any);
+const RedirectToLogin = withRouter(function(props) {
+  props.history.push('/');
+  return <React.Fragment />;
+});
 
-const AuthRoute: React.FunctionComponent<any> = ({
-  component: Component,
-  ...rest
-}) => (
-  <AppContext.Consumer>
-    {context => (
-      <Route
-        {...rest}
-        render={props =>
-          context.user ? (
-            <Component {...props} {...rest} />
-          ) : (
-            <RedirectToLogin context={context} />
-          )
-        }
-      />
-    )}
-  </AppContext.Consumer>
-);
+export default function AuthRoute(props: any) {
+  const context = useContext(AppContext);
 
-export default AuthRoute;
+  let { component: Component, ...rest } = props;
+
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        context.user ? <Component {...props} {...rest} /> : <RedirectToLogin />
+      }
+    />
+  );
+}

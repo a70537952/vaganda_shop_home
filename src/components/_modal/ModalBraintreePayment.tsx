@@ -15,7 +15,7 @@ import DialogProcessingPayment from '../_dialog/DialogProcessingPayment';
 import { makeStyles } from '@material-ui/styles';
 import { useGetBraintreeClientTokenMutation } from '../../graphql/mutation/braintreeMutation/GetBraintreeClientTokenMutation';
 import { getBraintreeClientTokenMutationFragments } from '../../graphql/fragment/mutation/braintreeMutation/GetBraintreeClientTokenMutationFragment';
-import { IGetBraintreeClientTokenMutationFragmentDefaultFragment } from '../../graphql/fragment/interface/mutation/braintreeMutation/GetBraintreeClientTokenMutationFragmentInterface';
+import { IGetBraintreeClientTokenMutationFragmentDefaultFragment } from '../../graphql/fragmentType/mutation/braintreeMutation/GetBraintreeClientTokenMutationFragmentInterface';
 
 interface IProps {
   isOpen: boolean;

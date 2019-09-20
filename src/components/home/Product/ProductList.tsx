@@ -11,7 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { productFragments } from '../../../graphql/fragment/query/ProductFragment';
-import { IProductFragmentProductList } from '../../../graphql/fragment/interface/query/ProductFragmentInterface';
+import { IProductFragmentProductList } from '../../../graphql/fragmentType/query/ProductFragmentInterface';
 import { useTranslation } from 'react-i18next';
 
 interface IProps {

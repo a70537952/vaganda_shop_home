@@ -22,12 +22,12 @@ import AddIcon from '@material-ui/icons/Add';
 import StarRating from '../../_rating/StarRating';
 import DefaultImage from '../../../image/default-image.jpg';
 import { useUserOrderDetailQuery } from '../../../graphql/query/UserOrderDetailQuery';
-import { IUserOrderDetailFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragment/interface/query/UserOrderDetailFragmentInterface';
+import { IUserOrderDetailFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
 import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOrderDetailFragment';
 import { useAddUserOrderDetailCommentMutation } from '../../../graphql/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutation';
 import { addUserOrderDetailCommentMutationFragments } from '../../../graphql/fragment/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragment';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragment/interface/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragmentInterface';
+import { IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragmentType/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragmentInterface';
 
 interface IProps {
   userOrderDetailId: string;

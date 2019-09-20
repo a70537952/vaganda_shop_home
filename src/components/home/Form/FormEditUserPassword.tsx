@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserPasswordMutation } from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
 import { updateUserPasswordMutationFragments } from '../../../graphql/fragment/mutation/userMutation/UpdateUserPasswordMutationFragment';
-import { IUpdateUserPasswordMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/userMutation/UpdateUserPasswordMutationFragmentInterface';
+import { IUpdateUserPasswordMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userMutation/UpdateUserPasswordMutationFragmentInterface';
 
 interface IProps {
   userId: string;

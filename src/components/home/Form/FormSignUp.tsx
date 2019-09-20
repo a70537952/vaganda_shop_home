@@ -15,10 +15,10 @@ import { makeStyles } from '@material-ui/styles';
 import { useSignUpUserMutation } from '../../../graphql/mutation/authMutation/SignUpUserMutation';
 import { userQuery } from '../../../graphql/query/UserQuery';
 import { WithPagination } from '../../../graphql/query/Query';
-import { IUserFragmentFormSignUp } from '../../../graphql/fragment/interface/query/UserFragmentInterface';
+import { IUserFragmentFormSignUp } from '../../../graphql/fragmentType/query/UserFragmentInterface';
 import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 import { signUpUserMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SignUpUserMutationFragment';
-import { ISignUpUserMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/SignUpUserMutationFragmentInterface';
+import { ISignUpUserMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/SignUpUserMutationFragmentInterface';
 
 interface IProps {
   onLoginClick: () => void;

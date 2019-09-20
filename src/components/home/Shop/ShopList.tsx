@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useShopQuery } from '../../../graphql/query/ShopQuery';
 import { shopFragments } from '../../../graphql/fragment/query/ShopFragment';
 import ProductCard from '../Product/ProductCard';
-import { IShopFragmentShopList } from '../../../graphql/fragment/interface/query/ShopFragmentInterface';
+import { IShopFragmentShopList } from '../../../graphql/fragmentType/query/ShopFragmentInterface';
 
 interface IProps {
   variables?: any;

@@ -20,9 +20,9 @@ import { getCookieKey, getCookieOption } from '../../../utils/CookieUtil';
 import { resendVerifyUserEmailMutationFragments } from '../../../graphql/fragment/mutation/authMutation/ResendVerifyUserEmailMutationFragment';
 import { signInUserMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SignInUserMutationFragment';
 import { facebookSignInMutationFragments } from '../../../graphql/fragment/mutation/authMutation/FacebookSignInMutationFragment';
-import { IResendVerifyUserEmailMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/ResendVerifyUserEmailMutationFragmentInterface';
-import { ISignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/SignInUserMutationFragmentInterface';
-import { IFacebookSignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/FacebookSignInUserMutationFragmentInterface';
+import { IResendVerifyUserEmailMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/ResendVerifyUserEmailMutationFragmentInterface';
+import { ISignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/SignInUserMutationFragmentInterface';
+import { IFacebookSignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/FacebookSignInUserMutationFragmentInterface';
 
 interface IProps {
   onForgotPasswordClick: () => void;

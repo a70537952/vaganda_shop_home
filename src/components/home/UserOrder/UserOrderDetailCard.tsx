@@ -24,7 +24,7 @@ import DefaultImage from '../../../image/default-image.jpg';
 import useToast from '../../_hook/useNotification';
 import { useUpdateUserOrderDetailStatusMutation } from '../../../graphql/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutation';
 import { updateUserOrderDetailStatusMutationFragment } from '../../../graphql/fragment/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutationFragment';
-import { IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard } from '../../../graphql/fragment/interface/query/UserOrderDetailFragmentInterface';
+import { IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard } from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
 
 interface IProps extends StyledComponentProps {
   userOrderDetail?: any;

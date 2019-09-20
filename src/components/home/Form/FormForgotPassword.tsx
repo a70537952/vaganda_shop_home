@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
 import { useSendResetPasswordEmailMutation } from '../../../graphql/mutation/authMutation/SendResetPasswordEmailMutation';
 import { sendResetPasswordEmailMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SendResetPasswordEmailMutationFragment';
-import { ISendResetPasswordEmailMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/SendResetPasswordEmailMutationFragmentInterface';
+import { ISendResetPasswordEmailMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/SendResetPasswordEmailMutationFragmentInterface';
 
 interface IProps {
   onLoginClick: () => void;

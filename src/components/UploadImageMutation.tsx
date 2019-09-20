@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUploadImageMutation } from '../graphql/mutation/UploadImageMutation';
 import { uploadImageMutationMutationFragments } from '../graphql/fragment/mutation/UploadImageMutationFragment';
-import { IUploadImageMutationFragmentUploadImageMutation } from '../graphql/fragment/interface/query/TempImageFragmentInterface';
+import { IUploadImageMutationFragmentUploadImageMutation } from '../graphql/fragmentType/query/TempImageFragmentInterface';
 
 interface IProps {
   onCompleted: (data: any, props: IProps) => void;

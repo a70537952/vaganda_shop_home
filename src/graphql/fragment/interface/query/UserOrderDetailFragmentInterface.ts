@@ -423,4 +423,3 @@ export interface IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard
   order_detail_status: string;
   received_at: string;
 }
-

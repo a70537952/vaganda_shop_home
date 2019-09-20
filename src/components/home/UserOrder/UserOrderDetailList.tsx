@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useUserOrderDetailQuery } from '../../../graphql/query/UserOrderDetailQuery';
 import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOrderDetailFragment';
 import ProductCard from '../Product/ProductCard';
-import { IUserOrderDetailFragmentUserOrderDetailList } from '../../../graphql/fragment/interface/UserOrderDetailFragmentInterface';
+import { IUserOrderDetailFragmentUserOrderDetailList } from '../../../graphql/fragment/interface/query/UserOrderDetailFragmentInterface';
 
 interface IProps {
   variables?: any;

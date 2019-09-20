@@ -22,7 +22,7 @@ import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { useUpdateUserInfoMutation } from '../../../graphql/mutation/userMutation/UpdateUserInfoMutation';
 import { useChangeUserAvatarMutation } from '../../../graphql/mutation/userMutation/ChangeUserAvatarMutation';
 import { useRemoveUserAvatarMutation } from '../../../graphql/mutation/userMutation/RemoveUserAvatarMutation';
-import { IUserFragmentFormEditUserAccount } from '../../../graphql/fragment/interface/UserFragmentInterface';
+import { IUserFragmentFormEditUserAccount } from '../../../graphql/fragment/interface/query/UserFragmentInterface';
 import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 
 interface IProps {
@@ -66,52 +66,57 @@ export default function FormEditUserAccount(props: IProps) {
   const [
     updateUserInfoMutation,
     { loading: isUpdatingUserInfoMutation }
-  ] = useUpdateUserInfoMutation<IUserFragmentFormEditUserAccount>(userFragments.FormEditUserAccount, {
-    onCompleted: data => {
-      setUpdateUserInfo(
-        FormUtil.resetFieldsIsValidHook(updateUserInfoFields, updateUserInfo)
-      );
-      enqueueSnackbar(t('your profile has been successfully updated'));
-      if (props.onUpdated) {
-        props.onUpdated();
+  ] = useUpdateUserInfoMutation<IUserFragmentFormEditUserAccount>(
+    userFragments.FormEditUserAccount,
+    {
+      onCompleted: data => {
+        setUpdateUserInfo(
+          FormUtil.resetFieldsIsValidHook(updateUserInfoFields, updateUserInfo)
+        );
+        enqueueSnackbar(t('your profile has been successfully updated'));
+        if (props.onUpdated) {
+          props.onUpdated();
+        }
+        context.getContext();
+      },
+      onError: error => {
+        setUpdateUserInfo(
+          FormUtil.validationErrorHandlerHook(
+            updateUserInfoFields,
+            error,
+            updateUserInfo
+          ).state
+        );
       }
-      context.getContext();
-    },
-    onError: error => {
-      setUpdateUserInfo(
-        FormUtil.validationErrorHandlerHook(
-          updateUserInfoFields,
-          error,
-          updateUserInfo
-        ).state
-      );
     }
-  });
+  );
   const [
     changeUserAvatarMutation,
     { loading: isChangingUserAvatarMutation }
-  ] = useChangeUserAvatarMutation<IUserFragmentFormEditUserAccount>(userFragments.FormEditUserAccount, {
-    onCompleted: data => {
-      context.getContext();
-    },
-    onError: error => {
-      let errorMessage = FormUtil.getValidationErrorByField(
-        'userAvatar',
-        error
-      );
-      enqueueSnackbar(errorMessage, {
-        variant: 'error'
-      });
-    }
-  });
-  const [removeUserAvatarMutation] = useRemoveUserAvatarMutation<IUserFragmentFormEditUserAccount>(
+  ] = useChangeUserAvatarMutation<IUserFragmentFormEditUserAccount>(
     userFragments.FormEditUserAccount,
     {
       onCompleted: data => {
         context.getContext();
+      },
+      onError: error => {
+        let errorMessage = FormUtil.getValidationErrorByField(
+          'userAvatar',
+          error
+        );
+        enqueueSnackbar(errorMessage, {
+          variant: 'error'
+        });
       }
     }
   );
+  const [removeUserAvatarMutation] = useRemoveUserAvatarMutation<
+    IUserFragmentFormEditUserAccount
+  >(userFragments.FormEditUserAccount, {
+    onCompleted: data => {
+      context.getContext();
+    }
+  });
 
   const { loading, data } = useUserQuery<IUserFragmentFormEditUserAccount>(
     userFragments.FormEditUserAccount,

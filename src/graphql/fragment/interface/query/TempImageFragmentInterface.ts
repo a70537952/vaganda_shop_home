@@ -1,4 +1,3 @@
-
 export interface IUploadImageMutationFragmentUploadImageMutation {
   id: string;
   path: string;

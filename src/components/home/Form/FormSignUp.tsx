@@ -15,10 +15,10 @@ import { makeStyles } from '@material-ui/styles';
 import { useSignUpUserMutation } from '../../../graphql/mutation/authMutation/SignUpUserMutation';
 import { userQuery } from '../../../graphql/query/UserQuery';
 import { WithPagination } from '../../../graphql/query/Query';
-import { IUserFragmentFormSignUp } from '../../../graphql/fragment/interface/UserFragmentInterface';
+import { IUserFragmentFormSignUp } from '../../../graphql/fragment/interface/query/UserFragmentInterface';
 import { userFragments } from '../../../graphql/fragment/query/UserFragment';
-import { signUpUserMutationFragments } from '../../../graphql/fragment/mutation/SignUpUserMutationFragment';
-import {ISignUpUserMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/SignUpUserMutationFragmentInterface";
+import { signUpUserMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SignUpUserMutationFragment';
+import { ISignUpUserMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/SignUpUserMutationFragmentInterface';
 
 interface IProps {
   onLoginClick: () => void;
@@ -72,25 +72,28 @@ export default function FormSignUp(props: IProps) {
   const [
     signUpUserMutation,
     { loading: isSigningUpUserMutation }
-  ] = useSignUpUserMutation<ISignUpUserMutationFragmentDefaultFragment>(signUpUserMutationFragments.DefaultFragment, {
-    onCompleted: data => {
-      setSignUp(signUp =>
-        FormUtil.resetFieldsIsValidHook(signUpFields, signUp)
-      );
-      enqueueSnackbar(
-        t(
-          'we have send verification email to your email address. please look for the verification email in your inbox and click the link in that email.'
-        ),
-        {
-          autoHideDuration: 30000
-        }
-      );
-      onLoginClick();
-    },
-    onError: error => {
-      checkSignUpField(error);
+  ] = useSignUpUserMutation<ISignUpUserMutationFragmentDefaultFragment>(
+    signUpUserMutationFragments.DefaultFragment,
+    {
+      onCompleted: data => {
+        setSignUp(signUp =>
+          FormUtil.resetFieldsIsValidHook(signUpFields, signUp)
+        );
+        enqueueSnackbar(
+          t(
+            'we have send verification email to your email address. please look for the verification email in your inbox and click the link in that email.'
+          ),
+          {
+            autoHideDuration: 30000
+          }
+        );
+        onLoginClick();
+      },
+      onError: error => {
+        checkSignUpField(error);
+      }
     }
-  });
+  );
 
   const [signUp, setSignUp] = useState<Fields>(
     FormUtil.generateFieldsState(signUpFields)

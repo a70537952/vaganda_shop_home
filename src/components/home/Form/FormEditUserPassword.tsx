@@ -12,8 +12,8 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserPasswordMutation } from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
-import { updateUserPasswordMutationFragments } from '../../../graphql/fragment/mutation/UpdateUserPasswordMutationFragment';
-import {IUpdateUserPasswordMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/UpdateUserPasswordMutationFragmentInterface";
+import { updateUserPasswordMutationFragments } from '../../../graphql/fragment/mutation/userMutation/UpdateUserPasswordMutationFragment';
+import { IUpdateUserPasswordMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/userMutation/UpdateUserPasswordMutationFragmentInterface';
 
 interface IProps {
   userId: string;
@@ -69,32 +69,31 @@ export default function FormEditUserPassword(props: IProps) {
   const [
     updateUserPasswordMutation,
     { loading: isUpdatingUserPasswordMutation }
-  ] = useUpdateUserPasswordMutation<IUpdateUserPasswordMutationFragmentDefaultFragment>(
-    updateUserPasswordMutationFragments.DefaultFragment,
-    {
-      onCompleted: data => {
-        setUpdateUserPassword(
-          FormUtil.generateResetFieldsStateHook(
-            updateUserPasswordFields,
-            updateUserPassword
-          )
-        );
-        enqueueSnackbar(t('your password has been successfully updated'));
-        if (props.onUpdated) {
-          props.onUpdated();
-        }
-      },
-      onError: error => {
-        setUpdateUserPassword(
-          FormUtil.validationErrorHandlerHook(
-            updateUserPasswordFields,
-            error,
-            updateUserPassword
-          ).state
-        );
+  ] = useUpdateUserPasswordMutation<
+    IUpdateUserPasswordMutationFragmentDefaultFragment
+  >(updateUserPasswordMutationFragments.DefaultFragment, {
+    onCompleted: data => {
+      setUpdateUserPassword(
+        FormUtil.generateResetFieldsStateHook(
+          updateUserPasswordFields,
+          updateUserPassword
+        )
+      );
+      enqueueSnackbar(t('your password has been successfully updated'));
+      if (props.onUpdated) {
+        props.onUpdated();
       }
+    },
+    onError: error => {
+      setUpdateUserPassword(
+        FormUtil.validationErrorHandlerHook(
+          updateUserPasswordFields,
+          error,
+          updateUserPassword
+        ).state
+      );
     }
-  );
+  });
 
   const [updateUserPassword, setUpdateUserPassword] = useState<Fields>(
     FormUtil.generateFieldsState(updateUserPasswordFields)

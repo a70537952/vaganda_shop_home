@@ -22,12 +22,12 @@ import AddIcon from '@material-ui/icons/Add';
 import StarRating from '../../_rating/StarRating';
 import DefaultImage from '../../../image/default-image.jpg';
 import { useUserOrderDetailQuery } from '../../../graphql/query/UserOrderDetailQuery';
-import { IUserOrderDetailFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragment/interface/UserOrderDetailFragmentInterface';
+import { IUserOrderDetailFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragment/interface/query/UserOrderDetailFragmentInterface';
 import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOrderDetailFragment';
 import { useAddUserOrderDetailCommentMutation } from '../../../graphql/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutation';
-import { addUserOrderDetailCommentMutationFragments } from '../../../graphql/fragment/mutation/AddUserOrderDetailCommentMutationFragment';
+import { addUserOrderDetailCommentMutationFragments } from '../../../graphql/fragment/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragment';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment} from "../../../graphql/fragment/interface/mutation/AddUserOrderDetailCommentMutationFragmentInterface";
+import { IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragment/interface/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragmentInterface';
 
 interface IProps {
   userOrderDetailId: string;
@@ -100,18 +100,17 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
   const [
     addUserOrderDetailCommentMutation,
     { loading: isAddingUserOrderDetailCommentMutation }
-  ] = useAddUserOrderDetailCommentMutation<IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment>(
-    addUserOrderDetailCommentMutationFragments.ModalAddUserOrderDetailComment,
-    {
-      onCompleted: () => {
-        enqueueSnackbar(t('rate product successfully'));
-        handleOkCloseDialog();
-      },
-      onError: async () => {
-        await checkAddUserOrderDetailCommentForm();
-      }
+  ] = useAddUserOrderDetailCommentMutation<
+    IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment
+  >(addUserOrderDetailCommentMutationFragments.ModalAddUserOrderDetailComment, {
+    onCompleted: () => {
+      enqueueSnackbar(t('rate product successfully'));
+      handleOkCloseDialog();
+    },
+    onError: async () => {
+      await checkAddUserOrderDetailCommentForm();
     }
-  );
+  });
 
   async function checkAddUserOrderDetailCommentForm(error?: any) {
     let {

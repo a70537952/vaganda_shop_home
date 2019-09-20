@@ -17,12 +17,12 @@ import { AppContext } from '../../../contexts/Context';
 import { useFacebookSignInMutation } from '../../../graphql/mutation/authMutation/FacebookSignInMutation';
 import { useCookies } from 'react-cookie';
 import { getCookieKey, getCookieOption } from '../../../utils/CookieUtil';
-import { resendVerifyUserEmailMutationFragments } from '../../../graphql/fragment/mutation/ResendVerifyUserEmailMutationFragment';
-import { signInUserMutationFragments } from '../../../graphql/fragment/mutation/SignInUserMutationFragment';
-import { facebookSignInMutationFragments } from '../../../graphql/fragment/mutation/FacebookSignInMutationFragment';
-import {IResendVerifyUserEmailMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/ResendVerifyUserEmailMutationFragmentInterface";
-import {ISignInUserMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/SignInUserMutationFragmentInterface";
-import {IFacebookSignInUserMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/FacebookSignInUserMutationFragmentInterface";
+import { resendVerifyUserEmailMutationFragments } from '../../../graphql/fragment/mutation/authMutation/ResendVerifyUserEmailMutationFragment';
+import { signInUserMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SignInUserMutationFragment';
+import { facebookSignInMutationFragments } from '../../../graphql/fragment/mutation/authMutation/FacebookSignInMutationFragment';
+import { IResendVerifyUserEmailMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/ResendVerifyUserEmailMutationFragmentInterface';
+import { ISignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/SignInUserMutationFragmentInterface';
+import { IFacebookSignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragment/interface/mutation/authMutation/FacebookSignInUserMutationFragmentInterface';
 
 interface IProps {
   onForgotPasswordClick: () => void;
@@ -82,40 +82,41 @@ export default function FormSignIn(props: IProps) {
   const [
     resendVerifyUserEmailMutation,
     { loading: isResendingVerifyUserEmailMutation }
-  ] = useResendVerifyUserEmailMutation<IResendVerifyUserEmailMutationFragmentDefaultFragment>(
-    resendVerifyUserEmailMutationFragments.DefaultFragment,
-    {
-      onCompleted: data => {
-        enqueueSnackbar(t('we have send an verify email to your email'));
-      }
-    }
-  );
-  const [
-    signInUserMutation,
-    { loading: isSigningInUserMutation }
-  ] = useSignInUserMutation<ISignInUserMutationFragmentDefaultFragment>(signInUserMutationFragments.DefaultFragment, {
+  ] = useResendVerifyUserEmailMutation<
+    IResendVerifyUserEmailMutationFragmentDefaultFragment
+  >(resendVerifyUserEmailMutationFragments.DefaultFragment, {
     onCompleted: data => {
-      setSignIn(FormUtil.resetFieldsIsValidHook(signInFields, signIn));
-      onSignInCompleted(data.signInUserMutation);
-    },
-    onError: error => {
-      checkSignInField(error);
+      enqueueSnackbar(t('we have send an verify email to your email'));
     }
   });
   const [
-    facebookSignInMutation,
-    { loading: isFacebookSigningInMutation }
-  ] = useFacebookSignInMutation<IFacebookSignInUserMutationFragmentDefaultFragment>(
-    facebookSignInMutationFragments.DefaultFragment,
+    signInUserMutation,
+    { loading: isSigningInUserMutation }
+  ] = useSignInUserMutation<ISignInUserMutationFragmentDefaultFragment>(
+    signInUserMutationFragments.DefaultFragment,
     {
       onCompleted: data => {
-        onSignInCompleted(data.facebookSignInMutation);
+        setSignIn(FormUtil.resetFieldsIsValidHook(signInFields, signIn));
+        onSignInCompleted(data.signInUserMutation);
       },
       onError: error => {
         checkSignInField(error);
       }
     }
   );
+  const [
+    facebookSignInMutation,
+    { loading: isFacebookSigningInMutation }
+  ] = useFacebookSignInMutation<
+    IFacebookSignInUserMutationFragmentDefaultFragment
+  >(facebookSignInMutationFragments.DefaultFragment, {
+    onCompleted: data => {
+      onSignInCompleted(data.facebookSignInMutation);
+    },
+    onError: error => {
+      checkSignInField(error);
+    }
+  });
 
   function onSignInCompleted(data: any) {
     setCookie(getCookieKey('api_token'), data.api_token, getCookieOption());

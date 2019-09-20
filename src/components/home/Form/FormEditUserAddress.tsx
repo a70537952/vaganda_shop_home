@@ -16,7 +16,7 @@ import { useUserQuery } from '../../../graphql/query/UserQuery';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserAddressMutation } from '../../../graphql/mutation/userMutation/UpdateUserAddressMutation';
 import { useUserAddressQuery } from '../../../graphql/query/UserAddressQuery';
-import { IUserAddressFragmentFormEditUserAddress } from '../../../graphql/fragment/interface/UserAddressFragmentInterface';
+import { IUserAddressFragmentFormEditUserAddress } from '../../../graphql/fragment/interface/query/UserAddressFragmentInterface';
 import { userAddressFragments } from '../../../graphql/fragment/query/UserAddressFragment';
 import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 
@@ -53,30 +53,33 @@ export default function FormEditUserAddress(props: IProps) {
   const [
     updateUserAddressMutation,
     { loading: isUpdatingUserAddressMutation }
-  ] = useUpdateUserAddressMutation<IUserAddressFragmentFormEditUserAddress>(userAddressFragments.FormEditUserAddress, {
-    onCompleted: data => {
-      setUpdateUserAddress(
-        FormUtil.resetFieldsIsValidHook(
-          updateUserAddressFields,
-          updateUserAddress
-        )
-      );
-      enqueueSnackbar(t('your address has been successfully updated'));
-      if (props.onUpdated) {
-        props.onUpdated();
+  ] = useUpdateUserAddressMutation<IUserAddressFragmentFormEditUserAddress>(
+    userAddressFragments.FormEditUserAddress,
+    {
+      onCompleted: data => {
+        setUpdateUserAddress(
+          FormUtil.resetFieldsIsValidHook(
+            updateUserAddressFields,
+            updateUserAddress
+          )
+        );
+        enqueueSnackbar(t('your address has been successfully updated'));
+        if (props.onUpdated) {
+          props.onUpdated();
+        }
+        context.getContext();
+      },
+      onError: error => {
+        setUpdateUserAddress(
+          FormUtil.validationErrorHandlerHook(
+            updateUserAddressFields,
+            error,
+            updateUserAddress
+          ).state
+        );
       }
-      context.getContext();
-    },
-    onError: error => {
-      setUpdateUserAddress(
-        FormUtil.validationErrorHandlerHook(
-          updateUserAddressFields,
-          error,
-          updateUserAddress
-        ).state
-      );
     }
-  });
+  );
 
   const { loading, data } = useUserAddressQuery<
     IUserAddressFragmentFormEditUserAddress

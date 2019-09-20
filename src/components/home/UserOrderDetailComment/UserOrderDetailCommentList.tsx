@@ -11,7 +11,7 @@ import Pagination from '../../Pagination';
 import StarRating from '../../_rating/StarRating';
 import { useUserOrderDetailCommentQuery } from '../../../graphql/query/UserOrderDetailCommentQuery';
 import { userOrderDetailCommentFragments } from '../../../graphql/fragment/query/UserOrderDetailCommentFragment';
-import { IUserOrderDetailCommentFragmentUserOrderDetailCommentList } from '../../../graphql/fragment/interface/UserOrderDetailCommentFragmentInterface';
+import { IUserOrderDetailCommentFragmentUserOrderDetailCommentList } from '../../../graphql/fragment/interface/query/UserOrderDetailCommentFragmentInterface';
 import { Cursor } from '../../../graphql/query/Query';
 
 interface IProps {

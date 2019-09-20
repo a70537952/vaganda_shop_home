@@ -81,7 +81,7 @@ export default function ProductList(props: IProps) {
   >(productFragments.ProductList, {
     variables: getVariables(),
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'no-cache'
+    fetchPolicy: 'network-only'
   });
 
   if (error) return <>Error!</>;

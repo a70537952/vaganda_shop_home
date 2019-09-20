@@ -4,12 +4,12 @@ import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface UpdateShopContactInfoMutationVars {
   shop_id: String;
-  email: String;
-  website: String;
-  telephone_country_code: String;
-  telephone: String;
-  phone_country_code: String;
-  phone: String;
+  email?: String;
+  website?: String;
+  telephone_country_code?: String;
+  telephone?: String;
+  phone_country_code?: String;
+  phone?: String;
 }
 
 export function useUpdateShopContactInfoMutation<TData = any>(

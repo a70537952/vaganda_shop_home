@@ -6,7 +6,7 @@ interface AddUserOrderDetailCommentMutationVars {
   userOrderDetailId: String;
   comment: String;
   star: number;
-  commentImages: String[];
+  commentImages?: String[];
 }
 
 export function useAddUserOrderDetailCommentMutation<TData = any>(

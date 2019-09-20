@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface ResendVerifyUserEmailMutationVars {
-  email: String;
+  email?: String;
 }
 
 export function useResendVerifyUserEmailMutation<TData = any>(

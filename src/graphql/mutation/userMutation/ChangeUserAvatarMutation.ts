@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface ChangeUserAvatarMutationVars {
-  userAvatar: File;
+  userAvatar?: File;
 }
 
 export function useChangeUserAvatarMutation<TData = any>(

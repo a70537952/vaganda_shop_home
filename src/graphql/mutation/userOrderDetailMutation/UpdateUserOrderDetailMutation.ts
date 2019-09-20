@@ -4,10 +4,10 @@ import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface UpdateUserOrderDetailMutationVars {
   user_order_detail_id: String;
-  shop_id: String;
-  order_detail_status: String;
-  product_shipping_track_number: String;
-  remark: String;
+  shop_id?: String;
+  order_detail_status?: String;
+  product_shipping_track_number?: String;
+  remark?: String;
 }
 
 export function useUpdateUserOrderDetailMutation<TData = any>(

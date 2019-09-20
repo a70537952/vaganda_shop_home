@@ -84,7 +84,7 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
   const { data } = useUserOrderDetailQuery<
     IUserOrderDetailFragmentModalAddUserOrderDetailComment
   >(userOrderDetailFragments.ModalAddUserOrderDetailComment, {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-only',
     variables: {
       id: userOrderDetailId
     }

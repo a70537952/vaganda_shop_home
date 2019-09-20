@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface UploadProductDescriptionImageMutationVars {
-  shop_id: String;
+  shop_id?: String;
   files: FileList;
 }
 

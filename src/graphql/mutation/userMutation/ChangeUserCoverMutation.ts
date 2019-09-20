@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface ChangeUserCoverMutationVars {
-  file: File;
+  file?: File;
 }
 
 export function useChangeUserCoverMutation<TData = any>(

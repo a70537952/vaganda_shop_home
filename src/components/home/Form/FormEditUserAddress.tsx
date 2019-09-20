@@ -81,7 +81,7 @@ export default function FormEditUserAddress(props: IProps) {
   const { loading, data } = useUserAddressQuery<
     IUserAddressFragmentFormEditUserAddress
   >(userAddressFragments.FormEditUserAddress, {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-only',
     variables: {
       user_id: context.user.id
     },

@@ -3,13 +3,13 @@ import gql from 'graphql-tag';
 import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface UpdateUserAddressMutationVars {
-  address_1: String;
-  address_2: String;
-  address_3: String;
-  city: String;
-  state: String;
-  postal_code: String;
-  country: String;
+  address_1?: String;
+  address_2?: String;
+  address_3?: String;
+  city?: String;
+  state?: String;
+  postal_code?: String;
+  country?: String;
 }
 
 export function useUpdateUserAddressMutation<TData = any>(

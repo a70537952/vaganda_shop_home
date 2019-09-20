@@ -3,8 +3,8 @@ import gql from 'graphql-tag';
 import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface UpdateUserInfoMutationVars {
-  name: String;
-  gender: number;
+  name?: String;
+  gender?: number;
 }
 
 export function useUpdateUserInfoMutation<TData = any>(

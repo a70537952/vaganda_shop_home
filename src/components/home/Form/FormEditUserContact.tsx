@@ -92,7 +92,7 @@ export default function FormEditUserContact(props: IProps) {
   const { loading, data } = useUserQuery<IUserFragmentFormEditUserContact>(
     userFragments.FormEditUserContact,
     {
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'network-only',
       variables: {
         id: context.user.id
       },

@@ -116,7 +116,7 @@ export default function FormEditUserAccount(props: IProps) {
   const { loading, data } = useUserQuery<IUserFragmentFormEditUserAccount>(
     userFragments.FormEditUserAccount,
     {
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'network-only',
       variables: {
         id: context.user.id
       },

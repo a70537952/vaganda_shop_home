@@ -4,7 +4,7 @@ import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface UpdateShopLogoMutationVars {
   shop_id: String;
-  logo: File;
+  logo?: File;
 }
 
 export function useUpdateShopLogoMutation<TData = any>(

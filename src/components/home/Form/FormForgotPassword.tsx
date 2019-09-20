@@ -10,7 +10,9 @@ import FormUtil, { Fields } from '../../../utils/FormUtil';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
-import { useSendResetPasswordEmailMutation } from '../../../graphql/mutation/userMutation/SendResetPasswordEmailMutation';
+import {useSendResetPasswordEmailMutation} from "../../../graphql/mutation/authMutation/SendResetPasswordEmailMutation";
+import {sendResetPasswordEmailMutationFragments} from "../../../graphql/fragment/mutation/SendResetPasswordEmailMutationFragment";
+import {ISendResetPasswordEmailMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/SendResetPasswordEmailMutationFragmentInterface";
 
 interface IProps {
   onLoginClick: () => void;
@@ -48,7 +50,8 @@ export default function FormForgotPassword(props: IProps) {
   const [
     sendResetPasswordEmailMutation,
     { loading: isSendingResetPasswordEmailMutation }
-  ] = useSendResetPasswordEmailMutation({
+  ] = useSendResetPasswordEmailMutation<ISendResetPasswordEmailMutationFragmentDefaultFragment>
+  (sendResetPasswordEmailMutationFragments.DefaultFragment, {
     onCompleted: data => {
       setForgotPassword(
         FormUtil.resetFieldsIsValidHook(forgotPasswordFields, forgotPassword)

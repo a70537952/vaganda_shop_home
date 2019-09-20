@@ -18,6 +18,7 @@ import { WithPagination } from '../../../graphql/query/Query';
 import { IUserFragmentFormSignUp } from '../../../graphql/fragment/interface/UserFragmentInterface';
 import { userFragments } from '../../../graphql/fragment/query/UserFragment';
 import { signUpUserMutationFragments } from '../../../graphql/fragment/mutation/SignUpUserMutationFragment';
+import {ISignUpUserMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/SignUpUserMutationFragmentInterface";
 
 interface IProps {
   onLoginClick: () => void;
@@ -71,7 +72,7 @@ export default function FormSignUp(props: IProps) {
   const [
     signUpUserMutation,
     { loading: isSigningUpUserMutation }
-  ] = useSignUpUserMutation(signUpUserMutationFragments.DefaultFragment, {
+  ] = useSignUpUserMutation<ISignUpUserMutationFragmentDefaultFragment>(signUpUserMutationFragments.DefaultFragment, {
     onCompleted: data => {
       setSignUp(signUp =>
         FormUtil.resetFieldsIsValidHook(signUpFields, signUp)

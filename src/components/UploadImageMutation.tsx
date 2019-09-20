@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUploadImageMutation } from '../graphql/mutation/UploadImageMutation';
 import { uploadImageMutationMutationFragments } from '../graphql/fragment/mutation/UploadImageMutationFragment';
+import {IUploadImageMutationFragmentUploadImageMutation} from "../graphql/fragment/interface/TempImageFragmentInterface";
 
 interface IProps {
   onCompleted: (data: any, props: IProps) => void;
@@ -16,7 +17,7 @@ export default function UploadImageMutation(props: IProps) {
   const [
     uploadImageMutation,
     { loading: isUploadingImageMutation }
-  ] = useUploadImageMutation(
+  ] = useUploadImageMutation<IUploadImageMutationFragmentUploadImageMutation>(
     uploadImageMutationMutationFragments.UploadImageMutation,
     {
       onCompleted: data => {

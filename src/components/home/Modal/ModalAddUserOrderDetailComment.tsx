@@ -27,6 +27,7 @@ import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOr
 import { useAddUserOrderDetailCommentMutation } from '../../../graphql/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutation';
 import { addUserOrderDetailCommentMutationFragments } from '../../../graphql/fragment/mutation/AddUserOrderDetailCommentMutationFragment';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import {IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment} from "../../../graphql/fragment/interface/mutation/AddUserOrderDetailCommentMutationFragmentInterface";
 
 interface IProps {
   userOrderDetailId: string;
@@ -99,7 +100,7 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
   const [
     addUserOrderDetailCommentMutation,
     { loading: isAddingUserOrderDetailCommentMutation }
-  ] = useAddUserOrderDetailCommentMutation(
+  ] = useAddUserOrderDetailCommentMutation<IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment>(
     addUserOrderDetailCommentMutationFragments.ModalAddUserOrderDetailComment,
     {
       onCompleted: () => {

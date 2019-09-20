@@ -65,7 +65,7 @@ export default function FormEditUserContact(props: IProps) {
   const [
     updateUserContactMutation,
     { loading: isUpdatingUserContactMutation }
-  ] = useUpdateUserContactMutation(userFragments.FormEditUserContact, {
+  ] = useUpdateUserContactMutation<IUserFragmentFormEditUserContact>(userFragments.FormEditUserContact, {
     onCompleted: data => {
       setUpdateUserContact(
         FormUtil.resetFieldsIsValidHook(

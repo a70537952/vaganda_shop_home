@@ -53,7 +53,7 @@ export default function FormEditUserAddress(props: IProps) {
   const [
     updateUserAddressMutation,
     { loading: isUpdatingUserAddressMutation }
-  ] = useUpdateUserAddressMutation(userAddressFragments.FormEditUserAddress, {
+  ] = useUpdateUserAddressMutation<IUserAddressFragmentFormEditUserAddress>(userAddressFragments.FormEditUserAddress, {
     onCompleted: data => {
       setUpdateUserAddress(
         FormUtil.resetFieldsIsValidHook(

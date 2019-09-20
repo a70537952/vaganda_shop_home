@@ -20,6 +20,9 @@ import { getCookieKey, getCookieOption } from '../../../utils/CookieUtil';
 import { resendVerifyUserEmailMutationFragments } from '../../../graphql/fragment/mutation/ResendVerifyUserEmailMutationFragment';
 import { signInUserMutationFragments } from '../../../graphql/fragment/mutation/SignInUserMutationFragment';
 import { facebookSignInMutationFragments } from '../../../graphql/fragment/mutation/FacebookSignInMutationFragment';
+import {IResendVerifyUserEmailMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/ResendVerifyUserEmailMutationFragmentInterface";
+import {ISignInUserMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/SignInUserMutationFragmentInterface";
+import {IFacebookSignInUserMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/FacebookSignInUserMutationFragmentInterface";
 
 interface IProps {
   onForgotPasswordClick: () => void;
@@ -79,7 +82,7 @@ export default function FormSignIn(props: IProps) {
   const [
     resendVerifyUserEmailMutation,
     { loading: isResendingVerifyUserEmailMutation }
-  ] = useResendVerifyUserEmailMutation(
+  ] = useResendVerifyUserEmailMutation<IResendVerifyUserEmailMutationFragmentDefaultFragment>(
     resendVerifyUserEmailMutationFragments.DefaultFragment,
     {
       onCompleted: data => {
@@ -90,7 +93,7 @@ export default function FormSignIn(props: IProps) {
   const [
     signInUserMutation,
     { loading: isSigningInUserMutation }
-  ] = useSignInUserMutation(signInUserMutationFragments.DefaultFragment, {
+  ] = useSignInUserMutation<ISignInUserMutationFragmentDefaultFragment>(signInUserMutationFragments.DefaultFragment, {
     onCompleted: data => {
       setSignIn(FormUtil.resetFieldsIsValidHook(signInFields, signIn));
       onSignInCompleted(data.signInUserMutation);
@@ -102,7 +105,7 @@ export default function FormSignIn(props: IProps) {
   const [
     facebookSignInMutation,
     { loading: isFacebookSigningInMutation }
-  ] = useFacebookSignInMutation(
+  ] = useFacebookSignInMutation<IFacebookSignInUserMutationFragmentDefaultFragment>(
     facebookSignInMutationFragments.DefaultFragment,
     {
       onCompleted: data => {

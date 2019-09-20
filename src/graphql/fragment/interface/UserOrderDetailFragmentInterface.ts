@@ -417,3 +417,10 @@ export interface IUserOrderDetailFragmentModalAddUserOrderDetailComment {
     }[];
   };
 }
+
+export interface IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard {
+  id: string;
+  order_detail_status: string;
+  received_at: string;
+}
+

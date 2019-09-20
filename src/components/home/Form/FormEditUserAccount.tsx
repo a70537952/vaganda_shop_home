@@ -66,7 +66,7 @@ export default function FormEditUserAccount(props: IProps) {
   const [
     updateUserInfoMutation,
     { loading: isUpdatingUserInfoMutation }
-  ] = useUpdateUserInfoMutation(userFragments.FormEditUserAccount, {
+  ] = useUpdateUserInfoMutation<IUserFragmentFormEditUserAccount>(userFragments.FormEditUserAccount, {
     onCompleted: data => {
       setUpdateUserInfo(
         FormUtil.resetFieldsIsValidHook(updateUserInfoFields, updateUserInfo)
@@ -90,7 +90,7 @@ export default function FormEditUserAccount(props: IProps) {
   const [
     changeUserAvatarMutation,
     { loading: isChangingUserAvatarMutation }
-  ] = useChangeUserAvatarMutation(userFragments.FormEditUserAccount, {
+  ] = useChangeUserAvatarMutation<IUserFragmentFormEditUserAccount>(userFragments.FormEditUserAccount, {
     onCompleted: data => {
       context.getContext();
     },
@@ -104,7 +104,7 @@ export default function FormEditUserAccount(props: IProps) {
       });
     }
   });
-  const [removeUserAvatarMutation] = useRemoveUserAvatarMutation(
+  const [removeUserAvatarMutation] = useRemoveUserAvatarMutation<IUserFragmentFormEditUserAccount>(
     userFragments.FormEditUserAccount,
     {
       onCompleted: data => {

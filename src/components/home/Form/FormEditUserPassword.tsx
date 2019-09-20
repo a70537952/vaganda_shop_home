@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserPasswordMutation } from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
 import { updateUserPasswordMutationFragments } from '../../../graphql/fragment/mutation/UpdateUserPasswordMutationFragment';
+import {IUpdateUserPasswordMutationFragmentDefaultFragment} from "../../../graphql/fragment/interface/mutation/UpdateUserPasswordMutationFragmentInterface";
 
 interface IProps {
   userId: string;
@@ -68,7 +69,7 @@ export default function FormEditUserPassword(props: IProps) {
   const [
     updateUserPasswordMutation,
     { loading: isUpdatingUserPasswordMutation }
-  ] = useUpdateUserPasswordMutation(
+  ] = useUpdateUserPasswordMutation<IUpdateUserPasswordMutationFragmentDefaultFragment>(
     updateUserPasswordMutationFragments.DefaultFragment,
     {
       onCompleted: data => {

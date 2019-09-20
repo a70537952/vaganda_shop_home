@@ -24,6 +24,7 @@ import DefaultImage from '../../../image/default-image.jpg';
 import useToast from '../../_hook/useNotification';
 import { useUpdateUserOrderDetailStatusMutation } from '../../../graphql/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutation';
 import { updateUserOrderDetailStatusMutationFragment } from '../../../graphql/fragment/mutation/UpdateUserOrderDetailStatusMutationFragment';
+import {IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard} from "../../../graphql/fragment/interface/UserOrderDetailFragmentInterface";
 
 interface IProps extends StyledComponentProps {
   userOrderDetail?: any;
@@ -71,10 +72,10 @@ export default function UserOrderDetailCard(props: IProps) {
   const [
     updateUserOrderDetailStatusMutation,
     { loading: isUpdatingUserOrderDetailStatusMutation }
-  ] = useUpdateUserOrderDetailStatusMutation(
+  ] = useUpdateUserOrderDetailStatusMutation<IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard>(
     updateUserOrderDetailStatusMutationFragment.UserOrderDetailCard,
     {
-      onCompleted: () => {
+      onCompleted: (data) => {
         toast.default(
           t('you have confirm received your product {{title}}', {
             title: `${userOrderDetail.product_title} (${userOrderDetail.product_type_title})`

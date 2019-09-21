@@ -1,54 +1,44 @@
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { homePath } from '../../../utils/RouteUtil';
 import Image from '../../Image';
 import ProductTitle from '../../ProductTitle';
 import useToast from '../../_hook/useToast';
-import { useRemoveProductTypeFromUserCartMutation } from '../../../graphql/mutation/userCartMutation/RemoveProductTypeFromUserCartMutation';
 import { removeProductTypeFromUserCartMutationFragments } from '../../../graphql/fragment/mutation/userCartMutation/RemoveProductTypeFromUserCartMutationFragment';
-import { IRemoveProductTypeFromUserCartMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userCartMutation/MutationFragmentInterface';
+import { IRemoveProductTypeFromUserCartMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userCartMutation/RemoveProductTypeFromUserCartMutationFragmentInterface';
+import UserCartRemoveButton from './UserCartRemoveButton';
 
 interface IProps {
-  userCart: any;
+  userCart: IUserCart;
   onRemoved?: () => void;
+}
+
+interface IUserCart {
+  id: string;
+  product_type: {
+    quantity: string;
+    title: string;
+    currency: string;
+    final_price: string;
+    product: {
+      id: string;
+      title: string;
+      product_image: {
+        image_small: string;
+      }[];
+    };
+  };
+
+  [key: string]: any;
 }
 
 export default function UserCartCard(props: IProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
   const { userCart, onRemoved } = props;
-
-  const [
-    removeProductTypeFromUserCartMutation,
-    { loading: isRemovingProductTypeFromUserCartMutation }
-  ] = useRemoveProductTypeFromUserCartMutation<
-    IRemoveProductTypeFromUserCartMutationFragmentDefaultFragment
-  >(removeProductTypeFromUserCartMutationFragments.DefaultFragment, {
-    onCompleted: () => {
-      toast.default(t('product successfully remove from cart'));
-      if (onRemoved) {
-        onRemoved();
-      }
-    },
-    onError: () => {
-      toast.error(
-        t('something went wrong. please refresh the page and try again.')
-      );
-    }
-  });
-
-  function onClickRemoveProductTypeFromUserCart(user_cart_id: number) {
-    removeProductTypeFromUserCartMutation({
-      variables: {
-        user_cart_ids: [user_cart_id]
-      }
-    });
-  }
 
   return (
     <Grid container item key={userCart.id} spacing={1} alignItems="center">
@@ -115,21 +105,27 @@ export default function UserCartCard(props: IProps) {
             </Typography>
           </Grid>
           <Grid item>
-            {isRemovingProductTypeFromUserCartMutation ? (
-              <Button size="small" variant="text">
-                <CircularProgress size={15} />
-              </Button>
-            ) : (
-              <Button
-                size="small"
-                variant="text"
-                onClick={() => {
-                  onClickRemoveProductTypeFromUserCart(userCart.id);
-                }}
-              >
-                {t('remove')}
-              </Button>
-            )}
+            <UserCartRemoveButton<
+              IRemoveProductTypeFromUserCartMutationFragmentDefaultFragment
+            >
+              userCart={userCart}
+              fragment={
+                removeProductTypeFromUserCartMutationFragments.DefaultFragment
+              }
+              onCompleted={() => {
+                toast.default(t('product successfully remove from cart'));
+                if (onRemoved) {
+                  onRemoved();
+                }
+              }}
+              onError={() => {
+                toast.error(
+                  t(
+                    'something went wrong. please refresh the page and try again.'
+                  )
+                );
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>

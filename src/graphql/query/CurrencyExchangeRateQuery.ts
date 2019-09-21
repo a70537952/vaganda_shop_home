@@ -1,6 +1,6 @@
 import gql, { disableFragmentWarnings } from 'graphql-tag';
 import { DocumentNode } from 'graphql';
-import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
 import { WithPagination, SortField } from './Query';
 
@@ -45,6 +45,19 @@ export interface CurrencyExchangeRateVars {
   where_not_rate?: String;
   where_not_source?: String;
   where_in_target?: String[];
+}
+
+export function useCurrencyExchangeRateLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { currencyExchangeRate: WithPagination<TData> },
+    CurrencyExchangeRateVars
+  >
+) {
+  return useLazyQuery<
+    { currencyExchangeRate: WithPagination<TData> },
+    CurrencyExchangeRateVars
+  >(currencyExchangeRateQuery(fragment), options);
 }
 
 export function useCurrencyExchangeRateQuery<TData = any>(

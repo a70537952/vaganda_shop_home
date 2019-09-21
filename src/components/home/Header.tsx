@@ -5,399 +5,38 @@ import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Popover from '@material-ui/core/Popover';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import classnames from 'classnames';
 import update from 'immutability-helper';
-import React from 'react';
-import { Link, Route, Switch, withRouter } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import {
+  Link,
+  Route,
+  RouteComponentProps,
+  Switch,
+  withRouter
+} from 'react-router-dom';
 import { AppContext } from '../../contexts/Context';
 import homeRoutes from '../../routes/home';
 import UserAvatar from './../UserAvatar';
 import AuthRoute from './AuthRoute';
 import ModalLoginRegister from './Modal/ModalLoginRegister';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import ErrorBoundary from './ErrorBoundary';
-import { RouteComponentProps } from 'react-router';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
 import Menu from '@material-ui/core/Menu';
 import { homePath } from '../../utils/RouteUtil';
-import { withSnackbar, WithSnackbarProps } from 'notistack';
 import UserCartButton from './UserCart/UserCartButton';
-import { ReactCookieProps, withCookies } from 'react-cookie';
 import { getCookieKey, getCookieOption } from '../../utils/CookieUtil';
+import { useCookies } from 'react-cookie';
 
-let t: any;
-
-interface IProps {
-  classes: any;
-  context: any;
-}
-
-interface IState {
-  modal: {
-    loginRegister: boolean;
-  };
-  searchValue: string;
-  searchInputData: {
-    recentSearches: [];
-    suggestionSearch: [];
-  };
-  isNavbarOpen: boolean;
-  profileMenuAnchorEl: any;
-  searchTypeMenuAnchorEl: any;
-  searchType: 'product' | 'shop';
-}
-
-class Header extends React.Component<
-  IProps &
-    WithSnackbarProps &
-    RouteComponentProps &
-    WithTranslation &
-    ReactCookieProps,
-  IState
-> {
-  constructor(
-    props: IProps &
-      WithSnackbarProps &
-      RouteComponentProps &
-      WithTranslation &
-      ReactCookieProps
-  ) {
-    super(props);
-
-    t = this.props.t;
-
-    this.state = {
-      modal: {
-        loginRegister: false
-      },
-      searchValue: '',
-      searchInputData: {
-        recentSearches: [],
-        suggestionSearch: []
-      },
-      isNavbarOpen: false,
-      profileMenuAnchorEl: null,
-      searchTypeMenuAnchorEl: null,
-      searchType: 'product'
-    };
-  }
-
-  handleProfileMenuOpen(event: any) {
-    this.setState({ profileMenuAnchorEl: event.currentTarget });
-  }
-
-  handleProfileMenuClose() {
-    this.setState({ profileMenuAnchorEl: null });
-  }
-
-  handleSearchTypeMenuOpen(event: any) {
-    this.setState({ searchTypeMenuAnchorEl: event.currentTarget });
-  }
-
-  handleSearchTypeMenuClose() {
-    this.setState({ searchTypeMenuAnchorEl: null });
-  }
-
-  toggleModalLoginRegister() {
-    this.setState(
-      update(this.state, {
-        modal: {
-          loginRegister: { $set: !this.state.modal.loginRegister }
-        }
-      })
-    );
-  }
-
-  onClickSearch() {
-    if (!this.state.searchValue) return;
-    this.props.history.push(
-      `/search/${this.state.searchType}/${this.state.searchValue}`
-    );
-  }
-
-  setSearchValue(val: string) {
-    this.setState(
-      update(this.state, {
-        searchValue: { $set: val }
-      })
-    );
-  }
-
-  setSearchType(type: 'shop' | 'product') {
-    this.setState(
-      update(this.state, {
-        searchType: { $set: type }
-      })
-    );
-  }
-
-  render() {
-    const { profileMenuAnchorEl, searchTypeMenuAnchorEl } = this.state;
-    const { classes, t } = this.props;
-    const isProfileMenuOpen = Boolean(profileMenuAnchorEl);
-    const isSearchTypeMenuOpen = Boolean(searchTypeMenuAnchorEl);
-
-    return (
-      <AppContext.Consumer>
-        {(context: any) => (
-          <div className={classes.root}>
-            <AppBar position="static">
-              <Toolbar>
-                <Typography
-                  {...({ component: Link, to: homePath('home') } as any)}
-                  className={classes.title}
-                  variant="h6"
-                  color="inherit"
-                >
-                  {t('vaganda')}
-                </Typography>
-                <Typography
-                  {...({ component: Link, to: homePath('home') } as any)}
-                  className={classes.titleIcon}
-                  variant="h6"
-                  color="inherit"
-                >
-                  V
-                </Typography>
-
-                <div className={classes.search}>
-                  <div className={classes.searchIcon}>
-                    <SearchIcon />
-                  </div>
-                  <InputBase
-                    fullWidth
-                    placeholder={t('search...')}
-                    value={this.state.searchValue}
-                    onChange={(e: any) => {
-                      this.setSearchValue(e.target.value);
-                    }}
-                    classes={{
-                      root: classes.inputRoot,
-                      input: classes.inputInput
-                    }}
-                    onKeyPress={event => {
-                      if (event.key == 'Enter') {
-                        this.onClickSearch();
-                      }
-                    }}
-                  />
-                  <div className={classes.searchTypeContainer}>
-                    <List
-                      component="nav"
-                      disablePadding
-                      className={classes.searchTypeList}
-                    >
-                      <ListItem
-                        className={classes.searchTypeListItem}
-                        button
-                        aria-haspopup="true"
-                        aria-controls="search-type"
-                        aria-label="When device is locked"
-                        onClick={this.handleSearchTypeMenuOpen.bind(this)}
-                      >
-                        <ListItemText
-                          primary={t(this.state.searchType)}
-                          className={classes.searchTypeListItemText}
-                          classes={{
-                            primary: classes.searchTypeListItemTextPrimary
-                          }}
-                        />
-                      </ListItem>
-                    </List>
-                    <Menu
-                      id="search-type"
-                      anchorEl={searchTypeMenuAnchorEl}
-                      open={isSearchTypeMenuOpen}
-                      onClose={this.handleSearchTypeMenuClose.bind(this)}
-                    >
-                      <MenuItem
-                        selected={'product' === this.state.searchType}
-                        onClick={() => {
-                          this.setSearchType('product');
-                          this.handleSearchTypeMenuClose();
-                        }}
-                      >
-                        {t('product')}
-                      </MenuItem>
-                      <MenuItem
-                        selected={'shop' === this.state.searchType}
-                        onClick={() => {
-                          this.setSearchType('shop');
-                          this.handleSearchTypeMenuClose();
-                        }}
-                      >
-                        {t('shop')}
-                      </MenuItem>
-                    </Menu>
-                    <Button
-                      variant="text"
-                      color="primary"
-                      className={classes.searchButton}
-                      onClick={this.onClickSearch.bind(this)}
-                    >
-                      <SearchIcon />
-                    </Button>
-                  </div>
-                </div>
-                {context.user ? (
-                  <>
-                    <UserCartButton />
-                    <div>
-                      <IconButton
-                        aria-owns={
-                          isProfileMenuOpen ? 'material-appbar' : undefined
-                        }
-                        aria-haspopup="true"
-                        onClick={this.handleProfileMenuOpen.bind(this)}
-                        color="inherit"
-                        className={classes.unsetBackground}
-                      >
-                        <UserAvatar user={context.user} />
-                      </IconButton>
-                      <Popover
-                        anchorEl={profileMenuAnchorEl}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'left'
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'left'
-                        }}
-                        open={isProfileMenuOpen}
-                        onClose={this.handleProfileMenuClose.bind(this)}
-                      >
-                        <React.Fragment>
-                          {context.user.shop_admins &&
-                            context.user.shop_admins.length !== 0 && (
-                              <MenuItem
-                                component={'a'}
-                                href={
-                                  '//' + process.env.REACT_APP_SELLER_DOMAIN
-                                }
-                              >
-                                {t('my shop')}
-                              </MenuItem>
-                            )}
-                          <MenuItem
-                            onClick={this.handleProfileMenuClose.bind(this)}
-                            {...({
-                              component: Link,
-                              to: homePath('myOrder')
-                            } as any)}
-                          >
-                            {t('my order')}
-                          </MenuItem>
-                          <MenuItem
-                            onClick={this.handleProfileMenuClose.bind(this)}
-                            {...({
-                              component: Link,
-                              to: homePath('createShop')
-                            } as any)}
-                          >
-                            {t('create shop')}
-                          </MenuItem>
-                          <MenuItem
-                            onClick={this.handleProfileMenuClose.bind(this)}
-                            {...({
-                              component: Link,
-                              to: homePath('accountEdit')
-                            } as any)}
-                          >
-                            {t('account setting')}
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() => {
-                              if (this.props.cookies) {
-                                this.props.cookies.remove(
-                                  getCookieKey('api_token'),
-                                  getCookieOption()
-                                );
-                              }
-                              window.location.reload();
-                            }}
-                          >
-                            {t('logout')}
-                          </MenuItem>
-                        </React.Fragment>
-                      </Popover>
-                    </div>
-                  </>
-                ) : (
-                  <div>
-                    <Button
-                      color="inherit"
-                      onClick={this.toggleModalLoginRegister.bind(this)}
-                      className={classnames(
-                        classes.unsetBackground,
-                        classes.login
-                      )}
-                    >
-                      <UserAvatar className={classes.loginIcon} /> {t('login')}
-                    </Button>
-                    <ModalLoginRegister
-                      toggle={this.toggleModalLoginRegister.bind(this)}
-                      isOpen={this.state.modal.loginRegister}
-                    />
-                  </div>
-                )}
-              </Toolbar>
-            </AppBar>
-            <Grid container className={classes.contentContainer}>
-              <ErrorBoundary>
-                <Switch>
-                  {Object.keys(homeRoutes).map(routeName => {
-                    let route: any = (homeRoutes as any)[routeName];
-
-                    if (route.component) {
-                      if (route.auth) {
-                        return (
-                          <AuthRoute
-                            key={routeName}
-                            exact={route.exact}
-                            path={route.path}
-                            context={context}
-                            component={route.component}
-                            setSearchValue={this.setSearchValue.bind(this)}
-                            setSearchType={this.setSearchType.bind(this)}
-                          />
-                        );
-                      } else {
-                        return (
-                          <Route
-                            key={routeName}
-                            exact={route.exact}
-                            path={route.path}
-                            render={() =>
-                              React.createElement(route.component, {
-                                context: context,
-                                setSearchValue: this.setSearchValue.bind(this),
-                                setSearchType: this.setSearchType.bind(this)
-                              })
-                            }
-                          />
-                        );
-                      }
-                    }
-                  })}
-                </Switch>
-              </ErrorBoundary>
-            </Grid>
-          </div>
-        )}
-      </AppContext.Consumer>
-    );
-  }
-}
-
-export default withStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: '100%',
     minHeight: 'calc(100vh - 77px)'
@@ -515,4 +154,297 @@ export default withStyles(theme => ({
     backgroundColor: theme.palette.primary.main,
     color: '#fff'
   }
-}))(withSnackbar(withTranslation()(withCookies(withRouter(Header)))));
+}));
+
+function Header(props: RouteComponentProps) {
+  const classes = useStyles();
+  const { t } = useTranslation();
+  const context = useContext(AppContext);
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const { location, history } = props;
+
+  const [modal, setModal] = useState<{
+    loginRegister: boolean;
+  }>({
+    loginRegister: false
+  });
+
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [profileMenuAnchorEl, setProfileMenuAnchorEl] = useState<any>(null);
+  const [searchTypeMenuAnchorEl, setSearchTypeMenuAnchorEl] = useState<any>(
+    null
+  );
+  const [searchType, setSearchType] = useState<'product' | 'shop'>('product');
+
+  function handleProfileMenuOpen(event: any) {
+    setProfileMenuAnchorEl(event.currentTarget);
+  }
+
+  function handleProfileMenuClose() {
+    setProfileMenuAnchorEl(null);
+  }
+
+  function handleSearchTypeMenuOpen(event: any) {
+    setSearchTypeMenuAnchorEl(event.currentTarget);
+  }
+
+  function handleSearchTypeMenuClose() {
+    setSearchTypeMenuAnchorEl(null);
+  }
+
+  function toggleModalLoginRegister() {
+    setModal(
+      update(modal, {
+        loginRegister: { $set: !modal.loginRegister }
+      })
+    );
+  }
+
+  function onClickSearch() {
+    if (!searchValue) return;
+    history.push(`/search/${searchType}/${searchValue}`);
+  }
+
+  const isProfileMenuOpen = Boolean(profileMenuAnchorEl);
+  const isSearchTypeMenuOpen = Boolean(searchTypeMenuAnchorEl);
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography
+            {...({ component: Link, to: homePath('home') } as any)}
+            className={classes.title}
+            variant="h6"
+            color="inherit"
+          >
+            {t('vaganda')}
+          </Typography>
+          <Typography
+            {...({ component: Link, to: homePath('home') } as any)}
+            className={classes.titleIcon}
+            variant="h6"
+            color="inherit"
+          >
+            V
+          </Typography>
+
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              fullWidth
+              placeholder={t('search...')}
+              value={searchValue}
+              onChange={(e: any) => {
+                setSearchValue(e.target.value);
+              }}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput
+              }}
+              onKeyPress={event => {
+                if (event.key == 'Enter') {
+                  onClickSearch();
+                }
+              }}
+            />
+            <div className={classes.searchTypeContainer}>
+              <List
+                component="nav"
+                disablePadding
+                className={classes.searchTypeList}
+              >
+                <ListItem
+                  className={classes.searchTypeListItem}
+                  button
+                  aria-haspopup="true"
+                  aria-controls="search-type"
+                  aria-label="When device is locked"
+                  onClick={handleSearchTypeMenuOpen}
+                >
+                  <ListItemText
+                    primary={t(searchType)}
+                    className={classes.searchTypeListItemText}
+                    classes={{
+                      primary: classes.searchTypeListItemTextPrimary
+                    }}
+                  />
+                </ListItem>
+              </List>
+              <Menu
+                id="search-type"
+                anchorEl={searchTypeMenuAnchorEl}
+                open={isSearchTypeMenuOpen}
+                onClose={handleSearchTypeMenuClose}
+              >
+                <MenuItem
+                  selected={'product' === searchType}
+                  onClick={() => {
+                    setSearchType('product');
+                    handleSearchTypeMenuClose();
+                  }}
+                >
+                  {t('product')}
+                </MenuItem>
+                <MenuItem
+                  selected={'shop' === searchType}
+                  onClick={() => {
+                    setSearchType('shop');
+                    handleSearchTypeMenuClose();
+                  }}
+                >
+                  {t('shop')}
+                </MenuItem>
+              </Menu>
+              <Button
+                variant="text"
+                color="primary"
+                className={classes.searchButton}
+                onClick={onClickSearch}
+              >
+                <SearchIcon />
+              </Button>
+            </div>
+          </div>
+          {context.user ? (
+            <>
+              {location.pathname !== homePath('userCart') && <UserCartButton />}
+              <div>
+                <IconButton
+                  aria-owns={isProfileMenuOpen ? 'material-appbar' : undefined}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                  className={classes.unsetBackground}
+                >
+                  <UserAvatar user={context.user} />
+                </IconButton>
+                <Popover
+                  anchorEl={profileMenuAnchorEl}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left'
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left'
+                  }}
+                  open={isProfileMenuOpen}
+                  onClose={handleProfileMenuClose}
+                >
+                  <React.Fragment>
+                    {context.user.shop_admins &&
+                      context.user.shop_admins.length !== 0 && (
+                        <MenuItem
+                          component={'a'}
+                          href={'//' + process.env.REACT_APP_SELLER_DOMAIN}
+                        >
+                          {t('my shop')}
+                        </MenuItem>
+                      )}
+                    <MenuItem
+                      onClick={handleProfileMenuClose}
+                      {...({
+                        component: Link,
+                        to: homePath('myOrder')
+                      } as any)}
+                    >
+                      {t('my order')}
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleProfileMenuClose}
+                      {...({
+                        component: Link,
+                        to: homePath('createShop')
+                      } as any)}
+                    >
+                      {t('create shop')}
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleProfileMenuClose}
+                      {...({
+                        component: Link,
+                        to: homePath('accountEdit')
+                      } as any)}
+                    >
+                      {t('account setting')}
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        removeCookie(
+                          getCookieKey('api_token'),
+                          getCookieOption()
+                        );
+                        window.location.reload();
+                      }}
+                    >
+                      {t('logout')}
+                    </MenuItem>
+                  </React.Fragment>
+                </Popover>
+              </div>
+            </>
+          ) : (
+            <div>
+              <Button
+                color="inherit"
+                onClick={toggleModalLoginRegister}
+                className={classnames(classes.unsetBackground, classes.login)}
+              >
+                <UserAvatar className={classes.loginIcon} /> {t('login')}
+              </Button>
+              <ModalLoginRegister
+                toggle={toggleModalLoginRegister}
+                isOpen={modal.loginRegister}
+              />
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+      <Grid container className={classes.contentContainer}>
+        <ErrorBoundary>
+          <Switch>
+            {Object.keys(homeRoutes).map(routeName => {
+              let route: any = (homeRoutes as any)[routeName];
+
+              if (route.component) {
+                if (route.auth) {
+                  return (
+                    <AuthRoute
+                      key={routeName}
+                      exact={route.exact}
+                      path={route.path}
+                      context={context}
+                      component={route.component}
+                      setSearchValue={setSearchValue}
+                      setSearchType={setSearchType}
+                    />
+                  );
+                } else {
+                  return (
+                    <Route
+                      key={routeName}
+                      exact={route.exact}
+                      path={route.path}
+                      render={() =>
+                        React.createElement(route.component, {
+                          context: context,
+                          setSearchValue: setSearchValue,
+                          setSearchType: setSearchType
+                        })
+                      }
+                    />
+                  );
+                }
+              }
+            })}
+          </Switch>
+        </ErrorBoundary>
+      </Grid>
+    </div>
+  );
+}
+
+export default withRouter(Header);

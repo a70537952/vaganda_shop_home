@@ -102,7 +102,7 @@ function Index() {
                   ]}
                 >
                   <>
-                    <Header context={context} />
+                    <Header />
                     <Footer />
                   </>
                 </SnackbarProvider>

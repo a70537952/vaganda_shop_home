@@ -79,6 +79,7 @@ export default function FormEditUserContact(props: IProps) {
         if (props.onUpdated) {
           props.onUpdated();
         }
+        context.getContext();
       },
       onError: error => {
         setUpdateUserContact(

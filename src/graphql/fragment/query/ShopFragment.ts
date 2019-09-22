@@ -31,5 +31,11 @@ export let shopFragments: any = {
         value
       }
     }
+  `,
+  CreateShop: gql`
+    fragment fragment on Shop {
+      id
+      name
+    }
   `
 };

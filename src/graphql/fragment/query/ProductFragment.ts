@@ -160,6 +160,7 @@ export let productFragments: any = {
   Product: gql`
     fragment fragment on Product {
       id
+      shop_id
       title
       product_category_id
       description
@@ -177,14 +178,22 @@ export let productFragments: any = {
       weight_unit
       is_publish
       created_at
+      product_rating
+      one_star_comment_count
+      two_star_comment_count
+      three_star_comment_count
+      four_star_comment_count
+      five_star_comment_count
 
       product_image {
         id
         product_id
         path
+        image_small
         image_medium
         image_large
         image_original
+        image_extra
       }
 
       product_category {
@@ -210,19 +219,31 @@ export let productFragments: any = {
           id
           product_type_id
           path
+          image_small
           image_medium
           image_large
+          image_extra
           image_original
         }
       }
 
-      product_shipping {
+      shop {
         id
-        product_id
-        shipping_method
-        shipping_fee
-        shipping_country
-        is_disabled
+        name
+        product_count
+        created_at
+        shop_info {
+          id
+          logo
+          logo_medium
+          banner
+          banner_large
+        }
+        shop_setting {
+          id
+          title
+          value
+        }
       }
 
       shop_product_category_product {

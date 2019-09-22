@@ -27,3 +27,8 @@ export interface IShopFragmentShopList {
     value: string;
   };
 }
+
+export interface IShopFragmentCreateShop {
+  id: string;
+  name: string;
+}

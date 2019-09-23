@@ -2,8 +2,8 @@ import React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import DialogContent from '@material-ui/core/DialogContent';
-import Dialog, { DialogProps } from '@material-ui/core/Dialog';
-import { makeStyles } from '@material-ui/styles';
+import Dialog, {DialogProps} from '@material-ui/core/Dialog';
+import {makeStyles} from '@material-ui/styles';
 
 interface IProps extends DialogProps {
   children: any;

@@ -10,19 +10,19 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import { Theme } from '@material-ui/core/styles/index';
+import {Theme} from '@material-ui/core/styles/index';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { useTranslation } from 'react-i18next';
-import { makeStyles, useTheme } from '@material-ui/styles';
-import { useProductCategoryQuery } from '../../graphql/query/ProductCategoryQuery';
-import { PropTypes, useMediaQuery } from '@material-ui/core';
+import {useTranslation} from 'react-i18next';
+import {makeStyles, useTheme} from '@material-ui/styles';
+import {useProductCategoryQuery} from '../../graphql/query/ProductCategoryQuery';
+import {PropTypes, useMediaQuery} from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { IProductCategoryFragmentProductCategorySelect } from '../../graphql/fragmentType/query/ProductCategoryFragmentInterface';
-import { productCategoryFragments } from '../../graphql/fragment/query/ProductCategoryFragment';
+import {IProductCategoryFragmentProductCategorySelect} from '../../graphql/fragmentType/query/ProductCategoryFragmentInterface';
+import {productCategoryFragments} from '../../graphql/fragment/query/ProductCategoryFragment';
 
 interface IProps {
   onChange: (value: unknown) => void;
@@ -34,7 +34,7 @@ interface IProps {
   margin?: PropTypes.Margin;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles({
   root: {},
   listItem: {
     // paddingBottom: '8px',
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   radioLabel: {
     marginLeft: 0
   }
-}));
+});
 
 export default function ProductCategorySelect(props: IProps) {
   const classes = useStyles();

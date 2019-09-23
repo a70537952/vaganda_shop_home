@@ -6,24 +6,24 @@ import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { Theme } from '@material-ui/core/styles/index';
+import {Theme} from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import update from 'immutability-helper';
-import { useSnackbar } from 'notistack';
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { AppContext } from '../../../contexts/Context';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
+import {AppContext} from '../../../contexts/Context';
+import FormUtil, {Fields} from '../../../utils/FormUtil';
 import UserAvatar from '../../UserAvatar';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
-import { useUserQuery } from '../../../graphql/query/UserQuery';
-import { useUpdateUserInfoMutation } from '../../../graphql/mutation/userMutation/UpdateUserInfoMutation';
-import { useChangeUserAvatarMutation } from '../../../graphql/mutation/userMutation/ChangeUserAvatarMutation';
-import { useRemoveUserAvatarMutation } from '../../../graphql/mutation/userMutation/RemoveUserAvatarMutation';
-import { IUserFragmentFormEditUserAccount } from '../../../graphql/fragmentType/query/UserFragmentInterface';
-import { userFragments } from '../../../graphql/fragment/query/UserFragment';
+import {makeStyles} from '@material-ui/styles';
+import {useUserQuery} from '../../../graphql/query/UserQuery';
+import {useUpdateUserInfoMutation} from '../../../graphql/mutation/userMutation/UpdateUserInfoMutation';
+import {useChangeUserAvatarMutation} from '../../../graphql/mutation/userMutation/ChangeUserAvatarMutation';
+import {useRemoveUserAvatarMutation} from '../../../graphql/mutation/userMutation/RemoveUserAvatarMutation';
+import {IUserFragmentFormEditUserAccount} from '../../../graphql/fragmentType/query/UserFragmentInterface';
+import {userFragments} from '../../../graphql/fragment/query/UserFragment';
+import useToast from "../../_hook/useToast";
 
 interface IProps {
   title?: string;
@@ -56,7 +56,7 @@ export default function FormEditUserAccount(props: IProps) {
   const classes = useStyles();
   const context = useContext(AppContext);
   const { t } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
+  const { toast } = useToast();
   let updateUserInfoFields = [
     { field: 'username' },
     { field: 'name', isCheckEmpty: true, emptyMessage: t('please enter name') },
@@ -69,11 +69,11 @@ export default function FormEditUserAccount(props: IProps) {
   ] = useUpdateUserInfoMutation<IUserFragmentFormEditUserAccount>(
     userFragments.FormEditUserAccount,
     {
-      onCompleted: data => {
+      onCompleted: () => {
         setUpdateUserInfo(
           FormUtil.resetFieldsIsValidHook(updateUserInfoFields, updateUserInfo)
         );
-        enqueueSnackbar(t('your profile has been successfully updated'));
+        toast.default(t('your profile has been successfully updated'));
         if (props.onUpdated) {
           props.onUpdated();
         }
@@ -96,7 +96,7 @@ export default function FormEditUserAccount(props: IProps) {
   ] = useChangeUserAvatarMutation<IUserFragmentFormEditUserAccount>(
     userFragments.FormEditUserAccount,
     {
-      onCompleted: data => {
+      onCompleted: () => {
         context.getContext();
       },
       onError: error => {
@@ -104,21 +104,19 @@ export default function FormEditUserAccount(props: IProps) {
           'userAvatar',
           error
         );
-        enqueueSnackbar(errorMessage, {
-          variant: 'error'
-        });
+        toast.error(errorMessage);
       }
     }
   );
   const [removeUserAvatarMutation] = useRemoveUserAvatarMutation<
     IUserFragmentFormEditUserAccount
   >(userFragments.FormEditUserAccount, {
-    onCompleted: data => {
+    onCompleted: () => {
       context.getContext();
     }
   });
 
-  const { loading, data } = useUserQuery<IUserFragmentFormEditUserAccount>(
+  const { loading } = useUserQuery<IUserFragmentFormEditUserAccount>(
     userFragments.FormEditUserAccount,
     {
       fetchPolicy: 'network-only',
@@ -252,7 +250,7 @@ export default function FormEditUserAccount(props: IProps) {
 
             {context.user.user_info.avatar !== null && (
               <label
-                onClick={e => {
+                onClick={() => {
                   removeUserAvatarMutation();
                 }}
               >

@@ -1,20 +1,20 @@
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import update from 'immutability-helper';
-import { SnackbarProvider } from 'notistack';
-import React, { useEffect, useState } from 'react';
-import { ApolloProvider } from 'react-apollo';
+import {SnackbarProvider} from 'notistack';
+import React, {useEffect, useState} from 'react';
+import {ApolloProvider} from 'react-apollo';
 import './i18n'; //must import i18n
-import { useTranslation } from 'react-i18next';
-import { BrowserRouter } from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {BrowserRouter} from 'react-router-dom';
 import Header from '../components/home/Header';
 import Footer from '../components/home/Footer';
-import { AppContext } from '../contexts/Context';
+import {AppContext} from '../contexts/Context';
 import apolloClient from '../apolloClient';
-import { CookiesProvider } from 'react-cookie';
-import { userFragments } from '../graphql/fragment/query/UserFragment';
-import { userQuery } from '../graphql/query/UserQuery';
+import {CookiesProvider} from 'react-cookie';
+import {userFragments} from '../graphql/fragment/query/UserFragment';
+import {userQuery} from '../graphql/query/UserQuery';
 
 function Index() {
   const { t } = useTranslation();

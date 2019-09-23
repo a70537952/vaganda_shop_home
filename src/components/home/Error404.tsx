@@ -3,12 +3,12 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { homePath } from '../../utils/RouteUtil';
+import {Link} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {homePath} from '../../utils/RouteUtil';
 import HomeHelmet from './HomeHelmet';
 
 const useStyles = makeStyles({

@@ -13,12 +13,12 @@ import Paper from '@material-ui/core/Paper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Stepper from '@material-ui/core/Stepper';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import {makeStyles, Theme} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import update from 'immutability-helper';
-import React, { useContext, useState } from 'react';
-import { useApolloClient } from 'react-apollo';
+import React, {useContext, useState} from 'react';
+import {useApolloClient} from 'react-apollo';
 import Geolocation from 'react-geolocation';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CountryPhoneCodeSelect from '../components/_select/CountryPhoneCodeSelect';
@@ -29,20 +29,19 @@ import GoogleMapMarker from '../components/GoogleMapMarker';
 import HomeHelmet from '../components/home/HomeHelmet';
 import ShopCategorySelect from '../components/_select/ShopCategorySelect';
 import UploadImageMutation from '../components/UploadImageMutation';
-import { AppContext } from '../contexts/Context';
-import FormUtil, { Fields } from '../utils/FormUtil';
-import { useTranslation } from 'react-i18next';
+import {AppContext} from '../contexts/Context';
+import FormUtil, {Fields} from '../utils/FormUtil';
+import {useTranslation} from 'react-i18next';
 import Image from '../components/Image';
 import useToast from '../components/_hook/useToast';
-import { shopQuery, ShopVars } from '../graphql/query/ShopQuery';
-import { shopFragments } from '../graphql/fragment/query/ShopFragment';
-import { IShopFragmentCreateShop } from '../graphql/fragmentType/query/ShopFragmentInterface';
-import { WithPagination } from '../graphql/query/Query';
-import { useCreateShopMutation } from '../graphql/mutation/shopMutation/CreateShopMutation';
-import { createShopMutationFragments } from '../graphql/fragment/mutation/shopMutation/CreateShopMutationFragment';
-import { ICreateShopMutationFragmentDefaultFragment } from '../graphql/fragmentType/mutation/shopMutation/CreateShopMutationFragmentInterface';
+import {shopQuery, ShopVars} from '../graphql/query/ShopQuery';
+import {shopFragments} from '../graphql/fragment/query/ShopFragment';
+import {IShopFragmentCreateShop} from '../graphql/fragmentType/query/ShopFragmentInterface';
+import {WithPagination} from '../graphql/query/Query';
+import {useCreateShopMutation} from '../graphql/mutation/shopMutation/CreateShopMutation';
+import {createShopMutationFragments} from '../graphql/fragment/mutation/shopMutation/CreateShopMutationFragment';
+import {ICreateShopMutationFragmentDefaultFragment} from '../graphql/fragmentType/mutation/shopMutation/CreateShopMutationFragmentInterface';
 
-interface IProps {}
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -76,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function CreateShop(props: IProps) {
+export default function CreateShop() {
   const classes = useStyles();
   const context = useContext(AppContext);
   const { t } = useTranslation();
@@ -188,7 +187,7 @@ export default function CreateShop(props: IProps) {
     }
   ];
 
-  const [steps, setSteps] = useState<
+  const [steps] = useState<
     ['shop setup', 'shop info', 'shop address', 'shop contact']
   >(['shop setup', 'shop info', 'shop address', 'shop contact']);
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -246,7 +245,7 @@ export default function CreateShop(props: IProps) {
     return isValid;
   }
 
-  async function checkSectionInfoField(error?: any) {
+  async function checkSectionInfoField() {
     let isValid = true;
     if (uploadingLogoCount > 0 || uploadingBannerCount > 0) {
       toast.default(t('please wait until image upload complete'));
@@ -376,7 +375,7 @@ export default function CreateShop(props: IProps) {
       onError: async error => {
         await checkSectionContactField(error);
         await checkSectionAddressField(error);
-        await checkSectionInfoField(error);
+        await checkSectionInfoField();
         await checkSectionSetupField(error);
       }
     }

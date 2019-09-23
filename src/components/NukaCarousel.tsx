@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
+import React, {ReactNode} from 'react';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
 import Carousel from 'nuka-carousel';
 
 interface IProps extends StyledComponentProps {

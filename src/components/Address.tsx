@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Typography, {TypographyProps} from '@material-ui/core/Typography';
 
 interface IProps extends TypographyProps {
   className?: string;

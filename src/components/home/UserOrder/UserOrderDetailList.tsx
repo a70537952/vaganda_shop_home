@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import UserOrderDetailCard from './UserOrderDetailCard';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useUserOrderDetailQuery } from '../../../graphql/query/UserOrderDetailQuery';
-import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOrderDetailFragment';
+import {useUserOrderDetailQuery} from '../../../graphql/query/UserOrderDetailQuery';
+import {userOrderDetailFragments} from '../../../graphql/fragment/query/UserOrderDetailFragment';
 import ProductCard from '../Product/ProductCard';
-import { IUserOrderDetailFragmentUserOrderDetailList } from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
+import {IUserOrderDetailFragmentUserOrderDetailList} from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
 
 interface IProps {
   variables?: any;

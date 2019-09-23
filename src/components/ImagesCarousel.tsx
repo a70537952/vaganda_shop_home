@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
-import Carousel, { Modal, ModalGateway } from 'react-images';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
+import Carousel, {Modal, ModalGateway} from 'react-images';
 
 interface IProps extends StyledComponentProps {
   onClose: () => void;

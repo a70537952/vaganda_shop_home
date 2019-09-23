@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import HomeHelmet from '../components/home/HomeHelmet';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import ProductList from '../components/home/Product/ProductList';
 import ShopList from '../components/home/Shop/ShopList';

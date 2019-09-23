@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ShopCard from './ShopCard';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useShopQuery } from '../../../graphql/query/ShopQuery';
-import { shopFragments } from '../../../graphql/fragment/query/ShopFragment';
+import {useShopQuery} from '../../../graphql/query/ShopQuery';
+import {shopFragments} from '../../../graphql/fragment/query/ShopFragment';
 import ProductCard from '../Product/ProductCard';
-import { IShopFragmentShopList } from '../../../graphql/fragmentType/query/ShopFragmentInterface';
+import {IShopFragmentShopList} from '../../../graphql/fragmentType/query/ShopFragmentInterface';
 
 interface IProps {
   variables?: any;

@@ -1,8 +1,8 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import React, { useState } from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
+import {makeStyles, Theme} from '@material-ui/core/styles';
+import React, {useState} from 'react';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import UserAvatar from '../../UserAvatar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';

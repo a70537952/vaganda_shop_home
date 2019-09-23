@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { OptionsObject, useSnackbar, WithSnackbarProps } from 'notistack';
-import { useTranslation } from 'react-i18next';
+import {OptionsObject, useSnackbar, WithSnackbarProps} from 'notistack';
+import {useTranslation} from 'react-i18next';
 
 import Button from '@material-ui/core/Button';
 

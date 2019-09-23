@@ -1,9 +1,9 @@
 import Grid from '@material-ui/core/Grid';
 import Modal from '../../_modal/Modal';
-import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
+import {useSnackbar} from 'notistack';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import FormUtil, {Fields} from '../../../utils/FormUtil';
 import update from 'immutability-helper';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -21,13 +21,13 @@ import Image from '../../Image';
 import AddIcon from '@material-ui/icons/Add';
 import StarRating from '../../_rating/StarRating';
 import DefaultImage from '../../../image/default-image.jpg';
-import { useUserOrderDetailQuery } from '../../../graphql/query/UserOrderDetailQuery';
-import { IUserOrderDetailFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
-import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOrderDetailFragment';
-import { useAddUserOrderDetailCommentMutation } from '../../../graphql/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutation';
-import { addUserOrderDetailCommentMutationFragments } from '../../../graphql/fragment/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragment';
+import {useUserOrderDetailQuery} from '../../../graphql/query/UserOrderDetailQuery';
+import {IUserOrderDetailFragmentModalAddUserOrderDetailComment} from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
+import {userOrderDetailFragments} from '../../../graphql/fragment/query/UserOrderDetailFragment';
+import {useAddUserOrderDetailCommentMutation} from '../../../graphql/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutation';
+import {addUserOrderDetailCommentMutationFragments} from '../../../graphql/fragment/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragment';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragmentType/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragmentInterface';
+import {IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment} from '../../../graphql/fragmentType/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragmentInterface';
 
 interface IProps {
   userOrderDetailId: string;

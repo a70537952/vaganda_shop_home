@@ -1,8 +1,8 @@
 import Modal from '../../_modal/Modal';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import FormEditUserAddress from '../Form/FormEditUserAddress';
-import { makeStyles } from '@material-ui/core';
+import {makeStyles} from '@material-ui/core';
 
 interface IProps {
   isOpen: boolean;

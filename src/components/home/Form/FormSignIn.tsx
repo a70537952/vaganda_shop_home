@@ -1,28 +1,27 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { Theme } from '@material-ui/core/styles/index';
+import {Theme} from '@material-ui/core/styles/index';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import update from 'immutability-helper';
-import { useSnackbar } from 'notistack';
-import React, { useContext, useState } from 'react';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
+import React, {useState} from 'react';
+import FormUtil, {Fields} from '../../../utils/FormUtil';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useTranslation } from 'react-i18next';
-import { makeStyles } from '@material-ui/styles';
-import { useSignInUserMutation } from '../../../graphql/mutation/authMutation/SignInUserMutation';
-import { useResendVerifyUserEmailMutation } from '../../../graphql/mutation/authMutation/ResendVerifyUserEmailMutation';
-import { AppContext } from '../../../contexts/Context';
-import { useFacebookSignInMutation } from '../../../graphql/mutation/authMutation/FacebookSignInMutation';
-import { useCookies } from 'react-cookie';
-import { getCookieKey, getCookieOption } from '../../../utils/CookieUtil';
-import { resendVerifyUserEmailMutationFragments } from '../../../graphql/fragment/mutation/authMutation/ResendVerifyUserEmailMutationFragment';
-import { signInUserMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SignInUserMutationFragment';
-import { facebookSignInMutationFragments } from '../../../graphql/fragment/mutation/authMutation/FacebookSignInMutationFragment';
-import { IResendVerifyUserEmailMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/ResendVerifyUserEmailMutationFragmentInterface';
-import { ISignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/SignInUserMutationFragmentInterface';
-import { IFacebookSignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/FacebookSignInUserMutationFragmentInterface';
+import {useTranslation} from 'react-i18next';
+import {makeStyles} from '@material-ui/styles';
+import {useSignInUserMutation} from '../../../graphql/mutation/authMutation/SignInUserMutation';
+import {useResendVerifyUserEmailMutation} from '../../../graphql/mutation/authMutation/ResendVerifyUserEmailMutation';
+import {useFacebookSignInMutation} from '../../../graphql/mutation/authMutation/FacebookSignInMutation';
+import {useCookies} from 'react-cookie';
+import {getCookieKey, getCookieOption} from '../../../utils/CookieUtil';
+import {resendVerifyUserEmailMutationFragments} from '../../../graphql/fragment/mutation/authMutation/ResendVerifyUserEmailMutationFragment';
+import {signInUserMutationFragments} from '../../../graphql/fragment/mutation/authMutation/SignInUserMutationFragment';
+import {facebookSignInMutationFragments} from '../../../graphql/fragment/mutation/authMutation/FacebookSignInMutationFragment';
+import {IResendVerifyUserEmailMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/authMutation/ResendVerifyUserEmailMutationFragmentInterface';
+import {ISignInUserMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/authMutation/SignInUserMutationFragmentInterface';
+import {IFacebookSignInUserMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/authMutation/FacebookSignInUserMutationFragmentInterface';
+import useToast from "../../_hook/useToast";
 
 interface IProps {
   onForgotPasswordClick: () => void;
@@ -64,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function FormSignIn(props: IProps) {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { toast } = useToast();
   const [cookie, setCookie] = useCookies([]);
   let signInFields = [
     {
@@ -85,8 +84,8 @@ export default function FormSignIn(props: IProps) {
   ] = useResendVerifyUserEmailMutation<
     IResendVerifyUserEmailMutationFragmentDefaultFragment
   >(resendVerifyUserEmailMutationFragments.DefaultFragment, {
-    onCompleted: data => {
-      enqueueSnackbar(t('we have send an verify email to your email'));
+    onCompleted: () => {
+      toast.default(t('we have send an verify email to your email'));
     }
   });
   const [

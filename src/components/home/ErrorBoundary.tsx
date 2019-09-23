@@ -1,15 +1,15 @@
-import { withStyles } from '@material-ui/core/styles/index';
-import React, { ErrorInfo } from 'react';
-import { WithTranslation, withTranslation } from 'react-i18next';
-import { Link, withRouter } from 'react-router-dom';
+import {withStyles} from '@material-ui/core/styles/index';
+import React, {ErrorInfo} from 'react';
+import {WithTranslation, withTranslation} from 'react-i18next';
+import {Link, withRouter} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { RouteComponentProps } from 'react-router';
-import { homePath } from '../../utils/RouteUtil';
+import {RouteComponentProps} from 'react-router';
+import {homePath} from '../../utils/RouteUtil';
 
 interface IProps {
   t: (key: string) => string;
@@ -37,7 +37,7 @@ class ErrorBoundary extends React.Component<
     };
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError() {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
@@ -102,7 +102,7 @@ class ErrorBoundary extends React.Component<
   }
 }
 
-export default withStyles(theme => ({
+export default withStyles(() => ({
   cardContainer: {
     minHeight: '50vh'
   },

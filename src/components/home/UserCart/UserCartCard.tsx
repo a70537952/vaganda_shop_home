@@ -1,14 +1,14 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { homePath } from '../../../utils/RouteUtil';
+import {Link} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {homePath} from '../../../utils/RouteUtil';
 import Image from '../../Image';
 import ProductTitle from '../../ProductTitle';
 import useToast from '../../_hook/useToast';
-import { removeProductTypeFromUserCartMutationFragments } from '../../../graphql/fragment/mutation/userCartMutation/RemoveProductTypeFromUserCartMutationFragment';
-import { IRemoveProductTypeFromUserCartMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userCartMutation/RemoveProductTypeFromUserCartMutationFragmentInterface';
+import {removeProductTypeFromUserCartMutationFragments} from '../../../graphql/fragment/mutation/userCartMutation/RemoveProductTypeFromUserCartMutationFragment';
+import {IRemoveProductTypeFromUserCartMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/userCartMutation/RemoveProductTypeFromUserCartMutationFragmentInterface';
 import UserCartRemoveButton from './UserCartRemoveButton';
 
 interface IProps {

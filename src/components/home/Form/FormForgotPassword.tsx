@@ -1,18 +1,18 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { Theme } from '@material-ui/core/styles/index';
+import {Theme} from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import update from 'immutability-helper';
-import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
+import React, {useState} from 'react';
+import FormUtil, {Fields} from '../../../utils/FormUtil';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useTranslation } from 'react-i18next';
-import { makeStyles } from '@material-ui/styles';
-import { useSendResetPasswordEmailMutation } from '../../../graphql/mutation/authMutation/SendResetPasswordEmailMutation';
-import { sendResetPasswordEmailMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SendResetPasswordEmailMutationFragment';
-import { ISendResetPasswordEmailMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/SendResetPasswordEmailMutationFragmentInterface';
+import {useTranslation} from 'react-i18next';
+import {makeStyles} from '@material-ui/styles';
+import {useSendResetPasswordEmailMutation} from '../../../graphql/mutation/authMutation/SendResetPasswordEmailMutation';
+import {sendResetPasswordEmailMutationFragments} from '../../../graphql/fragment/mutation/authMutation/SendResetPasswordEmailMutationFragment';
+import {ISendResetPasswordEmailMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/authMutation/SendResetPasswordEmailMutationFragmentInterface';
+import useToast from "../../_hook/useToast";
 
 interface IProps {
   onLoginClick: () => void;
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function FormForgotPassword(props: IProps) {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { toast } = useToast();
   let forgotPasswordFields = [
     {
       field: 'email',
@@ -53,11 +53,11 @@ export default function FormForgotPassword(props: IProps) {
   ] = useSendResetPasswordEmailMutation<
     ISendResetPasswordEmailMutationFragmentDefaultFragment
   >(sendResetPasswordEmailMutationFragments.DefaultFragment, {
-    onCompleted: data => {
+    onCompleted: () => {
       setForgotPassword(
         FormUtil.resetFieldsIsValidHook(forgotPasswordFields, forgotPassword)
       );
-      enqueueSnackbar(
+      toast.default(
         t(
           'we have send a reset password link to your email, please sign in to your email account and check'
         ),

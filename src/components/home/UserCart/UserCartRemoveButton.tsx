@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useRemoveProductTypeFromUserCartMutation } from '../../../graphql/mutation/userCartMutation/RemoveProductTypeFromUserCartMutation';
-import { DocumentNode } from 'graphql';
-import { ApolloError } from 'apollo-client';
+import {useRemoveProductTypeFromUserCartMutation} from '../../../graphql/mutation/userCartMutation/RemoveProductTypeFromUserCartMutation';
+import {DocumentNode} from 'graphql';
+import {ApolloError} from 'apollo-client';
 
 interface IProps<FragmentInterface = any> {
   userCart: IUserCart;

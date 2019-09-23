@@ -188,7 +188,7 @@ export default {
       let isEmpty = false;
       if (fieldObj.isCheckEmpty) {
         if (fieldObj.dataType) {
-          let dataType = fieldObj.dataType;
+          // let dataType = fieldObj.dataType;
         } else {
           if (String(stateForm[field].value).trim() === '') {
             isEmpty = true;
@@ -221,7 +221,7 @@ export default {
       let isEmpty = false;
       if (fieldObj.isCheckEmpty) {
         if (fieldObj.dataType) {
-          let dataType = fieldObj.dataType;
+          // let dataType = fieldObj.dataType;
         } else {
           if (String(stateForm[field].value).trim() === '') {
             isEmpty = true;

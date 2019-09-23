@@ -1,7 +1,7 @@
 import Modal from '../../_modal/Modal';
-import { makeStyles } from '@material-ui/core/styles/index';
+import {makeStyles} from '@material-ui/core/styles/index';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import FormEditUserAccount from '../Form/FormEditUserAccount';
 
 interface IProps {

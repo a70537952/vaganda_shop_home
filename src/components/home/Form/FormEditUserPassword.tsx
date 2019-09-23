@@ -1,19 +1,19 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import { Theme } from '@material-ui/core/styles/index';
+import {Theme} from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import update from 'immutability-helper';
-import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
+import React, {useState} from 'react';
+import FormUtil, {Fields} from '../../../utils/FormUtil';
 import blue from '@material-ui/core/colors/blue';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
-import { useUpdateUserPasswordMutation } from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
-import { updateUserPasswordMutationFragments } from '../../../graphql/fragment/mutation/userMutation/UpdateUserPasswordMutationFragment';
-import { IUpdateUserPasswordMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userMutation/UpdateUserPasswordMutationFragmentInterface';
+import {makeStyles} from '@material-ui/styles';
+import {useUpdateUserPasswordMutation} from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
+import {updateUserPasswordMutationFragments} from '../../../graphql/fragment/mutation/userMutation/UpdateUserPasswordMutationFragment';
+import {IUpdateUserPasswordMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/userMutation/UpdateUserPasswordMutationFragmentInterface';
+import useToast from "../../_hook/useToast";
 
 interface IProps {
   userId: string;
@@ -22,7 +22,7 @@ interface IProps {
   className?: any;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles({
   textFieldName: {
     minWidth: 230
   },
@@ -39,12 +39,12 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: blue[700]
     }
   }
-}));
+});
 
 export default function FormEditUserPassword(props: IProps) {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { toast } = useToast();
   let updateUserPasswordFields = [
     {
       field: 'currentPassword',
@@ -72,14 +72,14 @@ export default function FormEditUserPassword(props: IProps) {
   ] = useUpdateUserPasswordMutation<
     IUpdateUserPasswordMutationFragmentDefaultFragment
   >(updateUserPasswordMutationFragments.DefaultFragment, {
-    onCompleted: data => {
+    onCompleted: () => {
       setUpdateUserPassword(
         FormUtil.generateResetFieldsStateHook(
           updateUserPasswordFields,
           updateUserPassword
         )
       );
-      enqueueSnackbar(t('your password has been successfully updated'));
+      toast.default(t('your password has been successfully updated'));
       if (props.onUpdated) {
         props.onUpdated();
       }

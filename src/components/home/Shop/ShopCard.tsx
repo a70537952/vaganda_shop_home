@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import React from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import ShopLogo from '../../ShopLogo';
 import Grid from '@material-ui/core/Grid';

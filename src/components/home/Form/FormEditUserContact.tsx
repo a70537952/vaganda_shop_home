@@ -3,26 +3,26 @@ import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { Theme } from '@material-ui/core/styles/index';
+import {Theme} from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import DoneIcon from '@material-ui/icons/Done';
 import EmailIcon from '@material-ui/icons/Email';
 import update from 'immutability-helper';
-import { useSnackbar } from 'notistack';
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CountryPhoneCodeSelect from '../../_select/CountryPhoneCodeSelect';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
+import FormUtil, {Fields} from '../../../utils/FormUtil';
 import blue from '@material-ui/core/colors/blue';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
-import { useUserQuery } from '../../../graphql/query/UserQuery';
-import { useUpdateUserContactMutation } from '../../../graphql/mutation/userMutation/UpdateUserContactMutation';
-import { IUserFragmentFormEditUserContact } from '../../../graphql/fragmentType/query/UserFragmentInterface';
-import { userFragments } from '../../../graphql/fragment/query/UserFragment';
-import { AppContext } from '../../../contexts/Context';
+import {makeStyles} from '@material-ui/styles';
+import {useUserQuery} from '../../../graphql/query/UserQuery';
+import {useUpdateUserContactMutation} from '../../../graphql/mutation/userMutation/UpdateUserContactMutation';
+import {IUserFragmentFormEditUserContact} from '../../../graphql/fragmentType/query/UserFragmentInterface';
+import {userFragments} from '../../../graphql/fragment/query/UserFragment';
+import {AppContext} from '../../../contexts/Context';
+import useToast from "../../_hook/useToast";
 
 interface IProps {
   title?: string;
@@ -30,7 +30,7 @@ interface IProps {
   className?: any;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles({
   textFieldName: {
     minWidth: 230
   },
@@ -47,13 +47,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: blue[700]
     }
   }
-}));
+});
 
 export default function FormEditUserContact(props: IProps) {
   const classes = useStyles();
   const context = useContext(AppContext);
   const { t } = useTranslation();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { toast } = useToast();
   let updateUserContactFields = [
     { field: 'is_sign_up_user', value: '' },
     { field: 'email_verified_at', value: '' },
@@ -68,14 +68,14 @@ export default function FormEditUserContact(props: IProps) {
   ] = useUpdateUserContactMutation<IUserFragmentFormEditUserContact>(
     userFragments.FormEditUserContact,
     {
-      onCompleted: data => {
+      onCompleted: () => {
         setUpdateUserContact(
           FormUtil.resetFieldsIsValidHook(
             updateUserContactFields,
             updateUserContact
           )
         );
-        enqueueSnackbar(t('your contact has been successfully updated'));
+        toast.default(t('your contact has been successfully updated'));
         if (props.onUpdated) {
           props.onUpdated();
         }
@@ -93,7 +93,7 @@ export default function FormEditUserContact(props: IProps) {
     }
   );
 
-  const { loading, data } = useUserQuery<IUserFragmentFormEditUserContact>(
+  const { loading } = useUserQuery<IUserFragmentFormEditUserContact>(
     userFragments.FormEditUserContact,
     {
       fetchPolicy: 'network-only',

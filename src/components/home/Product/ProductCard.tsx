@@ -1,17 +1,17 @@
 import React from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import Tooltip from '@material-ui/core/Tooltip';
 import HelpIcon from '@material-ui/icons/Help';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { homePath } from '../../../utils/RouteUtil';
+import {homePath} from '../../../utils/RouteUtil';
 import Image from '../../Image';
 import ProductTitle from '../../ProductTitle';
-import { makeStyles, Theme } from '@material-ui/core';
+import {makeStyles, Theme} from '@material-ui/core';
 
 interface IProps extends StyledComponentProps {
   product?: any;

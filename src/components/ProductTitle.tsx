@@ -1,7 +1,7 @@
 import React from 'react';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import { homePath } from '../utils/RouteUtil';
-import { Link } from 'react-router-dom';
+import Typography, {TypographyProps} from '@material-ui/core/Typography';
+import {homePath} from '../utils/RouteUtil';
+import {Link} from 'react-router-dom';
 import classNames from 'classnames';
 
 interface IProduct {

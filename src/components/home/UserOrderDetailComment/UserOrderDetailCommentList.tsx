@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {makeStyles, Theme} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -9,10 +9,10 @@ import UserOrderDetailCommentCard from './UserOrderDetailCommentCard';
 import LazyLoad from 'react-lazyload';
 import Pagination from '../../Pagination';
 import StarRating from '../../_rating/StarRating';
-import { useUserOrderDetailCommentQuery } from '../../../graphql/query/UserOrderDetailCommentQuery';
-import { userOrderDetailCommentFragments } from '../../../graphql/fragment/query/UserOrderDetailCommentFragment';
-import { IUserOrderDetailCommentFragmentUserOrderDetailCommentList } from '../../../graphql/fragmentType/query/UserOrderDetailCommentFragmentInterface';
-import { Cursor } from '../../../graphql/query/Query';
+import {useUserOrderDetailCommentQuery} from '../../../graphql/query/UserOrderDetailCommentQuery';
+import {userOrderDetailCommentFragments} from '../../../graphql/fragment/query/UserOrderDetailCommentFragment';
+import {IUserOrderDetailCommentFragmentUserOrderDetailCommentList} from '../../../graphql/fragmentType/query/UserOrderDetailCommentFragmentInterface';
+import {Cursor} from '../../../graphql/query/Query';
 
 interface IProps {
   variables?: any;
@@ -58,7 +58,6 @@ export default function UserOrderDetailCommentList(props: IProps) {
     variables = {},
     gridProps,
     hideSort,
-    disableLoadMore,
     product_rating,
     one_star_comment_count,
     two_star_comment_count,

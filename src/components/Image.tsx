@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, {CSSProperties} from 'react';
 import LazyLoad from 'react-lazyload';
 
 export interface IProps {

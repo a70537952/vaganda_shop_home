@@ -1,22 +1,21 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, Theme } from '@material-ui/core/styles/index';
+import {makeStyles, Theme} from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import update from 'immutability-helper';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 import HomeHelmet from '../components/home/HomeHelmet';
-import FormUtil, { Fields } from '../utils/FormUtil';
+import FormUtil, {Fields} from '../utils/FormUtil';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { useTranslation } from 'react-i18next';
-import { RouteComponentProps } from 'react-router';
-import { homePath } from '../utils/RouteUtil';
+import {useTranslation} from 'react-i18next';
+import {homePath} from '../utils/RouteUtil';
 import useToast from '../components/_hook/useToast';
-import { useResetUserPasswordMutation } from '../graphql/mutation/authMutation/ResetUserPasswordMutation';
-import { IResetUserPasswordMutationFragmentDefaultFragment } from '../graphql/fragmentType/mutation/authMutation/ResetUserPasswordMutationFragmentInterface';
-import { resetUserPasswordMutationFragments } from '../graphql/fragment/mutation/authMutation/ResetUserPasswordMutationFragment';
+import {useResetUserPasswordMutation} from '../graphql/mutation/authMutation/ResetUserPasswordMutation';
+import {IResetUserPasswordMutationFragmentDefaultFragment} from '../graphql/fragmentType/mutation/authMutation/ResetUserPasswordMutationFragmentInterface';
+import {resetUserPasswordMutationFragments} from '../graphql/fragment/mutation/authMutation/ResetUserPasswordMutationFragment';
 import useRouter from '../components/_hook/useRouter';
 
 const useStyles = makeStyles((theme: Theme) => ({

@@ -1,7 +1,7 @@
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import Modal from '../../_modal/Modal';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import FormForgotPassword from '../Form/FormForgotPassword';
 import FormSignIn from '../Form/FormSignIn';
 import FormSignUp from '../Form/FormSignUp';

@@ -1,6 +1,6 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import React, { useState } from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
+import {makeStyles, Theme} from '@material-ui/core/styles';
+import React, {useState} from 'react';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import ShopLogo from '../../ShopLogo';
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +8,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import ShopName from '../../ShopName';
 import Address from '../../Address';
 import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import Image from '../../Image';
 import Button from '@material-ui/core/Button';
@@ -22,9 +22,9 @@ import ImagesCarousel from '../../ImagesCarousel';
 import StarRating from '../../_rating/StarRating';
 import DefaultImage from '../../../image/default-image.jpg';
 import useToast from '../../_hook/useToast';
-import { useUpdateUserOrderDetailStatusMutation } from '../../../graphql/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutation';
-import { updateUserOrderDetailStatusMutationFragment } from '../../../graphql/fragment/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutationFragment';
-import { IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard } from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
+import {useUpdateUserOrderDetailStatusMutation} from '../../../graphql/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutation';
+import {updateUserOrderDetailStatusMutationFragment} from '../../../graphql/fragment/mutation/userOrderDetailMutation/UpdateUserOrderDetailStatusMutationFragment';
+import {IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard} from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
 
 interface IProps extends StyledComponentProps {
   userOrderDetail?: any;
@@ -75,7 +75,7 @@ export default function UserOrderDetailCard(props: IProps) {
   ] = useUpdateUserOrderDetailStatusMutation<
     IUpdateUserOrderDetailStatusMutationFragmentUserOrderDetailCard
   >(updateUserOrderDetailStatusMutationFragment.UserOrderDetailCard, {
-    onCompleted: data => {
+    onCompleted: () => {
       toast.default(
         t('you have confirm received your product {{title}}', {
           title: `${userOrderDetail.product_title} (${userOrderDetail.product_type_title})`

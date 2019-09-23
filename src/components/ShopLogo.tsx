@@ -1,11 +1,11 @@
 import Avatar from '@material-ui/core/Avatar';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Store from '@material-ui/icons/Store';
 import classnames from 'classnames';
 import React from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
-import { Link } from 'react-router-dom';
-import { homePath } from '../utils/RouteUtil';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
+import {Link} from 'react-router-dom';
+import {homePath} from '../utils/RouteUtil';
 
 interface IProps extends StyledComponentProps {
   shop: any;

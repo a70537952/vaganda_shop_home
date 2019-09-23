@@ -1,5 +1,5 @@
 import GoogleMapReact from 'google-map-react';
-import React, { ReactNode, useState } from 'react';
+import React, {ReactNode, useState} from 'react';
 
 interface IProps {
   children?: ReactNode;
@@ -13,15 +13,15 @@ interface IProps {
 export default function GoogleMap(props: IProps) {
   const { latitude, longitude, onClick, children } = props;
 
-  const [mapsApiLoaded, setMapsApiLoaded] = useState<boolean>(false);
-  const [mapInstance, setMapInstance] = useState<any>(null);
-  const [mapsapi, setMapsapi] = useState<any>(null);
-
-  function apiLoaded(map: any, maps: any) {
-    setMapsApiLoaded(true);
-    setMapInstance(map);
-    setMapsapi(maps);
-  }
+  // const [mapsApiLoaded, setMapsApiLoaded] = useState<boolean>(false);
+  // const [mapInstance, setMapInstance] = useState<any>(null);
+  // const [mapsapi, setMapsapi] = useState<any>(null);
+  //
+  // function apiLoaded(map: any, maps: any) {
+  //   setMapsApiLoaded(true);
+  //   setMapInstance(map);
+  //   setMapsapi(maps);
+  // }
 
   let defaultLat = props.defaultLat || -1;
   let defaultLng = props.defaultLng || 67;
@@ -46,9 +46,9 @@ export default function GoogleMap(props: IProps) {
         };
       }}
       yesIWantToUseGoogleMapApiInternals
-      onGoogleApiLoaded={({ map, maps }) => {
-        apiLoaded(map, maps);
-      }}
+      // onGoogleApiLoaded={({ map, maps }) => {
+      //   apiLoaded(map, maps);
+      // }}
       defaultCenter={{
         lat: defaultLat,
         lng: defaultLng

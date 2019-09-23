@@ -1,7 +1,7 @@
 import React from 'react';
-import { TypographyProps } from '@material-ui/core/Typography';
+import {TypographyProps} from '@material-ui/core/Typography';
 import TablePagination from '@material-ui/core/TablePagination';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 interface IProps extends TypographyProps {
   total: number;

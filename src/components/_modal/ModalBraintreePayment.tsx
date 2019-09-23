@@ -1,9 +1,8 @@
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import { useSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import Modal from './Modal';
 import Braintree from 'braintree-web';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -12,10 +11,11 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import BRAINTREE_ERROR from '../../constant/BRAINTREE_ERROR';
 import DialogProcessingPayment from '../_dialog/DialogProcessingPayment';
-import { makeStyles } from '@material-ui/styles';
-import { useGetBraintreeClientTokenMutation } from '../../graphql/mutation/braintreeMutation/GetBraintreeClientTokenMutation';
-import { getBraintreeClientTokenMutationFragments } from '../../graphql/fragment/mutation/braintreeMutation/GetBraintreeClientTokenMutationFragment';
-import { IGetBraintreeClientTokenMutationFragmentDefaultFragment } from '../../graphql/fragmentType/mutation/braintreeMutation/GetBraintreeClientTokenMutationFragmentInterface';
+import {makeStyles} from '@material-ui/styles';
+import {useGetBraintreeClientTokenMutation} from '../../graphql/mutation/braintreeMutation/GetBraintreeClientTokenMutation';
+import {getBraintreeClientTokenMutationFragments} from '../../graphql/fragment/mutation/braintreeMutation/GetBraintreeClientTokenMutationFragment';
+import {IGetBraintreeClientTokenMutationFragmentDefaultFragment} from '../../graphql/fragmentType/mutation/braintreeMutation/GetBraintreeClientTokenMutationFragmentInterface';
+import useToast from "../_hook/useToast";
 
 interface IProps {
   isOpen: boolean;
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 export default function ModalBraintreePayment(props: IProps) {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { toast } = useToast();
   const { payButtonText } = props;
   const [getBraintreeClientTokenMutation] = useGetBraintreeClientTokenMutation<
     IGetBraintreeClientTokenMutationFragmentDefaultFragment
@@ -206,9 +206,7 @@ export default function ModalBraintreePayment(props: IProps) {
             err.code ===
             BRAINTREE_ERROR.HOSTED_FIELDS.HOSTED_FIELDS_FIELDS_EMPTY
           ) {
-            enqueueSnackbar(t('global$$please enter card info'), {
-              variant: 'error'
-            });
+            toast.error(t('global$$please enter card info'));
           }
           return;
         }

@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { homePath } from '../utils/RouteUtil';
-import { Link } from 'react-router-dom';
+import {homePath} from '../utils/RouteUtil';
+import {Link} from 'react-router-dom';
 
 interface IProps {
   shop?: any;

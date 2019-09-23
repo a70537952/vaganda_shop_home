@@ -1,6 +1,6 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import {makeStyles, Theme} from '@material-ui/core/styles';
 import React from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import DoneIcon from '@material-ui/icons/Done';
 

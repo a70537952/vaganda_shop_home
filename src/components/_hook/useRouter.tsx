@@ -1,12 +1,9 @@
 import queryString from 'query-string';
 
-import { useContext } from 'react';
+import {useContext} from 'react';
 
-import {
-  // @ts-ignore
-  __RouterContext as RouterContext,
-  RouteComponentProps
-} from 'react-router-dom';
+// @ts-ignore
+import {__RouterContext as RouterContext, RouteComponentProps} from 'react-router-dom';
 
 export default function useRouter<Params = any>() {
   const context: RouteComponentProps<Params> = useContext(RouterContext);

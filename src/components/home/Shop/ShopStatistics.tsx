@@ -1,13 +1,13 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import {makeStyles, Theme} from '@material-ui/core/styles';
 import React from 'react';
-import { StyledComponentProps } from '@material-ui/core/styles/withStyles';
+import {StyledComponentProps} from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import LocalMallIcon from '@material-ui/icons/LocalMall';
 import LocaleMoment from '../../LocaleMoment';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 interface IProps extends StyledComponentProps {
   shop?: any;

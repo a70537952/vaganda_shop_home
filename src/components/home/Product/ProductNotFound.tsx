@@ -5,13 +5,11 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { homePath } from '../../../utils/RouteUtil';
+import {Link} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {homePath} from '../../../utils/RouteUtil';
 import HomeHelmet from '../HomeHelmet';
-import { makeStyles } from '@material-ui/core';
-
-interface IProps {}
+import {makeStyles} from '@material-ui/core';
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -19,7 +17,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function ProductNotFound(props: IProps) {
+export default function ProductNotFound() {
   const classes = useStyles();
   const { t } = useTranslation();
   return (

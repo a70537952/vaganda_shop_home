@@ -1,4 +1,3 @@
-import Echo from 'laravel-echo';
 import parseDomain from 'parse-domain';
 
 if (window.location.hostname === 'localhost' && process.env.REACT_APP_DOMAIN) {
@@ -28,10 +27,10 @@ declare var window: Window;
 
 window.io = require('socket.io-client');
 
-let echoConfig = {
-  broadcaster: 'socket.io',
-  host: 'socket.' + domain + ':6001'
-};
+// let echoConfig = {
+//   broadcaster: 'socket.io',
+//   host: 'socket.' + domain + ':6001'
+// };
 
 // if (hostname !== 'vaganda.shop') {
 // 	// development

@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, Theme } from '@material-ui/core/styles/index';
+import {makeStyles} from '@material-ui/core/styles/index';
 import LocationOn from '@material-ui/icons/LocationOn';
 import React from 'react';
 
@@ -21,6 +21,7 @@ const useStyles = makeStyles({
 
 export default function GoogleMapMarker(props: IProps) {
   const classes = useStyles();
+  const {} = props;
 
   return (
     <Grid container className={classes.root}>

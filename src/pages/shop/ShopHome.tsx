@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import HomeHelmet from '../../components/home/HomeHelmet';
-import { useTranslation } from 'react-i18next';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import {useTranslation} from 'react-i18next';
+import {makeStyles, Theme} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import ShopNotFound from '../../components/home/Shop/ShopNotFound';
 import ShopCard from '../../components/home/Shop/ShopCard';
@@ -17,9 +17,9 @@ import ProductList from '../../components/home/Product/ProductList';
 import Skeleton from '@material-ui/lab/Skeleton';
 import ShopStatistics from '../../components/home/Shop/ShopStatistics';
 import Image from '../../components/Image';
-import { useShopSettingQuery } from '../../graphql/query/ShopSettingQuery';
-import { shopSettingFragments } from '../../graphql/fragment/query/ShopSettingFragment';
-import { IShopSettingFragmentShopHome } from '../../graphql/fragmentType/query/ShopSettingFragmentInterface';
+import {useShopSettingQuery} from '../../graphql/query/ShopSettingQuery';
+import {shopSettingFragments} from '../../graphql/fragment/query/ShopSettingFragment';
+import {IShopSettingFragmentShopHome} from '../../graphql/fragmentType/query/ShopSettingFragmentInterface';
 import useRouter from '../../components/_hook/useRouter';
 
 const useStyles = makeStyles((theme: Theme) => {

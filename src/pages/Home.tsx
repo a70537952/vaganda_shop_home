@@ -1,11 +1,10 @@
 import React from 'react';
 import HomeHelmet from '../components/home/HomeHelmet';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 
-interface IProps {}
 
-export default function Home(props: IProps) {
+export default function Home() {
   const { t } = useTranslation();
 
   return (
@@ -16,7 +15,7 @@ export default function Home(props: IProps) {
         keywords={t('')}
         ogImage="/images/favicon-228.png"
       />
-      <Grid container spacing={3}></Grid>
+      <Grid container spacing={3}/>
     </>
   );
 }

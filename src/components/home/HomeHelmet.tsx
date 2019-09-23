@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Helmet as ReactHelmet } from 'react-helmet';
+import {useTranslation} from 'react-i18next';
+import {Helmet as ReactHelmet} from 'react-helmet';
 
 interface IProps {
   title?: string;

@@ -1,8 +1,8 @@
 import MomentTimezone from 'moment-timezone';
 import 'moment-timezone';
-import React, { ReactNode } from 'react';
+import React, {ReactNode} from 'react';
 import Moment from 'react-moment';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 interface IProps {
   children: ReactNode;

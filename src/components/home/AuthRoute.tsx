@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Route } from 'react-router-dom';
-import { AppContext } from '../../contexts/Context';
+import React, {useContext} from 'react';
+import {Route} from 'react-router-dom';
+import {AppContext} from '../../contexts/Context';
 import useRouter from '../_hook/useRouter';
 
 const RedirectToLogin = function() {

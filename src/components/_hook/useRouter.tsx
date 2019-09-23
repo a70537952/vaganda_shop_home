@@ -1,8 +1,9 @@
 import queryString from 'query-string';
 
 import { useContext } from 'react';
-// @ts-ignore
+
 import {
+  // @ts-ignore
   __RouterContext as RouterContext,
   RouteComponentProps
 } from 'react-router-dom';

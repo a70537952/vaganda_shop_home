@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import HomeHelmet from '../components/home/HomeHelmet';
 import { useTranslation } from 'react-i18next';
-import { withRouter } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import ProductList from '../components/home/Product/ProductList';
 import ShopList from '../components/home/Shop/ShopList';
+import useRouter from '../components/_hook/useRouter';
 
 interface IProps {
   setSearchValue: (value: string) => void;
   setSearchType: (type: 'product' | 'shop') => void;
 }
 
-function Search(
-  props: IProps &
-    RouteComponentProps<{ searchValue: string; searchType: 'product' | 'shop' }>
-) {
+export default function Search(props: IProps) {
   const { t } = useTranslation();
-  const { match } = props;
+  const { match } = useRouter<{
+    searchValue: string;
+    searchType: 'product' | 'shop';
+  }>();
 
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchType, setSearchType] = useState<'product' | 'shop'>('product');
@@ -61,5 +60,3 @@ function Search(
     </>
   );
 }
-
-export default withRouter(Search);

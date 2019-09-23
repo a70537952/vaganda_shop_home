@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { AppContext } from '../../contexts/Context';
+import useRouter from '../_hook/useRouter';
 
-const RedirectToLogin = withRouter(function(props) {
-  props.history.push('/');
+const RedirectToLogin = function() {
+  const { history } = useRouter();
+  history.push('/');
   return <React.Fragment />;
-});
+};
 
 export default function AuthRoute(props: any) {
   const context = useContext(AppContext);

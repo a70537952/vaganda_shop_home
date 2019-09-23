@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import HomeHelmet from '../components/home/HomeHelmet';
 import { AppContext } from '../contexts/Context';
 import { useTranslation } from 'react-i18next';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { RouteComponentProps } from 'react-router';
 import gql from 'graphql-tag';
 import Grid from '@material-ui/core/Grid';
 import { useApolloClient } from 'react-apollo';
@@ -61,8 +60,7 @@ import { useSetUserCartQuantityMutation } from '../graphql/mutation/userCartMuta
 import { setUserCartQuantityMutationFragments } from '../graphql/fragment/mutation/userCartMutation/SetUserCartQuantityMutationFragment';
 import { ISetUserCartQuantityMutationFragmentDefaultFragment } from '../graphql/fragmentType/mutation/userCartMutation/SetUserCartQuantityMutationFragmentInterface';
 import UserCartRemoveButton from '../components/home/UserCart/UserCartRemoveButton';
-
-interface IProps {}
+import useRouter from '../components/_hook/useRouter';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -166,12 +164,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-function UserCart(props: IProps & RouteComponentProps) {
+export default function UserCart() {
   const classes = useStyles();
   const { t } = useTranslation();
   const { toast } = useToast();
   const context = useContext(AppContext);
   const client = useApolloClient();
+  const { location, history } = useRouter();
 
   const [selectedCartIDs, setSelectedCartIDs] = useState<Set<number>>(
     new Set()
@@ -393,7 +392,7 @@ function UserCart(props: IProps & RouteComponentProps) {
         }
       });
 
-      let queryParams: any = queryString.parse(props.location.search);
+      let queryParams: any = queryString.parse(location.search);
       if (
         queryParams.cartID &&
         newUserCarts.find((cart: any) => cart.id === queryParams.cartID)
@@ -533,7 +532,6 @@ function UserCart(props: IProps & RouteComponentProps) {
     });
   }
 
-  const { history } = props;
   let isCheckAllCart = selectedCartIDs.size === userCarts.length;
   let subtotalArray = Array.from(calculateSubtotal().values());
   let totalCheckedQuantity = subtotalArray.reduce(
@@ -1734,5 +1732,3 @@ function UserCart(props: IProps & RouteComponentProps) {
     </Grid>
   );
 }
-
-export default withRouter(UserCart);

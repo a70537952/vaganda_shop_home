@@ -9,7 +9,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import PhoneIcon from '@material-ui/icons/Phone';
 import LockIcon from '@material-ui/icons/Lock';
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink, Route, withRouter } from 'react-router-dom';
+import { NavLink, Route } from 'react-router-dom';
 import HomeHelmet from '../components/home/HomeHelmet';
 import FormEditUserAccount from '../components/home/Form/FormEditUserAccount';
 import FormEditUserAddress from '../components/home/Form/FormEditUserAddress';
@@ -17,10 +17,8 @@ import FormEditUserContact from '../components/home/Form/FormEditUserContact';
 import FormEditUserPassword from '../components/home/Form/FormEditUserPassword';
 import { AppContext } from '../contexts/Context';
 import { useTranslation } from 'react-i18next';
-import { RouteComponentProps } from 'react-router';
 import { homePath } from '../utils/RouteUtil';
-
-interface IProps {}
+import useRouter from '../components/_hook/useRouter';
 
 const useStyles = makeStyles({
   root: {
@@ -32,11 +30,11 @@ const useStyles = makeStyles({
   }
 });
 
-function AccountEdit(props: IProps & RouteComponentProps) {
+export default function AccountEdit() {
   const classes = useStyles();
   const { t } = useTranslation();
   const context = useContext(AppContext);
-  const { location, history } = props;
+  const { location, history } = useRouter();
 
   let tabs = [
     homePath('accountEdit'),
@@ -200,5 +198,3 @@ function AccountEdit(props: IProps & RouteComponentProps) {
     </>
   );
 }
-
-export default withRouter(AccountEdit);

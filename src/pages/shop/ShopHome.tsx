@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import HomeHelmet from '../../components/home/HomeHelmet';
 import { useTranslation } from 'react-i18next';
-import { withRouter } from 'react-router-dom';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { RouteComponentProps } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import ShopNotFound from '../../components/home/Shop/ShopNotFound';
 import ShopCard from '../../components/home/Shop/ShopCard';
@@ -22,8 +20,7 @@ import Image from '../../components/Image';
 import { useShopSettingQuery } from '../../graphql/query/ShopSettingQuery';
 import { shopSettingFragments } from '../../graphql/fragment/query/ShopSettingFragment';
 import { IShopSettingFragmentShopHome } from '../../graphql/fragmentType/query/ShopSettingFragmentInterface';
-
-interface IProps {}
+import useRouter from '../../components/_hook/useRouter';
 
 const useStyles = makeStyles((theme: Theme) => {
   let marginReponsive = {
@@ -84,7 +81,7 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-function ShopHome(props: IProps & RouteComponentProps<{ account: string }>) {
+export default function ShopHome() {
   const classes = useStyles();
   const { t } = useTranslation();
   const [categoryTabValue, setCategoryTabValue] = useState<number>(0);
@@ -92,7 +89,7 @@ function ShopHome(props: IProps & RouteComponentProps<{ account: string }>) {
     string
   >('');
 
-  const { match } = props;
+  const { match } = useRouter<{ account: string }>();
   const { loading, data, error } = useShopSettingQuery<
     IShopSettingFragmentShopHome
   >(shopSettingFragments.ShopHome, {
@@ -377,5 +374,3 @@ function ShopHome(props: IProps & RouteComponentProps<{ account: string }>) {
     </Grid>
   );
 }
-
-export default withRouter(ShopHome);

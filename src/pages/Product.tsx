@@ -2,9 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import HomeHelmet from '../components/home/HomeHelmet';
 import { AppContext } from '../contexts/Context';
 import { useTranslation } from 'react-i18next';
-import { withRouter } from 'react-router-dom';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { RouteComponentProps } from 'react-router';
 import Grid from '@material-ui/core/Grid';
 import ProductNotFound from '../components/home/Product/ProductNotFound';
 import Paper from '@material-ui/core/Paper';
@@ -36,8 +34,7 @@ import { addProductTypeToUserCartMutationFragments } from '../graphql/fragment/m
 import { useProductQuery } from '../graphql/query/ProductQuery';
 import { productFragments } from '../graphql/fragment/query/ProductFragment';
 import { IProductFragmentProduct } from '../graphql/fragmentType/query/ProductFragmentInterface';
-
-interface IProps {}
+import useRouter from '../components/_hook/useRouter';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -105,12 +102,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-function Product(props: IProps & RouteComponentProps<{ productId: string }>) {
+export default function Product() {
   const classes = useStyles();
   const context = useContext(AppContext);
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { match, history } = props;
+  const { match, history } = useRouter<{ productId: string }>();
 
   const [modal, setModal] = useState<{
     loginRegister: boolean;
@@ -876,5 +873,3 @@ function Product(props: IProps & RouteComponentProps<{ productId: string }>) {
     </>
   );
 }
-
-export default withRouter(Product);

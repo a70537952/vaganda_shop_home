@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import update from 'immutability-helper';
 import React, { useEffect, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import HomeHelmet from '../components/home/HomeHelmet';
 import FormUtil, { Fields } from '../utils/FormUtil';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -17,8 +17,7 @@ import useToast from '../components/_hook/useToast';
 import { useResetUserPasswordMutation } from '../graphql/mutation/authMutation/ResetUserPasswordMutation';
 import { IResetUserPasswordMutationFragmentDefaultFragment } from '../graphql/fragmentType/mutation/authMutation/ResetUserPasswordMutationFragmentInterface';
 import { resetUserPasswordMutationFragments } from '../graphql/fragment/mutation/authMutation/ResetUserPasswordMutationFragment';
-
-interface IProps {}
+import useRouter from '../components/_hook/useRouter';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-function ResetPassword(props: IProps & RouteComponentProps) {
+export default function ResetPassword() {
   const classes = useStyles();
   const { t } = useTranslation();
   const { toast } = useToast();
@@ -59,7 +58,7 @@ function ResetPassword(props: IProps & RouteComponentProps) {
   const [isResetPasswordCompleted, setIsResetPasswordCompleted] = useState<
     boolean
   >(false);
-  const { location, history } = props;
+  const { location, history } = useRouter();
   const [
     resetUserPasswordMutation,
     { loading: isResetingUserPasswordMutation }
@@ -272,5 +271,3 @@ function ResetPassword(props: IProps & RouteComponentProps) {
     </>
   );
 }
-
-export default withRouter(ResetPassword);

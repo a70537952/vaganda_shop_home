@@ -9,16 +9,14 @@ import HomeIcon from '@material-ui/icons/Home';
 import DoneIcon from '@material-ui/icons/Done';
 import CancelIcon from '@material-ui/icons/Cancel';
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink, Route, withRouter } from 'react-router-dom';
+import { NavLink, Route } from 'react-router-dom';
 import HomeHelmet from '../components/home/HomeHelmet';
 import { AppContext } from '../contexts/Context';
 import { useTranslation } from 'react-i18next';
-import { RouteComponentProps } from 'react-router';
 import { homePath } from '../utils/RouteUtil';
 import UserOrderDetailList from '../components/home/UserOrder/UserOrderDetailList';
 import USER_ORDER_DETAIL from '../constant/USER_ORDER_DETAIL';
-
-interface IProps {}
+import useRouter from '../components/_hook/useRouter';
 
 const useStyles = makeStyles({
   root: {
@@ -30,11 +28,11 @@ const useStyles = makeStyles({
   }
 });
 
-function MyOrder(props: IProps & RouteComponentProps) {
+export default function MyOrder() {
   const classes = useStyles();
   const { t } = useTranslation();
   const context = useContext(AppContext);
-  const { location, history } = props;
+  const { location, history } = useRouter();
 
   let tabs = [
     homePath('myOrderShip'),
@@ -204,5 +202,3 @@ function MyOrder(props: IProps & RouteComponentProps) {
     </>
   );
 }
-
-export default withRouter(MyOrder);

@@ -1,3 +1,7 @@
+[![Depfu](https://badges.depfu.com/badges/9ce3b0e14ad0a4a395d585e3482c82ee/status.svg)](https://depfu.com)
+[![Depfu](https://badges.depfu.com/badges/9ce3b0e14ad0a4a395d585e3482c82ee/overview.svg)](https://depfu.com/repos/a70537952/vaganda_shop_home?project_id=9437)
+[![Depfu](https://badges.depfu.com/badges/9ce3b0e14ad0a4a395d585e3482c82ee/count.svg)](https://depfu.com/repos/a70537952/vaganda_shop_home?project_id=9437)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

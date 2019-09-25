@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -30,6 +30,19 @@ export interface ShopAdminRoleVars {
   where_like_title?: String;
   where_like_permission?: String;
   where_like_is_shop_owner_role?: String;
+}
+
+export function useShopAdminRoleLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { shopAdminRole: WithPagination<TData> },
+    ShopAdminRoleVars
+  >
+) {
+  return useLazyQuery<
+    { shopAdminRole: WithPagination<TData> },
+    ShopAdminRoleVars
+  >(shopAdminRoleQuery(fragment), options);
 }
 
 export function useShopAdminRoleQuery<TData = any>(

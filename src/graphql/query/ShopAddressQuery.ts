@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -48,6 +48,19 @@ export interface ShopAddressVars {
   where_like_country?: String;
   where_like_latitude?: String;
   where_like_longitude?: String;
+}
+
+export function useShopAddressLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { shopAddress: WithPagination<TData> },
+    ShopAddressVars
+  >
+) {
+  return useLazyQuery<{ shopAddress: WithPagination<TData> }, ShopAddressVars>(
+    shopAddressQuery(fragment),
+    options
+  );
 }
 
 export function useShopAddressQuery<TData = any>(

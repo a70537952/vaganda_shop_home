@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -53,6 +53,19 @@ export interface BraintreeTransactionVars {
   where_not_amount?: String;
   where_not_status?: String;
   where_not_error?: String;
+}
+
+export function useBraintreeTransactionLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { braintreeTransaction: WithPagination<TData> },
+    BraintreeTransactionVars
+  >
+) {
+  return useLazyQuery<
+    { braintreeTransaction: WithPagination<TData> },
+    BraintreeTransactionVars
+  >(braintreeTransactionQuery(fragment), options);
 }
 
 export function useBraintreeTransactionQuery<TData = any>(

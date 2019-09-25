@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -30,6 +30,16 @@ export interface ShopInfoVars {
   where_like_summary?: String;
   where_like_logo?: String;
   where_like_banner?: String;
+}
+
+export function useShopInfoLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<{ shopInfo: WithPagination<TData> }, ShopInfoVars>
+) {
+  return useLazyQuery<{ shopInfo: WithPagination<TData> }, ShopInfoVars>(
+    shopInfoQuery(fragment),
+    options
+  );
 }
 
 export function useShopInfoQuery<TData = any>(

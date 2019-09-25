@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField} from './Query';
+import { SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -34,6 +34,16 @@ export interface TempImageVars {
   where_like_mime_type?: String;
   where_like_width?: String;
   where_like_height?: String;
+}
+
+export function useTempImageLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<{ tempImage: TData[] }, TempImageVars>
+) {
+  return useLazyQuery<{ tempImage: TData[] }, TempImageVars>(
+    tempImageQuery(fragment),
+    options
+  );
 }
 
 export function useTempImageQuery<TData = any>(

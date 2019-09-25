@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -24,6 +24,19 @@ export interface ShopProductCategoryProductVars {
   where_like_id?: String;
   where_like_shop_product_category_id?: String;
   where_like_product_id?: String;
+}
+
+export function useShopProductCategoryProductLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { shopProductCategoryProduct: WithPagination<TData> },
+    ShopProductCategoryProductVars
+  >
+) {
+  return useLazyQuery<
+    { shopProductCategoryProduct: WithPagination<TData> },
+    ShopProductCategoryProductVars
+  >(shopProductCategoryProductQuery(fragment), options);
 }
 
 export function useShopProductCategoryProductQuery<TData = any>(

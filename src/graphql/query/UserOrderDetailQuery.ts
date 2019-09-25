@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -169,6 +169,19 @@ export interface UserOrderDetailVars {
   where_not_auto_received_at?: String;
   where_not_shipped_at?: String;
   where_not_received_at?: String;
+}
+
+export function useUserOrderDetailLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { userOrderDetail: WithPagination<TData> },
+    UserOrderDetailVars
+  >
+) {
+  return useLazyQuery<
+    { userOrderDetail: WithPagination<TData> },
+    UserOrderDetailVars
+  >(userOrderDetailQuery(fragment), options);
 }
 
 export function useUserOrderDetailQuery<TData = any>(

@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -24,6 +24,19 @@ export interface PasswordResetVars {
   where_like_id?: String;
   where_like_email?: String;
   where_like_token?: String;
+}
+
+export function usePasswordResetLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { passwordReset: WithPagination<TData> },
+    PasswordResetVars
+  >
+) {
+  return useLazyQuery<
+    { passwordReset: WithPagination<TData> },
+    PasswordResetVars
+  >(passwordResetQuery(fragment), options);
 }
 
 export function usePasswordResetQuery<TData = any>(

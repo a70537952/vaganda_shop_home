@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -46,6 +46,19 @@ export interface UserOrderDetailCommentVars {
   where_not_comment?: String;
   where_not_star?: String;
   withImage?: boolean;
+}
+
+export function useUserOrderDetailCommentLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { userOrderDetailComment: WithPagination<TData> },
+    UserOrderDetailCommentVars
+  >
+) {
+  return useLazyQuery<
+    { userOrderDetailComment: WithPagination<TData> },
+    UserOrderDetailCommentVars
+  >(userOrderDetailCommentQuery(fragment), options);
 }
 
 export function useUserOrderDetailCommentQuery<TData = any>(

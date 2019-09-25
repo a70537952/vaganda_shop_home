@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField} from './Query';
+import { SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -37,6 +37,19 @@ export interface ProductDescriptionImageVars {
   where_like_mime_type?: String;
   where_like_width?: String;
   where_like_height?: String;
+}
+
+export function useProductDescriptionImageLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { productDescriptionImage: TData[] },
+    ProductDescriptionImageVars
+  >
+) {
+  return useLazyQuery<
+    { productDescriptionImage: TData[] },
+    ProductDescriptionImageVars
+  >(productDescriptionImageQuery(fragment), options);
 }
 
 export function useProductDescriptionImageQuery<TData = any>(

@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -46,6 +46,16 @@ export interface UserVars {
   where_like_email_verified_at?: String;
   where_like_remember_token?: String;
   except_self?: boolean;
+}
+
+export function useUserLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<{ user: WithPagination<TData> }, UserVars>
+) {
+  return useLazyQuery<{ user: WithPagination<TData> }, UserVars>(
+    userQuery(fragment),
+    options
+  );
 }
 
 export function useUserQuery<TData = any>(

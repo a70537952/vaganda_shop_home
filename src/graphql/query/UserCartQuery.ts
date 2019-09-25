@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -33,6 +33,16 @@ export interface UserCartVars {
   where_not_user_id?: String;
   where_not_product_type_id?: String;
   where_not_quantity?: String;
+}
+
+export function useUserCartLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<{ userCart: WithPagination<TData> }, UserCartVars>
+) {
+  return useLazyQuery<{ userCart: WithPagination<TData> }, UserCartVars>(
+    userCartQuery(fragment),
+    options
+  );
 }
 
 export function useUserCartQuery<TData = any>(

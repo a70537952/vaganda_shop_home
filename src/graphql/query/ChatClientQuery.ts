@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -41,6 +41,19 @@ export interface ChatClientVars {
   where_not_client_id?: String;
   where_not_is_open_chat?: String;
   where_not_is_read?: String;
+}
+
+export function useChatClientLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { chatClient: WithPagination<TData> },
+    ChatClientVars
+  >
+) {
+  return useLazyQuery<{ chatClient: WithPagination<TData> }, ChatClientVars>(
+    chatClientQuery(fragment),
+    options
+  );
 }
 
 export function useChatClientQuery<TData = any>(

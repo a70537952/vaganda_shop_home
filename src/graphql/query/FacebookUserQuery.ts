@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -42,6 +42,19 @@ export interface FacebookUserVars {
   where_like_facebook_email?: String;
   where_like_facebook_short_access_token?: String;
   where_like_facebook_user_avatar?: String;
+}
+
+export function useFacebookUserLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { facebookUser: WithPagination<TData> },
+    FacebookUserVars
+  >
+) {
+  return useLazyQuery<
+    { facebookUser: WithPagination<TData> },
+    FacebookUserVars
+  >(facebookUserQuery(fragment), options);
 }
 
 export function useFacebookUserQuery<TData = any>(

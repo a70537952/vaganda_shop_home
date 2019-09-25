@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -39,6 +39,19 @@ export interface ProductTypeVars {
   where_like_currency?: String;
   where_like_discount?: String;
   where_like_discount_unit?: String;
+}
+
+export function useProductTypeLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { productType: WithPagination<TData> },
+    ProductTypeVars
+  >
+) {
+  return useLazyQuery<{ productType: WithPagination<TData> }, ProductTypeVars>(
+    productTypeQuery(fragment),
+    options
+  );
 }
 
 export function useProductTypeQuery<TData = any>(

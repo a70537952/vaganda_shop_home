@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -45,6 +45,19 @@ export interface ProductShippingVars {
   where_not_shipping_fee?: String;
   where_not_shipping_country?: String;
   where_not_is_disabled?: String;
+}
+
+export function useProductShippingLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { productShipping: WithPagination<TData> },
+    ProductShippingVars
+  >
+) {
+  return useLazyQuery<
+    { productShipping: WithPagination<TData> },
+    ProductShippingVars
+  >(productShippingQuery(fragment), options);
 }
 
 export function useProductShippingQuery<TData = any>(

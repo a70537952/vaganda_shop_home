@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField} from './Query';
+import { SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -25,6 +25,16 @@ export interface CurrencyVars {
   where_like_country?: String;
   where_like_currency?: String;
   where_like_iso?: String;
+}
+
+export function useCurrencyLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<{ currency: TData[] }, CurrencyVars>
+) {
+  return useLazyQuery<{ currency: TData[] }, CurrencyVars>(
+    currencyQuery(fragment),
+    options
+  );
 }
 
 export function useCurrencyQuery<TData = any>(

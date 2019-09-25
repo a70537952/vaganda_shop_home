@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField} from './Query';
+import { SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -25,6 +25,19 @@ export interface CountryPhoneCodeVars {
   where_like_name?: String;
   where_like_country_code?: String;
   where_like_phone_code?: String;
+}
+
+export function useCountryPhoneCodeLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { countryPhoneCode: TData[] },
+    CountryPhoneCodeVars
+  >
+) {
+  return useLazyQuery<{ countryPhoneCode: TData[] }, CountryPhoneCodeVars>(
+    countryPhoneCodeQuery(fragment),
+    options
+  );
 }
 
 export function useCountryPhoneCodeQuery<TData = any>(

@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField} from './Query';
+import { SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -19,6 +19,16 @@ export interface CountryVars {
   where_like_updated_at?: String;
   where_like_id?: String;
   where_like_name?: String;
+}
+
+export function useCountryLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<{ country: TData[] }, CountryVars>
+) {
+  return useLazyQuery<{ country: TData[] }, CountryVars>(
+    countryQuery(fragment),
+    options
+  );
 }
 
 export function useCountryQuery<TData = any>(

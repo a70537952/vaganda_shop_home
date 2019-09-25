@@ -1,8 +1,8 @@
-import gql, {disableFragmentWarnings} from 'graphql-tag';
-import {DocumentNode} from 'graphql';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import gql, { disableFragmentWarnings } from 'graphql-tag';
+import { DocumentNode } from 'graphql';
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/react-hooks';
 
-import {SortField, WithPagination} from './Query';
+import { WithPagination, SortField } from './Query';
 
 disableFragmentWarnings();
 
@@ -39,6 +39,19 @@ export interface VagandaUserVars {
   where_like_vaganda_email?: String;
   where_like_vaganda_access_token?: String;
   where_like_vaganda_refresh_token?: String;
+}
+
+export function useVagandaUserLazyQuery<TData = any>(
+  fragment: DocumentNode,
+  options?: QueryHookOptions<
+    { vagandaUser: WithPagination<TData> },
+    VagandaUserVars
+  >
+) {
+  return useLazyQuery<{ vagandaUser: WithPagination<TData> }, VagandaUserVars>(
+    vagandaUserQuery(fragment),
+    options
+  );
 }
 
 export function useVagandaUserQuery<TData = any>(

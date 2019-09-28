@@ -1,6 +1,6 @@
-import {DocumentNode} from 'graphql';
+import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
-import {MutationHookOptions, useMutation} from '@apollo/react-hooks';
+import { MutationHookOptions, useMutation } from '@apollo/react-hooks';
 
 interface RemoveProductTypeFromUserCartMutationVars {
   user_cart_ids: String[];

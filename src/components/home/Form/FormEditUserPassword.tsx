@@ -1,22 +1,21 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import {Theme} from '@material-ui/core/styles/index';
+import { Theme } from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import update from 'immutability-helper';
-import React, {useState} from 'react';
-import FormUtil, {Fields} from '../../../utils/FormUtil';
+import React, { useState } from 'react';
+import FormUtil, { Fields } from '../../../utils/FormUtil';
 import blue from '@material-ui/core/colors/blue';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/styles';
-import {useUpdateUserPasswordMutation} from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
-import {updateUserPasswordMutationFragments} from '../../../graphql/fragment/mutation/userMutation/UpdateUserPasswordMutationFragment';
-import {IUpdateUserPasswordMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/userMutation/UpdateUserPasswordMutationFragmentInterface';
-import useToast from "../../_hook/useToast";
+import { makeStyles } from '@material-ui/styles';
+import { useUpdateUserPasswordMutation } from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
+import { updateUserPasswordMutationFragments } from '../../../graphql/fragment/mutation/userMutation/UpdateUserPasswordMutationFragment';
+import { IUpdateUserPasswordMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userMutation/UpdateUserPasswordMutationFragmentInterface';
+import useToast from '../../_hook/useToast';
 
 interface IProps {
-  userId: string;
   title?: string;
   onUpdated?: () => void;
   className?: any;

@@ -1,23 +1,23 @@
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import PhoneIcon from '@material-ui/icons/Phone';
 import LockIcon from '@material-ui/icons/Lock';
-import React, {useContext, useEffect, useState} from 'react';
-import {NavLink, Route} from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { NavLink, Route } from 'react-router-dom';
 import HomeHelmet from '../components/home/HomeHelmet';
 import FormEditUserAccount from '../components/home/Form/FormEditUserAccount';
 import FormEditUserAddress from '../components/home/Form/FormEditUserAddress';
 import FormEditUserContact from '../components/home/Form/FormEditUserContact';
 import FormEditUserPassword from '../components/home/Form/FormEditUserPassword';
-import {AppContext} from '../contexts/Context';
-import {useTranslation} from 'react-i18next';
-import {homePath} from '../utils/RouteUtil';
+import { AppContext } from '../contexts/Context';
+import { useTranslation } from 'react-i18next';
+import { homePath } from '../utils/RouteUtil';
 import useRouter from '../components/_hook/useRouter';
 
 const useStyles = makeStyles({
@@ -41,6 +41,10 @@ export default function AccountEdit() {
     homePath('accountEditAddress'),
     homePath('accountEditContact')
   ];
+
+  if (context.user.is_sign_up_user) {
+    tabs.push(homePath('accountEditPassword'));
+  }
 
   let tabIndex = tabs.indexOf(location.pathname);
   const [value, setValue] = useState<number>(tabIndex !== -1 ? tabIndex : 0);
@@ -185,9 +189,7 @@ export default function AccountEdit() {
                 {value === 3 && (
                   <Route
                     path={homePath('accountEditPassword')}
-                    render={() => (
-                      <FormEditUserPassword userId={context.user.id} />
-                    )}
+                    render={() => <FormEditUserPassword />}
                   />
                 )}
               </Grid>

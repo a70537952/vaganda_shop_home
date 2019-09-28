@@ -3,26 +3,27 @@ import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import {Theme} from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import DoneIcon from '@material-ui/icons/Done';
 import EmailIcon from '@material-ui/icons/Email';
 import update from 'immutability-helper';
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CountryPhoneCodeSelect from '../../_select/CountryPhoneCodeSelect';
-import FormUtil, {Fields} from '../../../utils/FormUtil';
+import FormUtil, { Fields } from '../../../utils/FormUtil';
 import blue from '@material-ui/core/colors/blue';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/styles';
-import {useUserQuery} from '../../../graphql/query/UserQuery';
-import {useUpdateUserContactMutation} from '../../../graphql/mutation/userMutation/UpdateUserContactMutation';
-import {IUserFragmentFormEditUserContact} from '../../../graphql/fragmentType/query/UserFragmentInterface';
-import {userFragments} from '../../../graphql/fragment/query/UserFragment';
-import {AppContext} from '../../../contexts/Context';
-import useToast from "../../_hook/useToast";
+import { makeStyles } from '@material-ui/styles';
+import { useUserQuery } from '../../../graphql/query/UserQuery';
+import { useUpdateUserContactMutation } from '../../../graphql/mutation/userInfoMutation/UpdateUserContactMutation';
+import { IUserFragmentFormEditUserContact } from '../../../graphql/fragmentType/query/UserFragmentInterface';
+import { userFragments } from '../../../graphql/fragment/query/UserFragment';
+import { AppContext } from '../../../contexts/Context';
+import useToast from '../../_hook/useToast';
+import { IUpdateUserContactMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userInfoMutation/UpdateUserContactMutationFragmentInterface';
+import { updateUserContactMutationFragments } from '../../../graphql/fragment/mutation/userInfoMutation/UpdateUserContactMutationFragment';
 
 interface IProps {
   title?: string;
@@ -65,33 +66,32 @@ export default function FormEditUserContact(props: IProps) {
   const [
     updateUserContactMutation,
     { loading: isUpdatingUserContactMutation }
-  ] = useUpdateUserContactMutation<IUserFragmentFormEditUserContact>(
-    userFragments.FormEditUserContact,
-    {
-      onCompleted: () => {
-        setUpdateUserContact(
-          FormUtil.resetFieldsIsValidHook(
-            updateUserContactFields,
-            updateUserContact
-          )
-        );
-        toast.default(t('your contact has been successfully updated'));
-        if (props.onUpdated) {
-          props.onUpdated();
-        }
-        context.getContext();
-      },
-      onError: error => {
-        setUpdateUserContact(
-          FormUtil.validationErrorHandlerHook(
-            updateUserContactFields,
-            error,
-            updateUserContact
-          ).state
-        );
+  ] = useUpdateUserContactMutation<
+    IUpdateUserContactMutationFragmentDefaultFragment
+  >(updateUserContactMutationFragments.DefaultFragment, {
+    onCompleted: () => {
+      setUpdateUserContact(
+        FormUtil.resetFieldsIsValidHook(
+          updateUserContactFields,
+          updateUserContact
+        )
+      );
+      toast.default(t('your contact has been successfully updated'));
+      if (props.onUpdated) {
+        props.onUpdated();
       }
+      context.getContext();
+    },
+    onError: error => {
+      setUpdateUserContact(
+        FormUtil.validationErrorHandlerHook(
+          updateUserContactFields,
+          error,
+          updateUserContact
+        ).state
+      );
     }
-  );
+  });
 
   const { loading } = useUserQuery<IUserFragmentFormEditUserContact>(
     userFragments.FormEditUserContact,

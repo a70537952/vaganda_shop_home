@@ -6,24 +6,30 @@ import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import {Theme} from '@material-ui/core/styles/index';
+import { Theme } from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import update from 'immutability-helper';
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
-import {AppContext} from '../../../contexts/Context';
-import FormUtil, {Fields} from '../../../utils/FormUtil';
+import { AppContext } from '../../../contexts/Context';
+import FormUtil, { Fields } from '../../../utils/FormUtil';
 import UserAvatar from '../../UserAvatar';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/styles';
-import {useUserQuery} from '../../../graphql/query/UserQuery';
-import {useUpdateUserInfoMutation} from '../../../graphql/mutation/userMutation/UpdateUserInfoMutation';
-import {useChangeUserAvatarMutation} from '../../../graphql/mutation/userMutation/ChangeUserAvatarMutation';
-import {useRemoveUserAvatarMutation} from '../../../graphql/mutation/userMutation/RemoveUserAvatarMutation';
-import {IUserFragmentFormEditUserAccount} from '../../../graphql/fragmentType/query/UserFragmentInterface';
-import {userFragments} from '../../../graphql/fragment/query/UserFragment';
-import useToast from "../../_hook/useToast";
+import { makeStyles } from '@material-ui/styles';
+import { useUserQuery } from '../../../graphql/query/UserQuery';
+import { useUpdateUserInfoMutation } from '../../../graphql/mutation/userInfoMutation/UpdateUserInfoMutation';
+import { useChangeUserAvatarMutation } from '../../../graphql/mutation/userInfoMutation/ChangeUserAvatarMutation';
+import { useRemoveUserAvatarMutation } from '../../../graphql/mutation/userInfoMutation/RemoveUserAvatarMutation';
+import { IUserFragmentFormEditUserAccount } from '../../../graphql/fragmentType/query/UserFragmentInterface';
+import { userFragments } from '../../../graphql/fragment/query/UserFragment';
+import useToast from '../../_hook/useToast';
+import { updateUserInfoMutationFragments } from '../../../graphql/fragment/mutation/userInfoMutation/UpdateUserInfoMutationFragment';
+import { IUpdateUserInfoMutationFragmentFormEditUserAccount } from '../../../graphql/fragmentType/mutation/userInfoMutation/UpdateUserInfoMutationFragmentInterface';
+import { IChangeUserAvatarMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userInfoMutation/ChangeUserAvatarMutationFragmentInterface';
+import { changeUserAvatarMutationFragments } from '../../../graphql/fragment/mutation/userInfoMutation/ChangeUserAvatarMutationFragment';
+import { RemoveUserAvatarMutationFragments } from '../../../graphql/fragment/mutation/userInfoMutation/RemoveUserAvatarMutationFragment';
+import { IRemoveUserAvatarMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userInfoMutation/RemoveUserAvatarMutationFragmentInterface';
 
 interface IProps {
   title?: string;
@@ -66,51 +72,49 @@ export default function FormEditUserAccount(props: IProps) {
   const [
     updateUserInfoMutation,
     { loading: isUpdatingUserInfoMutation }
-  ] = useUpdateUserInfoMutation<IUserFragmentFormEditUserAccount>(
-    userFragments.FormEditUserAccount,
-    {
-      onCompleted: () => {
-        setUpdateUserInfo(
-          FormUtil.resetFieldsIsValidHook(updateUserInfoFields, updateUserInfo)
-        );
-        toast.default(t('your profile has been successfully updated'));
-        if (props.onUpdated) {
-          props.onUpdated();
-        }
-        context.getContext();
-      },
-      onError: error => {
-        setUpdateUserInfo(
-          FormUtil.validationErrorHandlerHook(
-            updateUserInfoFields,
-            error,
-            updateUserInfo
-          ).state
-        );
+  ] = useUpdateUserInfoMutation<
+    IUpdateUserInfoMutationFragmentFormEditUserAccount
+  >(updateUserInfoMutationFragments.FormEditUserAccount, {
+    onCompleted: () => {
+      setUpdateUserInfo(
+        FormUtil.resetFieldsIsValidHook(updateUserInfoFields, updateUserInfo)
+      );
+      toast.default(t('your profile has been successfully updated'));
+      if (props.onUpdated) {
+        props.onUpdated();
       }
+      context.getContext();
+    },
+    onError: error => {
+      setUpdateUserInfo(
+        FormUtil.validationErrorHandlerHook(
+          updateUserInfoFields,
+          error,
+          updateUserInfo
+        ).state
+      );
     }
-  );
+  });
   const [
     changeUserAvatarMutation,
     { loading: isChangingUserAvatarMutation }
-  ] = useChangeUserAvatarMutation<IUserFragmentFormEditUserAccount>(
-    userFragments.FormEditUserAccount,
-    {
-      onCompleted: () => {
-        context.getContext();
-      },
-      onError: error => {
-        let errorMessage = FormUtil.getValidationErrorByField(
-          'userAvatar',
-          error
-        );
-        toast.error(errorMessage);
-      }
+  ] = useChangeUserAvatarMutation<
+    IChangeUserAvatarMutationFragmentDefaultFragment
+  >(changeUserAvatarMutationFragments.DefaultFragment, {
+    onCompleted: () => {
+      context.getContext();
+    },
+    onError: error => {
+      let errorMessage = FormUtil.getValidationErrorByField(
+        'userAvatar',
+        error
+      );
+      toast.error(errorMessage);
     }
-  );
+  });
   const [removeUserAvatarMutation] = useRemoveUserAvatarMutation<
-    IUserFragmentFormEditUserAccount
-  >(userFragments.FormEditUserAccount, {
+    IRemoveUserAvatarMutationFragmentDefaultFragment
+  >(RemoveUserAvatarMutationFragments.DefaultFragment, {
     onCompleted: () => {
       context.getContext();
     }

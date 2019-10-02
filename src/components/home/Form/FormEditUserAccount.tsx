@@ -31,6 +31,7 @@ import { changeUserAvatarMutationFragments } from '../../../graphql/fragment/mut
 import { RemoveUserAvatarMutationFragments } from '../../../graphql/fragment/mutation/userInfoMutation/RemoveUserAvatarMutationFragment';
 import { IRemoveUserAvatarMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userInfoMutation/RemoveUserAvatarMutationFragmentInterface';
 import useForm from '../../_hook/useForm';
+import ButtonSubmit from '../../ButtonSubmit';
 
 interface IProps {
   title?: string;
@@ -39,7 +40,6 @@ interface IProps {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {},
   inputUploadAvatar: {
     display: 'none'
   },
@@ -53,9 +53,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   btnRemoveAvatar: {
     margin: theme.spacing(1)
-  },
-  buttonUpdateProgress: {
-    color: '#fff'
   }
 }));
 
@@ -64,14 +61,7 @@ export default function FormEditUserAccount(props: IProps) {
   const context = useContext(AppContext);
   const { t } = useTranslation();
   const { toast } = useToast();
-  const {
-    value,
-    error,
-    setValue,
-    validate,
-    checkApolloError,
-    resetError
-  } = useForm({
+  const { value, error, setValue, validate, checkApolloError } = useForm({
     username: {
       value: ''
     },
@@ -322,24 +312,14 @@ export default function FormEditUserAccount(props: IProps) {
       </Grid>
       <Grid container item justify="flex-end">
         {!loading ? (
-          <>
-            {isUpdatingUserInfoMutation ? (
-              <Button variant="contained" color="primary">
-                <CircularProgress
-                  size={20}
-                  className={classes.buttonUpdateProgress}
-                />
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={onClickUpdateUserInfo}
-              >
-                {t('update')}
-              </Button>
-            )}
-          </>
+          <ButtonSubmit
+            onClick={onClickUpdateUserInfo}
+            variant="contained"
+            color="primary"
+            loading={isUpdatingUserInfoMutation}
+            loadingLabel={t('updating')}
+            label={t('update')}
+          />
         ) : (
           <Skeleton variant={'rect'} height={50} width={100} />
         )}

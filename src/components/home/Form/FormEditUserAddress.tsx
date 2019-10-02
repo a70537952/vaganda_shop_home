@@ -1,22 +1,19 @@
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import { Theme } from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import update from 'immutability-helper';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { AppContext } from '../../../contexts/Context';
 import CountrySelect from '../../_select/CountrySelect';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserAddressMutation } from '../../../graphql/mutation/userAddressMutation/UpdateUserAddressMutation';
 import { useUserAddressQuery } from '../../../graphql/query/UserAddressQuery';
 import { IUserAddressFragmentFormEditUserAddress } from '../../../graphql/fragmentType/query/UserAddressFragmentInterface';
 import { userAddressFragments } from '../../../graphql/fragment/query/UserAddressFragment';
 import useToast from '../../_hook/useToast';
+import useForm from '../../_hook/useForm';
+import ButtonSubmit from '../../ButtonSubmit';
 
 interface IProps {
   title?: string;
@@ -24,29 +21,33 @@ interface IProps {
   className?: any;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  buttonUpdateProgress: {
-    color: '#fff'
-  },
-  buttonUpdate: {
-    marginTop: theme.spacing(1)
-  }
-}));
-
 export default function FormEditUserAddress(props: IProps) {
-  const classes = useStyles();
   const context = useContext(AppContext);
   const { t } = useTranslation();
   const { toast } = useToast();
-  let updateUserAddressFields = [
-    { field: 'address_1', value: '' },
-    { field: 'address_2', value: '' },
-    { field: 'address_3', value: '' },
-    { field: 'city', value: '' },
-    { field: 'state', value: '' },
-    { field: 'postal_code', value: '' },
-    { field: 'country', value: '' }
-  ];
+  const { value, error, setValue, checkApolloError } = useForm({
+    address_1: {
+      value: ''
+    },
+    address_2: {
+      value: ''
+    },
+    address_3: {
+      value: ''
+    },
+    city: {
+      value: ''
+    },
+    state: {
+      value: ''
+    },
+    postal_code: {
+      value: ''
+    },
+    country: {
+      value: ''
+    }
+  });
 
   const [
     updateUserAddressMutation,
@@ -55,12 +56,6 @@ export default function FormEditUserAddress(props: IProps) {
     userAddressFragments.FormEditUserAddress,
     {
       onCompleted: () => {
-        setUpdateUserAddress(
-          FormUtil.resetFieldsIsValidHook(
-            updateUserAddressFields,
-            updateUserAddress
-          )
-        );
         toast.default(t('your address has been successfully updated'));
         if (props.onUpdated) {
           props.onUpdated();
@@ -68,13 +63,7 @@ export default function FormEditUserAddress(props: IProps) {
         context.getContext();
       },
       onError: error => {
-        setUpdateUserAddress(
-          FormUtil.validationErrorHandlerHook(
-            updateUserAddressFields,
-            error,
-            updateUserAddress
-          ).state
-        );
+        checkApolloError(error);
       }
     }
   );
@@ -88,34 +77,26 @@ export default function FormEditUserAddress(props: IProps) {
     },
     onCompleted: data => {
       let newUserAddress = data.userAddress.items[0];
-      setUpdateUserAddress(
-        update(updateUserAddress, {
-          address_1: { value: { $set: newUserAddress.address_1 || '' } },
-          address_2: { value: { $set: newUserAddress.address_2 || '' } },
-          address_3: { value: { $set: newUserAddress.address_3 || '' } },
-          city: { value: { $set: newUserAddress.city || '' } },
-          state: { value: { $set: newUserAddress.state || '' } },
-          postal_code: { value: { $set: newUserAddress.postal_code || '' } },
-          country: { value: { $set: newUserAddress.country || '' } }
-        })
-      );
+      setValue('address_1', newUserAddress.address_1 || '');
+      setValue('address_2', newUserAddress.address_2 || '');
+      setValue('address_3', newUserAddress.address_3 || '');
+      setValue('city', newUserAddress.city || '');
+      setValue('state', newUserAddress.state || '');
+      setValue('postal_code', newUserAddress.postal_code || '');
+      setValue('country', newUserAddress.country || '');
     }
   });
-
-  const [updateUserAddress, setUpdateUserAddress] = useState<Fields>(
-    FormUtil.generateFieldsState(updateUserAddressFields)
-  );
 
   function onClickUpdateUserAddress() {
     updateUserAddressMutation({
       variables: {
-        address_1: updateUserAddress.address_1.value,
-        address_2: updateUserAddress.address_2.value,
-        address_3: updateUserAddress.address_3.value,
-        city: updateUserAddress.city.value,
-        state: updateUserAddress.state.value,
-        postal_code: updateUserAddress.postal_code.value,
-        country: updateUserAddress.country.value
+        address_1: value.address_1,
+        address_2: value.address_2,
+        address_3: value.address_3,
+        city: value.city,
+        state: value.state,
+        postal_code: value.postal_code,
+        country: value.country
       }
     });
   }
@@ -149,19 +130,13 @@ export default function FormEditUserAddress(props: IProps) {
       <Grid item xs={12}>
         {!loading ? (
           <TextField
-            error={!updateUserAddress.address_1.is_valid}
+            error={Boolean(error.address_1)}
             label={t('address 1')}
-            value={updateUserAddress.address_1.value}
-            onChange={(e: { target: { value: any } }) => {
-              setUpdateUserAddress(
-                update(updateUserAddress, {
-                  address_1: {
-                    value: { $set: e.target.value }
-                  }
-                })
-              );
+            value={value.address_1}
+            onChange={e => {
+              setValue('address_1', e.target.value);
             }}
-            helperText={updateUserAddress.address_1.feedback}
+            helperText={error.address_1}
             margin="normal"
             fullWidth
           />
@@ -172,19 +147,13 @@ export default function FormEditUserAddress(props: IProps) {
       <Grid item xs={12}>
         {!loading ? (
           <TextField
-            error={!updateUserAddress.address_2.is_valid}
+            error={Boolean(error.address_2)}
             label={t('address 2')}
-            value={updateUserAddress.address_2.value}
-            onChange={(e: { target: { value: any } }) => {
-              setUpdateUserAddress(
-                update(updateUserAddress, {
-                  address_2: {
-                    value: { $set: e.target.value }
-                  }
-                })
-              );
+            value={value.address_2}
+            onChange={e => {
+              setValue('address_2', e.target.value);
             }}
-            helperText={updateUserAddress.address_2.feedback}
+            helperText={error.address_2}
             margin="normal"
             fullWidth
           />
@@ -195,19 +164,13 @@ export default function FormEditUserAddress(props: IProps) {
       <Grid item xs={12}>
         {!loading ? (
           <TextField
-            error={!updateUserAddress.address_3.is_valid}
+            error={Boolean(error.address_3)}
             label={t('address 3')}
-            value={updateUserAddress.address_3.value}
-            onChange={(e: { target: { value: any } }) => {
-              setUpdateUserAddress(
-                update(updateUserAddress, {
-                  address_3: {
-                    value: { $set: e.target.value }
-                  }
-                })
-              );
+            value={value.address_3}
+            onChange={e => {
+              setValue('address_3', e.target.value);
             }}
-            helperText={updateUserAddress.address_3.feedback}
+            helperText={error.address_3}
             margin="normal"
             fullWidth
           />
@@ -219,19 +182,13 @@ export default function FormEditUserAddress(props: IProps) {
       <Grid item xs={12} sm={6}>
         {!loading ? (
           <TextField
-            error={!updateUserAddress.city.is_valid}
+            error={Boolean(error.city)}
             label={t('city')}
-            value={updateUserAddress.city.value}
-            onChange={(e: { target: { value: any } }) => {
-              setUpdateUserAddress(
-                update(updateUserAddress, {
-                  city: {
-                    value: { $set: e.target.value }
-                  }
-                })
-              );
+            value={value.city}
+            onChange={e => {
+              setValue('city', e.target.value);
             }}
-            helperText={updateUserAddress.city.feedback}
+            helperText={error.city}
             margin="normal"
             fullWidth
           />
@@ -242,19 +199,13 @@ export default function FormEditUserAddress(props: IProps) {
       <Grid item xs={12} sm={6}>
         {!loading ? (
           <TextField
-            error={!updateUserAddress.state.is_valid}
+            error={Boolean(error.state)}
             label={t('state')}
-            value={updateUserAddress.state.value}
-            onChange={(e: { target: { value: any } }) => {
-              setUpdateUserAddress(
-                update(updateUserAddress, {
-                  state: {
-                    value: { $set: e.target.value }
-                  }
-                })
-              );
+            value={value.state}
+            onChange={e => {
+              setValue('state', e.target.value);
             }}
-            helperText={updateUserAddress.state.feedback}
+            helperText={error.state}
             margin="normal"
             fullWidth
           />
@@ -266,19 +217,13 @@ export default function FormEditUserAddress(props: IProps) {
       <Grid item xs={12} sm={6}>
         {!loading ? (
           <TextField
-            error={!updateUserAddress.postal_code.is_valid}
+            error={Boolean(error.postal_code)}
             label={t('postal code')}
-            value={updateUserAddress.postal_code.value}
-            onChange={(e: { target: { value: any } }) => {
-              setUpdateUserAddress(
-                update(updateUserAddress, {
-                  postal_code: {
-                    value: { $set: e.target.value }
-                  }
-                })
-              );
+            value={value.postal_code}
+            onChange={e => {
+              setValue('postal_code', e.target.value);
             }}
-            helperText={updateUserAddress.postal_code.feedback}
+            helperText={error.postal_code}
             margin="normal"
             fullWidth
           />
@@ -289,18 +234,12 @@ export default function FormEditUserAddress(props: IProps) {
       <Grid item xs={12} sm={6}>
         {!loading ? (
           <CountrySelect
+            error={Boolean(error.country)}
             label={t('country')}
-            error={!updateUserAddress.country.is_valid}
-            helperText={updateUserAddress.country.feedback}
-            value={updateUserAddress.country.value}
+            helperText={error.country}
+            value={value.country}
             onChange={(value: unknown) => {
-              setUpdateUserAddress(
-                update(updateUserAddress, {
-                  country: {
-                    value: { $set: value }
-                  }
-                })
-              );
+              setValue('country', value);
             }}
             margin="normal"
             fullWidth
@@ -311,25 +250,14 @@ export default function FormEditUserAddress(props: IProps) {
       </Grid>
       <Grid container item justify="flex-end">
         {!loading ? (
-          <>
-            {isUpdatingUserAddressMutation ? (
-              <Button variant="contained" color="primary">
-                <CircularProgress
-                  size={20}
-                  className={classes.buttonUpdateProgress}
-                />
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.buttonUpdate}
-                onClick={onClickUpdateUserAddress}
-              >
-                {t('update')}
-              </Button>
-            )}
-          </>
+          <ButtonSubmit
+            onClick={onClickUpdateUserAddress}
+            variant="contained"
+            color="primary"
+            loading={isUpdatingUserAddressMutation}
+            loadingLabel={t('updating')}
+            label={t('update')}
+          />
         ) : (
           <Skeleton variant={'rect'} width={150} height={50} />
         )}

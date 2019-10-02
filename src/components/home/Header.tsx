@@ -5,30 +5,30 @@ import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Popover from '@material-ui/core/Popover';
-import {makeStyles, Theme} from '@material-ui/core/styles';
-import {fade} from '@material-ui/core/styles/colorManipulator';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import classnames from 'classnames';
 import update from 'immutability-helper';
-import React, {useContext, useState} from 'react';
-import {Link, Route, Switch} from 'react-router-dom';
-import {AppContext} from '../../contexts/Context';
+import React, { useContext, useState } from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
+import { AppContext } from '../../contexts/Context';
 import homeRoutes from '../../routes/home';
 import UserAvatar from './../UserAvatar';
 import AuthRoute from './AuthRoute';
 import ModalLoginRegister from './Modal/ModalLoginRegister';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import ErrorBoundary from './ErrorBoundary';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
 import Menu from '@material-ui/core/Menu';
-import {homePath} from '../../utils/RouteUtil';
+import { homePath } from '../../utils/RouteUtil';
 import UserCartButton from './UserCart/UserCartButton';
-import {getCookieKey, getCookieOption} from '../../utils/CookieUtil';
-import {useCookies} from 'react-cookie';
+import { getCookieKey, getGlobalCookieOption } from '../../utils/CookieUtil';
+import { useCookies } from 'react-cookie';
 import useRouter from '../_hook/useRouter';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -370,7 +370,7 @@ export default function Header() {
                       onClick={() => {
                         removeCookie(
                           getCookieKey('api_token'),
-                          getCookieOption()
+                          getGlobalCookieOption()
                         );
                         window.location.reload();
                       }}

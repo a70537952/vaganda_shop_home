@@ -1,9 +1,9 @@
 import Grid from '@material-ui/core/Grid';
 import Modal from '../../_modal/Modal';
-import {useSnackbar} from 'notistack';
-import React, {useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import FormUtil, {Fields} from '../../../utils/FormUtil';
+import { useSnackbar } from 'notistack';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import FormUtil from '../../../utils/FormUtil';
 import update from 'immutability-helper';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -21,13 +21,15 @@ import Image from '../../Image';
 import AddIcon from '@material-ui/icons/Add';
 import StarRating from '../../_rating/StarRating';
 import DefaultImage from '../../../image/default-image.jpg';
-import {useUserOrderDetailQuery} from '../../../graphql/query/UserOrderDetailQuery';
-import {IUserOrderDetailFragmentModalAddUserOrderDetailComment} from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
-import {userOrderDetailFragments} from '../../../graphql/fragment/query/UserOrderDetailFragment';
-import {useAddUserOrderDetailCommentMutation} from '../../../graphql/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutation';
-import {addUserOrderDetailCommentMutationFragments} from '../../../graphql/fragment/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragment';
+import { useUserOrderDetailQuery } from '../../../graphql/query/UserOrderDetailQuery';
+import { IUserOrderDetailFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragmentType/query/UserOrderDetailFragmentInterface';
+import { userOrderDetailFragments } from '../../../graphql/fragment/query/UserOrderDetailFragment';
+import { useAddUserOrderDetailCommentMutation } from '../../../graphql/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutation';
+import { addUserOrderDetailCommentMutationFragments } from '../../../graphql/fragment/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragment';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment} from '../../../graphql/fragmentType/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragmentInterface';
+import { IAddUserOrderDetailCommentMutationFragmentInterfaceFragmentModalAddUserOrderDetailComment } from '../../../graphql/fragmentType/mutation/userOrderDetailMutation/AddUserOrderDetailCommentMutationFragmentInterface';
+import useForm from '../../_hook/useForm';
+import ButtonSubmit from '../../ButtonSubmit';
 
 interface IProps {
   userOrderDetailId: string;
@@ -56,27 +58,28 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
   const classes = useStyles();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  let addUserOrderDetailCommentFields = [
-    {
-      field: 'comment',
-      isCheckEmpty: true,
-      emptyMessage: t('please enter comment'),
-      value: ''
+  const {
+    value,
+    error,
+    setValue,
+    validate,
+    checkApolloError,
+    setError,
+    disable
+  } = useForm({
+    comment: {
+      value: '',
+      emptyMessage: t('please enter comment')
     },
-    {
-      field: 'star',
-      isCheckEmpty: true,
-      emptyMessage: t('please rate your star'),
-      value: 0
+    star: {
+      value: '',
+      emptyMessage: t('please rate your star')
     },
-    {
-      field: 'uploadedImages',
+    uploadedImages: {
       value: []
     }
-  ];
-  const [addUserOrderDetailComment, setAddUserOrderDetailComment] = useState<
-    Fields
-  >(FormUtil.generateFieldsState(addUserOrderDetailCommentFields));
+  });
+
   const [uploadingImageCount, setUploadingImageCount] = useState<number>(0);
   const [isCloseDialogOpen, setIsCloseDialogOpen] = useState<boolean>(false);
 
@@ -112,40 +115,12 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
     }
   });
 
-  async function checkAddUserOrderDetailCommentForm(error?: any) {
-    let {
-      state: checkedEmptyState,
-      isValid: emptyIsValid
-    } = FormUtil.generateFieldsEmptyErrorHook(
-      addUserOrderDetailCommentFields,
-      addUserOrderDetailComment
-    );
-
-    let {
-      state: checkedErrorState,
-      isValid: validationIsValid
-    } = FormUtil.validationErrorHandlerHook(
-      addUserOrderDetailCommentFields,
-      error,
-      checkedEmptyState
-    );
-
-    if (addUserOrderDetailComment.star.value === 0) {
-      checkedErrorState = update(checkedErrorState, {
-        addUserOrderDetailComment: {
-          star: {
-            feedback: { $set: t('please rate star') },
-            is_valid: { $set: false }
-          }
-        }
-      });
+  async function checkAddUserOrderDetailCommentForm() {
+    if (value.star === 0) {
+      setError('star', t('please rate your star'));
     }
 
-    setAddUserOrderDetailComment(checkedErrorState);
-
-    return (
-      emptyIsValid && validationIsValid && !(await isCommentImageUploading())
-    );
+    return validate() && !isCommentImageUploading();
   }
 
   function isCommentImageUploading() {
@@ -161,9 +136,9 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
       addUserOrderDetailCommentMutation({
         variables: {
           userOrderDetailId: userOrderDetailId,
-          comment: addUserOrderDetailComment.comment.value,
-          star: addUserOrderDetailComment.star.value,
-          commentImages: addUserOrderDetailComment.uploadedImages.value.map(
+          comment: value.comment,
+          star: value.star,
+          commentImages: value.uploadedImages.map(
             (uploadedImage: any) => uploadedImage.path
           )
         }
@@ -201,9 +176,10 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
     let tempImageData = data.uploadImageMutation;
     setUploadingImageCount(uploadingImageCount - tempImageData.length);
 
-    setAddUserOrderDetailComment(
-      update(addUserOrderDetailComment, {
-        uploadedImages: { value: { $push: [tempImageData[0]] } }
+    setValue(
+      'uploadedImages',
+      update(value.uploadedImages, {
+        $push: [tempImageData[0]]
       })
     );
   }
@@ -218,15 +194,13 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
   }
 
   function removeUploadedProductImage(removeUploadedImage: any) {
-    let removingIndex = addUserOrderDetailComment.uploadedImages.value.findIndex(
-      (uploadedImage: any) => {
-        return removeUploadedImage.id === uploadedImage.id;
-      }
-    );
-
-    setAddUserOrderDetailComment(
-      update(addUserOrderDetailComment, {
-        uploadedImages: { value: { $splice: [[removingIndex, 1]] } }
+    let removingIndex = value.uploadedImages.findIndex((uploadedImage: any) => {
+      return removeUploadedImage.id === uploadedImage.id;
+    });
+    setValue(
+      'uploadedImages',
+      update(value.uploadedImages, {
+        $splice: [[removingIndex, 1]]
       })
     );
   }
@@ -302,42 +276,28 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
                 <FormControl margin="none">
                   <StarRating
                     size={'large'}
-                    value={addUserOrderDetailComment.star.value}
+                    value={value.star}
                     onChange={(event: React.ChangeEvent<{}>, value: number) => {
-                      setAddUserOrderDetailComment(
-                        update(addUserOrderDetailComment, {
-                          star: {
-                            value: { $set: value }
-                          }
-                        })
-                      );
+                      setValue('star', value);
                     }}
                   />
-                  {addUserOrderDetailComment.star.feedback && (
-                    <FormHelperText error>
-                      {addUserOrderDetailComment.star.feedback}
-                    </FormHelperText>
+                  {Boolean(error.star) && (
+                    <FormHelperText error>{error.star}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required={addUserOrderDetailComment.comment.value}
-                  error={!addUserOrderDetailComment.comment.is_valid}
+                  required
+                  error={Boolean(error.comment)}
                   label={t('your comment')}
-                  value={addUserOrderDetailComment.comment.value}
-                  onChange={(e: { target: { value: any } }) => {
-                    setAddUserOrderDetailComment(
-                      update(addUserOrderDetailComment, {
-                        comment: {
-                          value: { $set: e.target.value }
-                        }
-                      })
-                    );
+                  value={value.comment}
+                  onChange={e => {
+                    setValue('comment', e.target.value);
                   }}
-                  helperText={addUserOrderDetailComment.comment.feedback}
+                  helperText={error.comment}
                   margin="normal"
-                  disabled={addUserOrderDetailComment.comment.disabled}
+                  disabled={disable.comment}
                   fullWidth
                   multiline
                   rows={5}
@@ -364,34 +324,25 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
                       {t('image')}
                     </Button>
                   </label>
-                  {addUserOrderDetailComment.uploadedImages.feedback && (
+                  {Boolean(error.uploadedImages) && (
                     <FormHelperText error>
-                      {addUserOrderDetailComment.uploadedImages.feedback}
+                      {error.uploadedImages}
                     </FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid container item spacing={1} xs={12}>
-                {addUserOrderDetailComment.uploadedImages.value.map(
-                  (uploadedImage: any) => (
-                    <Grid
-                      key={uploadedImage.id}
-                      item
-                      xs={6}
-                      sm={4}
-                      md={3}
-                      lg={3}
-                    >
-                      <RemovableImage
-                        className={classes.commentImage}
-                        remove={() => {
-                          removeUploadedProductImage(uploadedImage);
-                        }}
-                        src={uploadedImage.image_medium}
-                      />
-                    </Grid>
-                  )
-                )}
+                {value.uploadedImages.map((uploadedImage: any) => (
+                  <Grid key={uploadedImage.id} item xs={6} sm={4} md={3} lg={3}>
+                    <RemovableImage
+                      className={classes.commentImage}
+                      remove={() => {
+                        removeUploadedProductImage(uploadedImage);
+                      }}
+                      src={uploadedImage.image_medium}
+                    />
+                  </Grid>
+                ))}
 
                 {new Array(uploadingImageCount).fill(6).map(ele => {
                   return (
@@ -408,21 +359,14 @@ export default function ModalAddUserOrderDetailComment(props: IProps) {
                   </Button>
                 </Grid>
                 <Grid item>
-                  {isAddingUserOrderDetailCommentMutation ? (
-                    <Button disabled variant="contained" color="primary">
-                      {t('submitting...')}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        onClickAddUserOrderDetailComment();
-                      }}
-                    >
-                      {t('submit')}
-                    </Button>
-                  )}
+                  <ButtonSubmit
+                    onClick={onClickAddUserOrderDetailComment}
+                    variant="contained"
+                    color="primary"
+                    loading={isAddingUserOrderDetailCommentMutation}
+                    loadingLabel={t('submitting...')}
+                    label={t('submit')}
+                  />
                 </Grid>
               </Grid>
             </>

@@ -23,6 +23,7 @@ interface IProps {
   variant?: 'text' | 'outlined' | 'contained';
   color?: PropTypes.Color;
   icon?: FunctionComponent | ComponentClass | string;
+  size?: 'small' | 'medium' | 'large';
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -39,7 +40,8 @@ export default function ButtonSubmit(props: IProps) {
     fullWidth,
     variant,
     color,
-    icon
+    icon,
+    size
   } = props;
   const classes = useStyles();
 
@@ -49,6 +51,7 @@ export default function ButtonSubmit(props: IProps) {
       variant={variant}
       color={color}
       onClick={loading ? undefined : onClick}
+      size={size}
     >
       {loading ? (
         <>

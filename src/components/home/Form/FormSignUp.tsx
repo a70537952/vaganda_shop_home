@@ -1,24 +1,22 @@
-import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
-import {Theme} from '@material-ui/core/styles/index';
+import { Theme } from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import update from 'immutability-helper';
-import React, {useState} from 'react';
-import FormUtil, {Fields} from '../../../utils/FormUtil';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import {useApolloClient} from 'react-apollo';
-import {useTranslation} from 'react-i18next';
-import {makeStyles} from '@material-ui/styles';
-import {useSignUpUserMutation} from '../../../graphql/mutation/authMutation/SignUpUserMutation';
-import {userQuery} from '../../../graphql/query/UserQuery';
-import {WithPagination} from '../../../graphql/query/Query';
-import {IUserFragmentFormSignUp} from '../../../graphql/fragmentType/query/UserFragmentInterface';
-import {userFragments} from '../../../graphql/fragment/query/UserFragment';
-import {signUpUserMutationFragments} from '../../../graphql/fragment/mutation/authMutation/SignUpUserMutationFragment';
-import {ISignUpUserMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/authMutation/SignUpUserMutationFragmentInterface';
-import useToast from "../../_hook/useToast";
+import React from 'react';
+import { useApolloClient } from 'react-apollo';
+import { useTranslation } from 'react-i18next';
+import { makeStyles } from '@material-ui/styles';
+import { useSignUpUserMutation } from '../../../graphql/mutation/authMutation/SignUpUserMutation';
+import { userQuery } from '../../../graphql/query/UserQuery';
+import { WithPagination } from '../../../graphql/query/Query';
+import { IUserFragmentFormSignUp } from '../../../graphql/fragmentType/query/UserFragmentInterface';
+import { userFragments } from '../../../graphql/fragment/query/UserFragment';
+import { signUpUserMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SignUpUserMutationFragment';
+import { ISignUpUserMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/SignUpUserMutationFragmentInterface';
+import useToast from '../../_hook/useToast';
+import useForm from '../../_hook/useForm';
+import ButtonSubmit from '../../ButtonSubmit';
 
 interface IProps {
   onLoginClick: () => void;
@@ -30,14 +28,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer',
     marginLeft: theme.spacing(1)
   },
-  buttonSignUp: {
-    marginTop: theme.spacing(2)
-  },
   containerLogin: {
     marginTop: theme.spacing(2)
-  },
-  buttonSignUpProgress: {
-    color: '#fff'
   }
 }));
 
@@ -46,28 +38,31 @@ export default function FormSignUp(props: IProps) {
   const { t } = useTranslation();
   const client = useApolloClient();
   const { toast } = useToast();
-  let signUpFields = [
-    {
-      field: 'username',
-      isCheckEmpty: true,
+  const {
+    value,
+    error,
+    setValue,
+    validate,
+    checkApolloError,
+    setError
+  } = useForm({
+    username: {
+      value: '',
       emptyMessage: t('please enter username')
     },
-    {
-      field: 'email',
-      isCheckEmpty: true,
+    email: {
+      value: '',
       emptyMessage: t('please enter email')
     },
-    {
-      field: 'password',
-      isCheckEmpty: true,
+    password: {
+      value: '',
       emptyMessage: t('please enter password')
     },
-    {
-      field: 'confirmPassword',
-      isCheckEmpty: true,
+    confirmPassword: {
+      value: '',
       emptyMessage: t('please enter confirm password')
     }
-  ];
+  });
 
   const [
     signUpUserMutation,
@@ -76,9 +71,6 @@ export default function FormSignUp(props: IProps) {
     signUpUserMutationFragments.DefaultFragment,
     {
       onCompleted: () => {
-        setSignUp(signUp =>
-          FormUtil.resetFieldsIsValidHook(signUpFields, signUp)
-        );
         toast.default(
           t(
             'we have send verification email to your email address. please look for the verification email in your inbox and click the link in that email.'
@@ -90,76 +82,48 @@ export default function FormSignUp(props: IProps) {
         onLoginClick();
       },
       onError: error => {
-        checkSignUpField(error);
+        checkApolloError(error);
       }
     }
-  );
-
-  const [signUp, setSignUp] = useState<Fields>(
-    FormUtil.generateFieldsState(signUpFields)
   );
 
   async function onClickSignUp() {
     if (await checkSignUpField()) {
       signUpUserMutation({
         variables: {
-          username: signUp.username.value,
-          email: signUp.email.value,
-          password: signUp.password.value
+          username: value.username,
+          email: value.email,
+          password: value.password
         }
       });
     }
   }
 
-  async function checkSignUpField(error?: any) {
-    let {
-      state: checkedEmptyState,
-      isValid: emptyIsValid
-    } = FormUtil.generateFieldsEmptyErrorHook(signUpFields, signUp);
-
-    let {
-      state: checkedErrorState,
-      isValid: validationIsValid
-    } = FormUtil.validationErrorHandlerHook(
-      signUpFields,
-      error,
-      checkedEmptyState
-    );
-
-    setSignUp(checkedErrorState);
-
-    let isInfoValid = true;
-    if (emptyIsValid && validationIsValid) {
+  async function checkSignUpField() {
+    let isInfoValid = validate();
+    if (isInfoValid) {
       isInfoValid =
         (await isUsernameValid()) &&
         (await isEmailValid()) &&
         (await isConfirmPasswordValid());
     }
 
-    return emptyIsValid && validationIsValid && isInfoValid;
+    return isInfoValid;
   }
 
   function isUsernameValid() {
-    if (signUp.username.value !== '') {
+    if (value.username !== '') {
       return client
         .query<{ user: WithPagination<IUserFragmentFormSignUp> }>({
           query: userQuery(userFragments.FormSignUp),
-          variables: { username: signUp.username.value }
+          variables: { username: value.username }
         })
         .then(({ data }) => {
           let isUsernameValid = !(data.user.items.length > 0);
-
-          setSignUp(signUp =>
-            update(signUp, {
-              username: {
-                feedback: {
-                  $set: isUsernameValid ? '' : t('this username already exists')
-                },
-                is_valid: { $set: isUsernameValid }
-              }
-            })
+          setError(
+            'username',
+            isUsernameValid ? '' : t('this username already exists')
           );
-
           return isUsernameValid;
         });
     }
@@ -167,26 +131,15 @@ export default function FormSignUp(props: IProps) {
   }
 
   function isEmailValid() {
-    if (signUp.email.value !== '') {
+    if (value.email !== '') {
       return client
         .query<{ user: WithPagination<IUserFragmentFormSignUp> }>({
           query: userQuery(userFragments.FormSignUp),
-          variables: { email: signUp.email.value }
+          variables: { email: value.email }
         })
         .then(({ data }) => {
           let isEmailValid = !(data.user.items.length > 0);
-
-          setSignUp(signUp =>
-            update(signUp, {
-              email: {
-                feedback: {
-                  $set: isEmailValid ? '' : t('this email already exists')
-                },
-                is_valid: { $set: isEmailValid }
-              }
-            })
-          );
-
+          setError('email', isEmailValid ? '' : t('this email already exists'));
           return isEmailValid;
         });
     }
@@ -194,16 +147,10 @@ export default function FormSignUp(props: IProps) {
   }
 
   function isConfirmPasswordValid() {
-    if (signUp.password.value !== signUp.confirmPassword.value) {
-      setSignUp(signUp =>
-        update(signUp, {
-          confirmPassword: {
-            feedback: {
-              $set: t('password does not match the confirm password')
-            },
-            is_valid: { $set: false }
-          }
-        })
+    if (value.password !== value.confirmPassword) {
+      setError(
+        'confirmPassword',
+        t('password does not match the confirm password')
       );
       return false;
     }
@@ -213,7 +160,7 @@ export default function FormSignUp(props: IProps) {
   let { onLoginClick } = props;
 
   return (
-    <Grid container item xs={10}>
+    <Grid container item xs={10} spacing={1}>
       <Grid item xs={12}>
         <Typography variant="h6" align={'center'}>
           {t('sign up')}
@@ -222,19 +169,13 @@ export default function FormSignUp(props: IProps) {
       <Grid item xs={12}>
         <TextField
           name={'username'}
-          error={!signUp.username.is_valid}
+          error={Boolean(error.username)}
           label={t('username')}
-          value={signUp.username.value}
-          onChange={(e: { target: { value: any } }) => {
-            setSignUp(
-              update(signUp, {
-                username: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.username}
+          onChange={e => {
+            setValue('username', e.target.value);
           }}
-          helperText={signUp.username.feedback}
+          helperText={error.username}
           margin={'dense'}
           fullWidth
           onBlur={isUsernameValid}
@@ -244,20 +185,14 @@ export default function FormSignUp(props: IProps) {
         <TextField
           name={'email'}
           type={'email'}
-          error={!signUp.email.is_valid}
+          error={Boolean(error.email)}
           label={t('email')}
-          value={signUp.email.value}
-          onChange={(e: { target: { value: any } }) => {
-            setSignUp(
-              update(signUp, {
-                email: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.email}
+          onChange={e => {
+            setValue('email', e.target.value);
           }}
           onBlur={isEmailValid}
-          helperText={signUp.email.feedback}
+          helperText={error.email}
           margin={'dense'}
           fullWidth
         />
@@ -270,19 +205,13 @@ export default function FormSignUp(props: IProps) {
       <Grid item xs={12}>
         <TextField
           type="password"
-          error={!signUp.password.is_valid}
+          error={Boolean(error.password)}
           label={t('password')}
-          value={signUp.password.value}
-          onChange={(e: { target: { value: any } }) => {
-            setSignUp(
-              update(signUp, {
-                password: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.password}
+          onChange={e => {
+            setValue('password', e.target.value);
           }}
-          helperText={signUp.password.feedback}
+          helperText={error.password}
           margin={'dense'}
           fullWidth
         />
@@ -290,49 +219,28 @@ export default function FormSignUp(props: IProps) {
       <Grid item xs={12}>
         <TextField
           type="password"
-          error={!signUp.confirmPassword.is_valid}
+          error={Boolean(error.confirmPassword)}
           label={t('confirm password')}
-          value={signUp.confirmPassword.value}
-          onChange={(e: { target: { value: any } }) => {
-            setSignUp(
-              update(signUp, {
-                confirmPassword: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.confirmPassword}
+          onChange={e => {
+            setValue('confirmPassword', e.target.value);
           }}
-          helperText={signUp.confirmPassword.feedback}
+          helperText={error.confirmPassword}
           margin={'dense'}
           fullWidth
         />
       </Grid>
       <Grid item xs={12}>
-        {isSigningUpUserMutation ? (
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            size={'large'}
-            className={classes.buttonSignUp}
-          >
-            <CircularProgress
-              size={20}
-              className={classes.buttonSignUpProgress}
-            />
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            size={'large'}
-            className={classes.buttonSignUp}
-            onClick={onClickSignUp}
-          >
-            {t('sign up')}
-          </Button>
-        )}
+        <ButtonSubmit
+          fullWidth
+          onClick={onClickSignUp}
+          variant="contained"
+          color="primary"
+          loading={isSigningUpUserMutation}
+          loadingLabel={t('signing up')}
+          size={'large'}
+          label={t('sign up')}
+        />
       </Grid>
       <Grid
         item

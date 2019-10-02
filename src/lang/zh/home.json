@@ -260,5 +260,7 @@
   "you have not verified your account. to complete the process of verify your account, please log in to your email account and find the email we have sent you.": "您尚未验证自己的帐户。要完成验证帐户的过程，请登录到您的电子邮件帐户，然后找到我们发送给您的电子邮件。",
   "we have send an verify email to your email": "我们已向您的电子邮件发送验证邮件",
   "remove": "移除",
-  "updating": "更新中"
+  "updating": "更新中",
+  "please enter phone country code": "请输入电话国家代码",
+  "please enter phone": "请输入电话"
 }

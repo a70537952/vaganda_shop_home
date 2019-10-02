@@ -1,16 +1,13 @@
-import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import DoneIcon from '@material-ui/icons/Done';
 import EmailIcon from '@material-ui/icons/Email';
 import update from 'immutability-helper';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CountryPhoneCodeSelect from '../../_select/CountryPhoneCodeSelect';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
 import blue from '@material-ui/core/colors/blue';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +21,8 @@ import { AppContext } from '../../../contexts/Context';
 import useToast from '../../_hook/useToast';
 import { IUpdateUserContactMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userInfoMutation/UpdateUserContactMutationFragmentInterface';
 import { updateUserContactMutationFragments } from '../../../graphql/fragment/mutation/userInfoMutation/UpdateUserContactMutationFragment';
+import useForm from '../../_hook/useForm';
+import ButtonSubmit from '../../ButtonSubmit';
 
 interface IProps {
   title?: string;
@@ -55,13 +54,25 @@ export default function FormEditUserContact(props: IProps) {
   const context = useContext(AppContext);
   const { t } = useTranslation();
   const { toast } = useToast();
-  let updateUserContactFields = [
-    { field: 'is_sign_up_user', value: '' },
-    { field: 'email_verified_at', value: '' },
-    { field: 'email', value: '' },
-    { field: 'phoneCountryCode', value: '' },
-    { field: 'phone', value: '' }
-  ];
+  const { value, error, setValue, validate, checkApolloError } = useForm({
+    is_sign_up_user: {
+      value: ''
+    },
+    email_verified_at: {
+      value: ''
+    },
+    email: {
+      value: ''
+    },
+    phoneCountryCode: {
+      value: '',
+      emptyMessage: t('please enter phone country code')
+    },
+    phone: {
+      value: '',
+      emptyMessage: t('please enter phone')
+    }
+  });
 
   const [
     updateUserContactMutation,
@@ -70,12 +81,6 @@ export default function FormEditUserContact(props: IProps) {
     IUpdateUserContactMutationFragmentDefaultFragment
   >(updateUserContactMutationFragments.DefaultFragment, {
     onCompleted: () => {
-      setUpdateUserContact(
-        FormUtil.resetFieldsIsValidHook(
-          updateUserContactFields,
-          updateUserContact
-        )
-      );
       toast.default(t('your contact has been successfully updated'));
       if (props.onUpdated) {
         props.onUpdated();
@@ -83,13 +88,7 @@ export default function FormEditUserContact(props: IProps) {
       context.getContext();
     },
     onError: error => {
-      setUpdateUserContact(
-        FormUtil.validationErrorHandlerHook(
-          updateUserContactFields,
-          error,
-          updateUserContact
-        ).state
-      );
+      checkApolloError(error);
     }
   });
 
@@ -102,32 +101,30 @@ export default function FormEditUserContact(props: IProps) {
       },
       onCompleted: data => {
         let newUser = data.user.items[0];
-        setUpdateUserContact(
-          update(updateUserContact, {
-            is_sign_up_user: { value: { $set: newUser.is_sign_up_user } },
-            email_verified_at: { value: { $set: newUser.email_verified_at } },
-            email: { value: { $set: newUser.email || '' } },
-            phoneCountryCode: {
-              value: { $set: newUser.user_info.phone_country_code || '' }
-            },
-            phone: { value: { $set: newUser.user_info.phone || '' } }
-          })
+        setValue('is_sign_up_user', newUser.is_sign_up_user);
+        setValue('email_verified_at', newUser.email_verified_at);
+        setValue('email', newUser.email || '');
+        setValue(
+          'phoneCountryCode',
+          newUser.user_info.phone_country_code || ''
         );
+        setValue('phone', newUser.user_info.phone || '');
       }
     }
   );
 
-  const [updateUserContact, setUpdateUserContact] = useState<Fields>(
-    FormUtil.generateFieldsState(updateUserContactFields)
-  );
-
   function onClickUpdateUserContact() {
-    updateUserContactMutation({
-      variables: {
-        phoneCountryCode: updateUserContact.phoneCountryCode.value,
-        phone: updateUserContact.phone.value
-      }
-    });
+    if (
+      (!value.phoneCountryCode && !value.phone) ||
+      (validate('phoneCountryCode') && validate('phone'))
+    ) {
+      updateUserContactMutation({
+        variables: {
+          phoneCountryCode: value.phoneCountryCode,
+          phone: value.phone
+        }
+      });
+    }
   }
 
   const { title, className } = props;
@@ -158,23 +155,17 @@ export default function FormEditUserContact(props: IProps) {
       )}
       {!loading ? (
         <>
-          {Boolean(updateUserContact.is_sign_up_user.value) && (
+          {Boolean(value.is_sign_up_user) && (
             <Grid item xs={12}>
               <TextField
                 disabled
-                error={!updateUserContact.email.is_valid}
+                error={Boolean(error.email)}
                 label={t('email')}
-                value={updateUserContact.email.value}
-                onChange={(e: { target: { value: any } }) => {
-                  setUpdateUserContact(
-                    update(updateUserContact, {
-                      email: {
-                        value: { $set: e.target.value }
-                      }
-                    })
-                  );
+                value={value.email}
+                onChange={e => {
+                  setValue('email', e.target.value);
                 }}
-                helperText={updateUserContact.email.feedback}
+                helperText={error.email}
                 margin="normal"
                 fullWidth
               />
@@ -197,9 +188,9 @@ export default function FormEditUserContact(props: IProps) {
         </Grid>
       )}
       {!loading &&
-        Boolean(updateUserContact.is_sign_up_user.value) &&
-        updateUserContact.email.value &&
-        updateUserContact.email_verified_at.value && (
+        Boolean(value.is_sign_up_user) &&
+        value.email &&
+        value.email_verified_at && (
           <Grid item xs={12}>
             <Chip
               className={classes.emailVerifiedChip}
@@ -214,17 +205,11 @@ export default function FormEditUserContact(props: IProps) {
       <Grid item xs={12} sm={12} md={6}>
         {!loading ? (
           <CountryPhoneCodeSelect
-            error={!updateUserContact.phoneCountryCode.is_valid}
-            helperText={updateUserContact.phoneCountryCode.feedback}
-            value={updateUserContact.phoneCountryCode.value}
+            error={Boolean(error.phoneCountryCode)}
+            helperText={error.phoneCountryCode}
+            value={value.phoneCountryCode}
             onChange={(value: unknown) => {
-              setUpdateUserContact(
-                update(updateUserContact, {
-                  phoneCountryCode: {
-                    value: { $set: value }
-                  }
-                })
-              );
+              setValue('phoneCountryCode', value);
             }}
             margin="normal"
             fullWidth
@@ -239,23 +224,17 @@ export default function FormEditUserContact(props: IProps) {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  {updateUserContact.phoneCountryCode.value}
+                  {value.phoneCountryCode}
                 </InputAdornment>
               )
             }}
-            error={!updateUserContact.phone.is_valid}
+            error={Boolean(error.phone)}
             label={t('phone')}
-            value={updateUserContact.phone.value}
-            onChange={(e: { target: { value: any } }) => {
-              setUpdateUserContact(
-                update(updateUserContact, {
-                  phone: {
-                    value: { $set: e.target.value }
-                  }
-                })
-              );
+            value={value.phone}
+            onChange={e => {
+              setValue('phone', e.target.value);
             }}
-            helperText={updateUserContact.phone.feedback}
+            helperText={error.phone}
             margin="normal"
             fullWidth
           />
@@ -265,24 +244,14 @@ export default function FormEditUserContact(props: IProps) {
       </Grid>
       <Grid container item justify="flex-end">
         {!loading ? (
-          <>
-            {isUpdatingUserContactMutation ? (
-              <Button variant="contained" color="primary">
-                <CircularProgress
-                  size={20}
-                  className={classes.buttonUpdateProgress}
-                />
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={onClickUpdateUserContact}
-              >
-                {t('update')}
-              </Button>
-            )}
-          </>
+          <ButtonSubmit
+            onClick={onClickUpdateUserContact}
+            variant="contained"
+            color="primary"
+            loading={isUpdatingUserContactMutation}
+            loadingLabel={t('updating')}
+            label={t('update')}
+          />
         ) : (
           <Skeleton variant={'rect'} height={50} width={100} />
         )}

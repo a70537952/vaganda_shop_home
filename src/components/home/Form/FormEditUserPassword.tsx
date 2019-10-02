@@ -1,19 +1,15 @@
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import { Theme } from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import update from 'immutability-helper';
-import React, { useState } from 'react';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
-import blue from '@material-ui/core/colors/blue';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
 import { useUpdateUserPasswordMutation } from '../../../graphql/mutation/userMutation/UpdateUserPasswordMutation';
 import { updateUserPasswordMutationFragments } from '../../../graphql/fragment/mutation/userMutation/UpdateUserPasswordMutationFragment';
 import { IUpdateUserPasswordMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userMutation/UpdateUserPasswordMutationFragmentInterface';
 import useToast from '../../_hook/useToast';
+import useForm from '../../_hook/useForm';
+import ButtonSubmit from '../../ButtonSubmit';
 
 interface IProps {
   title?: string;
@@ -21,49 +17,30 @@ interface IProps {
   className?: any;
 }
 
-const useStyles = makeStyles({
-  textFieldName: {
-    minWidth: 230
-  },
-  buttonUpdateProgress: {
-    color: '#fff'
-  },
-  emailVerifiedChip: {
-    width: '100%'
-  },
-  emailUnverifiedChip: {
-    width: '100%',
-    backgroundColor: blue[500],
-    '&:hover': {
-      backgroundColor: blue[700]
-    }
-  }
-});
-
 export default function FormEditUserPassword(props: IProps) {
-  const classes = useStyles();
   const { t } = useTranslation();
   const { toast } = useToast();
-  let updateUserPasswordFields = [
-    {
-      field: 'currentPassword',
+  const {
+    value,
+    error,
+    setValue,
+    validate,
+    checkApolloError,
+    setError
+  } = useForm({
+    currentPassword: {
       value: '',
-      isCheckEmpty: true,
       emptyMessage: t('please enter your current password')
     },
-    {
-      field: 'newPassword',
+    newPassword: {
       value: '',
-      isCheckEmpty: true,
       emptyMessage: t('please enter your new password')
     },
-    {
-      field: 'confirmPassword',
+    confirmPassword: {
       value: '',
-      isCheckEmpty: true,
       emptyMessage: t('please enter your confirm password')
     }
-  ];
+  });
 
   const [
     updateUserPasswordMutation,
@@ -72,66 +49,31 @@ export default function FormEditUserPassword(props: IProps) {
     IUpdateUserPasswordMutationFragmentDefaultFragment
   >(updateUserPasswordMutationFragments.DefaultFragment, {
     onCompleted: () => {
-      setUpdateUserPassword(
-        FormUtil.generateResetFieldsStateHook(
-          updateUserPasswordFields,
-          updateUserPassword
-        )
-      );
       toast.default(t('your password has been successfully updated'));
       if (props.onUpdated) {
         props.onUpdated();
       }
     },
     onError: error => {
-      setUpdateUserPassword(
-        FormUtil.validationErrorHandlerHook(
-          updateUserPasswordFields,
-          error,
-          updateUserPassword
-        ).state
-      );
+      checkApolloError(error);
     }
   });
 
-  const [updateUserPassword, setUpdateUserPassword] = useState<Fields>(
-    FormUtil.generateFieldsState(updateUserPasswordFields)
-  );
-
   function onClickUpdateUserPassword() {
-    let { state, isValid } = FormUtil.generateFieldsEmptyErrorHook(
-      updateUserPasswordFields,
-      updateUserPassword
-    );
-
-    setUpdateUserPassword(state);
-
-    let isConfirmPasswordValid = true;
-
-    if (
-      updateUserPassword.newPassword.value !==
-      updateUserPassword.confirmPassword.value
-    ) {
-      isConfirmPasswordValid = false;
-      setUpdateUserPassword(
-        update(updateUserPassword, {
-          confirmPassword: {
-            feedback: {
-              $set: t('confirm password does not match new password')
-            },
-            is_valid: { $set: false }
+    if (validate()) {
+      if (value.newPassword !== value.confirmPassword) {
+        setError(
+          'confirmPassword',
+          t('confirm password does not match new password')
+        );
+      } else {
+        updateUserPasswordMutation({
+          variables: {
+            currentPassword: value.currentPassword,
+            newPassword: value.newPassword
           }
-        })
-      );
-    }
-
-    if (isValid && isConfirmPasswordValid) {
-      updateUserPasswordMutation({
-        variables: {
-          currentPassword: updateUserPassword.currentPassword.value,
-          newPassword: updateUserPassword.newPassword.value
-        }
-      });
+        });
+      }
     }
   }
 
@@ -164,19 +106,13 @@ export default function FormEditUserPassword(props: IProps) {
       <Grid item xs={12}>
         <TextField
           type="password"
-          error={!updateUserPassword.currentPassword.is_valid}
+          error={Boolean(error.currentPassword)}
           label={t('current password')}
-          value={updateUserPassword.currentPassword.value}
-          onChange={(e: { target: { value: any } }) => {
-            setUpdateUserPassword(
-              update(updateUserPassword, {
-                currentPassword: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.currentPassword}
+          onChange={e => {
+            setValue('currentPassword', e.target.value);
           }}
-          helperText={updateUserPassword.currentPassword.feedback}
+          helperText={error.currentPassword}
           margin="normal"
           fullWidth
         />
@@ -184,19 +120,13 @@ export default function FormEditUserPassword(props: IProps) {
       <Grid item xs={12}>
         <TextField
           type="password"
-          error={!updateUserPassword.newPassword.is_valid}
+          error={Boolean(error.newPassword)}
           label={t('new password')}
-          value={updateUserPassword.newPassword.value}
-          onChange={(e: { target: { value: any } }) => {
-            setUpdateUserPassword(
-              update(updateUserPassword, {
-                newPassword: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.newPassword}
+          onChange={e => {
+            setValue('newPassword', e.target.value);
           }}
-          helperText={updateUserPassword.newPassword.feedback}
+          helperText={error.newPassword}
           margin="normal"
           fullWidth
         />
@@ -204,41 +134,27 @@ export default function FormEditUserPassword(props: IProps) {
       <Grid item xs={12}>
         <TextField
           type="password"
-          error={!updateUserPassword.confirmPassword.is_valid}
+          error={Boolean(error.confirmPassword)}
           label={t('confirm password')}
-          value={updateUserPassword.confirmPassword.value}
-          onChange={(e: { target: { value: any } }) => {
-            setUpdateUserPassword(
-              update(updateUserPassword, {
-                confirmPassword: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.confirmPassword}
+          onChange={e => {
+            setValue('confirmPassword', e.target.value);
           }}
-          helperText={updateUserPassword.confirmPassword.feedback}
+          helperText={error.confirmPassword}
           margin="normal"
           fullWidth
         />
       </Grid>
 
       <Grid container item justify="flex-end">
-        {isUpdatingUserPasswordMutation ? (
-          <Button variant="contained" color="primary">
-            <CircularProgress
-              size={20}
-              className={classes.buttonUpdateProgress}
-            />
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onClickUpdateUserPassword}
-          >
-            {t('update')}
-          </Button>
-        )}
+        <ButtonSubmit
+          onClick={onClickUpdateUserPassword}
+          variant="contained"
+          color="primary"
+          loading={isUpdatingUserPasswordMutation}
+          loadingLabel={t('updating')}
+          label={t('update')}
+        />
       </Grid>
     </Grid>
   );

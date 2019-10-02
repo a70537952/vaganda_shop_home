@@ -1,18 +1,16 @@
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import {Theme} from '@material-ui/core/styles/index';
+import { Theme } from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import update from 'immutability-helper';
-import React, {useState} from 'react';
-import FormUtil, {Fields} from '../../../utils/FormUtil';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import {useTranslation} from 'react-i18next';
-import {makeStyles} from '@material-ui/styles';
-import {useSendResetPasswordEmailMutation} from '../../../graphql/mutation/authMutation/SendResetPasswordEmailMutation';
-import {sendResetPasswordEmailMutationFragments} from '../../../graphql/fragment/mutation/authMutation/SendResetPasswordEmailMutationFragment';
-import {ISendResetPasswordEmailMutationFragmentDefaultFragment} from '../../../graphql/fragmentType/mutation/authMutation/SendResetPasswordEmailMutationFragmentInterface';
-import useToast from "../../_hook/useToast";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { makeStyles } from '@material-ui/styles';
+import { useSendResetPasswordEmailMutation } from '../../../graphql/mutation/authMutation/SendResetPasswordEmailMutation';
+import { sendResetPasswordEmailMutationFragments } from '../../../graphql/fragment/mutation/authMutation/SendResetPasswordEmailMutationFragment';
+import { ISendResetPasswordEmailMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/SendResetPasswordEmailMutationFragmentInterface';
+import useToast from '../../_hook/useToast';
+import useForm from '../../_hook/useForm';
+import ButtonSubmit from '../../ButtonSubmit';
 
 interface IProps {
   onLoginClick: () => void;
@@ -23,15 +21,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.primary.main,
     cursor: 'pointer',
     marginLeft: theme.spacing(1)
-  },
-  buttonResetPassword: {
-    marginTop: theme.spacing(2)
-  },
-  containerLogin: {
-    marginTop: theme.spacing(2)
-  },
-  buttonResetPasswordProgress: {
-    color: '#fff'
   }
 }));
 
@@ -39,13 +28,12 @@ export default function FormForgotPassword(props: IProps) {
   const classes = useStyles();
   const { t } = useTranslation();
   const { toast } = useToast();
-  let forgotPasswordFields = [
-    {
-      field: 'email',
-      isCheckEmpty: true,
+  const { value, error, setValue, validate, checkApolloError } = useForm({
+    email: {
+      value: '',
       emptyMessage: t('please enter email')
     }
-  ];
+  });
 
   const [
     sendResetPasswordEmailMutation,
@@ -54,9 +42,6 @@ export default function FormForgotPassword(props: IProps) {
     ISendResetPasswordEmailMutationFragmentDefaultFragment
   >(sendResetPasswordEmailMutationFragments.DefaultFragment, {
     onCompleted: () => {
-      setForgotPassword(
-        FormUtil.resetFieldsIsValidHook(forgotPasswordFields, forgotPassword)
-      );
       toast.default(
         t(
           'we have send a reset password link to your email, please sign in to your email account and check'
@@ -68,42 +53,15 @@ export default function FormForgotPassword(props: IProps) {
       props.onLoginClick();
     },
     onError: error => {
-      checkSendResetPasswordEmailField(error);
+      checkApolloError(error);
     }
   });
 
-  function checkSendResetPasswordEmailField(error?: any) {
-    let {
-      state: checkedEmptyState,
-      isValid: emptyIsValid
-    } = FormUtil.generateFieldsEmptyErrorHook(
-      forgotPasswordFields,
-      forgotPassword
-    );
-
-    let {
-      state: checkedErrorState,
-      isValid: validationIsValid
-    } = FormUtil.validationErrorHandlerHook(
-      forgotPasswordFields,
-      error,
-      checkedEmptyState
-    );
-
-    setForgotPassword(checkedErrorState);
-
-    return emptyIsValid && validationIsValid;
-  }
-
-  const [forgotPassword, setForgotPassword] = useState<Fields>(
-    FormUtil.generateFieldsState(forgotPasswordFields)
-  );
-
   function onClickSendResetPasswordEmail() {
-    if (checkSendResetPasswordEmailField()) {
+    if (validate()) {
       sendResetPasswordEmailMutation({
         variables: {
-          email: forgotPassword.email.value
+          email: value.email
         }
       });
     }
@@ -112,9 +70,9 @@ export default function FormForgotPassword(props: IProps) {
   let { onLoginClick } = props;
 
   return (
-    <Grid container item xs={10}>
+    <Grid container item xs={10} spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h6" align={'center'} gutterBottom paragraph>
+        <Typography variant="h6" align={'center'} paragraph>
           {t('forgot password?')}
         </Typography>
       </Grid>
@@ -129,57 +87,29 @@ export default function FormForgotPassword(props: IProps) {
         <TextField
           name={'email'}
           type={'email'}
-          error={!forgotPassword.email.is_valid}
+          error={Boolean(error.email)}
           label={t('email')}
-          value={forgotPassword.email.value}
-          onChange={(e: { target: { value: any } }) => {
-            setForgotPassword(
-              update(forgotPassword, {
-                email: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.email}
+          onChange={e => {
+            setValue('email', e.target.value);
           }}
-          helperText={forgotPassword.email.feedback}
+          helperText={error.email}
           margin={'dense'}
           fullWidth
         />
       </Grid>
       <Grid item xs={12}>
-        {isSendingResetPasswordEmailMutation ? (
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            size={'large'}
-            className={classes.buttonResetPassword}
-          >
-            <CircularProgress
-              size={20}
-              className={classes.buttonResetPasswordProgress}
-            />
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            size={'large'}
-            className={classes.buttonResetPassword}
-            onClick={onClickSendResetPasswordEmail}
-          >
-            {t('send reset password email')}
-          </Button>
-        )}
+        <ButtonSubmit
+          fullWidth
+          onClick={onClickSendResetPasswordEmail}
+          variant="contained"
+          color="primary"
+          loading={isSendingResetPasswordEmailMutation}
+          loadingLabel={t('sending')}
+          label={t('send reset password email')}
+        />
       </Grid>
-      <Grid
-        item
-        xs={12}
-        container
-        justify={'center'}
-        className={classes.containerLogin}
-      >
+      <Grid item xs={12} container justify={'center'}>
         <Typography variant="body1" display="inline">
           {t('already have an account?')}
         </Typography>

@@ -9,10 +9,10 @@ import Select from '@material-ui/core/Select';
 import { Theme } from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import update from 'immutability-helper';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { AppContext } from '../../../contexts/Context';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
+import FormUtil from '../../../utils/FormUtil';
 import UserAvatar from '../../UserAvatar';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -30,6 +30,7 @@ import { IChangeUserAvatarMutationFragmentDefaultFragment } from '../../../graph
 import { changeUserAvatarMutationFragments } from '../../../graphql/fragment/mutation/userInfoMutation/ChangeUserAvatarMutationFragment';
 import { RemoveUserAvatarMutationFragments } from '../../../graphql/fragment/mutation/userInfoMutation/RemoveUserAvatarMutationFragment';
 import { IRemoveUserAvatarMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/userInfoMutation/RemoveUserAvatarMutationFragmentInterface';
+import useForm from '../../_hook/useForm';
 
 interface IProps {
   title?: string;
@@ -63,11 +64,25 @@ export default function FormEditUserAccount(props: IProps) {
   const context = useContext(AppContext);
   const { t } = useTranslation();
   const { toast } = useToast();
-  let updateUserInfoFields = [
-    { field: 'username' },
-    { field: 'name', isCheckEmpty: true, emptyMessage: t('please enter name') },
-    { field: 'gender' }
-  ];
+  const {
+    value,
+    error,
+    setValue,
+    validate,
+    checkApolloError,
+    resetError
+  } = useForm({
+    username: {
+      value: ''
+    },
+    name: {
+      value: '',
+      emptyMessage: t('please enter name')
+    },
+    gender: {
+      value: ''
+    }
+  });
 
   const [
     updateUserInfoMutation,
@@ -76,9 +91,6 @@ export default function FormEditUserAccount(props: IProps) {
     IUpdateUserInfoMutationFragmentFormEditUserAccount
   >(updateUserInfoMutationFragments.FormEditUserAccount, {
     onCompleted: () => {
-      setUpdateUserInfo(
-        FormUtil.resetFieldsIsValidHook(updateUserInfoFields, updateUserInfo)
-      );
       toast.default(t('your profile has been successfully updated'));
       if (props.onUpdated) {
         props.onUpdated();
@@ -86,13 +98,7 @@ export default function FormEditUserAccount(props: IProps) {
       context.getContext();
     },
     onError: error => {
-      setUpdateUserInfo(
-        FormUtil.validationErrorHandlerHook(
-          updateUserInfoFields,
-          error,
-          updateUserInfo
-        ).state
-      );
+      checkApolloError(error);
     }
   });
   const [
@@ -129,43 +135,19 @@ export default function FormEditUserAccount(props: IProps) {
       },
       onCompleted: data => {
         let newUser = data.user.items[0];
-        setUpdateUserInfo(
-          update(updateUserInfo, {
-            username: {
-              value: { $set: newUser.username || '' }
-            },
-            name: {
-              value: { $set: newUser.name || '' }
-            },
-            gender: {
-              value: { $set: newUser.user_info.gender || '' }
-            }
-          })
-        );
+        setValue('username', newUser.username || '');
+        setValue('name', newUser.name || '');
+        setValue('gender', newUser.user_info.gender || '');
       }
     }
   );
 
-  const [updateUserInfo, setUpdateUserInfo] = useState<Fields>(
-    FormUtil.generateFieldsState(updateUserInfoFields)
-  );
-
   function onClickUpdateUserInfo() {
-    let { state, isValid } = FormUtil.generateFieldsEmptyErrorHook(
-      updateUserInfoFields,
-      updateUserInfo
-    );
-
-    setUpdateUserInfo(state);
-
-    if (isValid) {
+    if (validate()) {
       updateUserInfoMutation({
         variables: {
-          name: updateUserInfo.name.value,
-          gender:
-            updateUserInfo.gender.value === ''
-              ? null
-              : updateUserInfo.gender.value
+          name: value.name,
+          gender: value.gender === '' ? null : value.gender
         }
       });
     }
@@ -284,10 +266,10 @@ export default function FormEditUserAccount(props: IProps) {
         {!loading ? (
           <TextField
             disabled={true}
-            error={!updateUserInfo.username.is_valid}
+            error={Boolean(error.username)}
             label={t('username')}
-            value={updateUserInfo.username.value}
-            helperText={updateUserInfo.username.feedback}
+            value={value.username}
+            helperText={error.username}
             margin="normal"
             fullWidth
           />
@@ -298,19 +280,13 @@ export default function FormEditUserAccount(props: IProps) {
       <Grid item xs={10}>
         {!loading ? (
           <TextField
-            error={!updateUserInfo.name.is_valid}
+            error={Boolean(error.name)}
             label={t('name')}
-            value={updateUserInfo.name.value}
-            onChange={(e: { target: { value: any } }) => {
-              setUpdateUserInfo(
-                update(updateUserInfo, {
-                  name: {
-                    value: { $set: e.target.value }
-                  }
-                })
-              );
+            value={value.name}
+            onChange={e => {
+              setValue('name', e.target.value);
             }}
-            helperText={updateUserInfo.name.feedback}
+            helperText={error.name}
             margin="normal"
             fullWidth
           />
@@ -320,18 +296,12 @@ export default function FormEditUserAccount(props: IProps) {
       </Grid>
       <Grid item xs={10}>
         {!loading ? (
-          <FormControl fullWidth error={!updateUserInfo.gender.is_valid}>
+          <FormControl fullWidth error={Boolean(error.gender)}>
             <InputLabel htmlFor="gender">{t('gender')}</InputLabel>
             <Select
-              value={updateUserInfo.gender.value}
-              onChange={(e: { target: { value: any } }) => {
-                setUpdateUserInfo(
-                  update(updateUserInfo, {
-                    gender: {
-                      value: { $set: e.target.value }
-                    }
-                  })
-                );
+              value={value.gender}
+              onChange={e => {
+                setValue('gender', e.target.value);
               }}
               inputProps={{
                 name: 'gender',
@@ -344,7 +314,7 @@ export default function FormEditUserAccount(props: IProps) {
               <MenuItem value={1}>{t('male')}</MenuItem>
               <MenuItem value={0}>{t('female')}</MenuItem>
             </Select>
-            <FormHelperText>{updateUserInfo.gender.feedback}</FormHelperText>
+            <FormHelperText>{error.gender}</FormHelperText>
           </FormControl>
         ) : (
           <Skeleton height={50} />

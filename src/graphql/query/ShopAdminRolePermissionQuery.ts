@@ -36,15 +36,11 @@ export function shopAdminRolePermissionQuery(
   fragment: DocumentNode
 ): DocumentNode {
   return gql`
-    query ShopAdminRolePermission(
-    
-    ) {
-        shopAdminRolePermission(
-        
-        ){
-            ...fragment
-        }
+    query ShopAdminRolePermission {
+      shopAdminRolePermission {
+        ...fragment
+      }
     }
     ${fragment}
-`;
+  `;
 }

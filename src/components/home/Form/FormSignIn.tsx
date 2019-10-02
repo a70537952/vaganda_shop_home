@@ -4,9 +4,8 @@ import { Theme } from '@material-ui/core/styles/index';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import update from 'immutability-helper';
 import React, { useState } from 'react';
-import FormUtil, { Fields } from '../../../utils/FormUtil';
+import FormUtil from '../../../utils/FormUtil';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
@@ -22,6 +21,8 @@ import { IResendVerifyUserEmailMutationFragmentDefaultFragment } from '../../../
 import { ISignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/SignInUserMutationFragmentInterface';
 import { IFacebookSignInUserMutationFragmentDefaultFragment } from '../../../graphql/fragmentType/mutation/authMutation/FacebookSignInUserMutationFragmentInterface';
 import useToast from '../../_hook/useToast';
+import useForm from '../../_hook/useForm';
+import ButtonSubmit from '../../ButtonSubmit';
 
 interface IProps {
   onForgotPasswordClick: () => void;
@@ -65,18 +66,16 @@ export default function FormSignIn(props: IProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [cookie, setCookie] = useCookies([]);
-  let signInFields = [
-    {
-      field: 'email',
-      isCheckEmpty: true,
+  const { value, error, setValue, validate, checkApolloError } = useForm({
+    email: {
+      value: '',
       emptyMessage: t('please enter email')
     },
-    {
-      field: 'password',
-      isCheckEmpty: true,
+    password: {
+      value: '',
       emptyMessage: t('please enter password')
     }
-  ];
+  });
 
   const [
     resendVerifyUserEmailMutation,
@@ -95,11 +94,10 @@ export default function FormSignIn(props: IProps) {
     signInUserMutationFragments.DefaultFragment,
     {
       onCompleted: data => {
-        setSignIn(FormUtil.resetFieldsIsValidHook(signInFields, signIn));
         onSignInCompleted(data.signInUserMutation);
       },
       onError: error => {
-        checkSignInField(error);
+        checkApolloError(error);
       }
     }
   );
@@ -113,7 +111,10 @@ export default function FormSignIn(props: IProps) {
       onSignInCompleted(data.facebookSignInMutation);
     },
     onError: error => {
-      checkSignInField(error);
+      checkApolloError(error);
+      setShowVerifyAccountMessage(
+        Boolean(FormUtil.getValidationErrorByField('account_verified', error))
+      );
     }
   });
 
@@ -126,45 +127,19 @@ export default function FormSignIn(props: IProps) {
     window.location.reload();
   }
 
-  const [signIn, setSignIn] = useState<Fields>(
-    FormUtil.generateFieldsState(signInFields)
-  );
   const [showVerifyAccountMessage, setShowVerifyAccountMessage] = useState<
     boolean
   >(false);
 
   function onClickSignIn() {
-    if (checkSignInField()) {
+    if (validate()) {
       signInUserMutation({
         variables: {
-          email: signIn.email.value,
-          password: signIn.password.value
+          email: value.email,
+          password: value.password
         }
       });
     }
-  }
-
-  function checkSignInField(error?: any) {
-    let {
-      state: checkedEmptyState,
-      isValid: emptyIsValid
-    } = FormUtil.generateFieldsEmptyErrorHook(signInFields, signIn);
-
-    let {
-      state: checkedErrorState,
-      isValid: validationIsValid
-    } = FormUtil.validationErrorHandlerHook(
-      signInFields,
-      error,
-      checkedEmptyState
-    );
-
-    setShowVerifyAccountMessage(
-      Boolean(FormUtil.getValidationErrorByField('account_verified', error))
-    );
-    setSignIn(checkedErrorState);
-
-    return emptyIsValid && validationIsValid;
   }
 
   let { onForgotPasswordClick, onSignUpClick } = props;
@@ -179,20 +154,14 @@ export default function FormSignIn(props: IProps) {
       <Grid item xs={12}>
         <TextField
           name={'email'}
-          error={!signIn.email.is_valid}
+          error={Boolean(error.email)}
           label={t('email')}
-          value={signIn.email.value}
-          onChange={(e: { target: { value: any } }) => {
-            setSignIn(
-              update(signIn, {
-                email: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.email}
+          onChange={e => {
+            setValue('email', e.target.value);
             setShowVerifyAccountMessage(false);
           }}
-          helperText={signIn.email.feedback}
+          helperText={error.email}
           margin={'dense'}
           fullWidth
         />
@@ -200,19 +169,13 @@ export default function FormSignIn(props: IProps) {
       <Grid item xs={12}>
         <TextField
           type="password"
-          error={!signIn.password.is_valid}
+          error={Boolean(error.password)}
           label={t('password')}
-          value={signIn.password.value}
-          onChange={(e: { target: { value: any } }) => {
-            setSignIn(
-              update(signIn, {
-                password: {
-                  value: { $set: e.target.value }
-                }
-              })
-            );
+          value={value.password}
+          onChange={e => {
+            setValue('password', e.target.value);
           }}
-          helperText={signIn.password.feedback}
+          helperText={error.password}
           margin={'dense'}
           fullWidth
         />
@@ -245,7 +208,7 @@ export default function FormSignIn(props: IProps) {
                 onClick={() => {
                   resendVerifyUserEmailMutation({
                     variables: {
-                      email: signIn.email.value
+                      email: value.email
                     }
                   });
                 }}
@@ -258,24 +221,15 @@ export default function FormSignIn(props: IProps) {
       )}
 
       <Grid item xs={12}>
-        {isSigningInUserMutation ? (
-          <Button variant="contained" color="primary" fullWidth size={'large'}>
-            <CircularProgress
-              size={20}
-              className={classes.buttonSignInProgress}
-            />
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            size={'large'}
-            onClick={onClickSignIn}
-          >
-            {t('sign in')}
-          </Button>
-        )}
+        <ButtonSubmit
+          fullWidth
+          onClick={onClickSignIn}
+          variant="contained"
+          color="primary"
+          loading={isSigningInUserMutation}
+          loadingLabel={t('signing in')}
+          label={t('sign in')}
+        />
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body1" align={'center'} className={classes.textOr}>

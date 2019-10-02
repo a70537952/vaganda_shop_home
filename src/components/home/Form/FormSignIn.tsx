@@ -98,6 +98,9 @@ export default function FormSignIn(props: IProps) {
       },
       onError: error => {
         checkApolloError(error);
+        setShowVerifyAccountMessage(
+          Boolean(FormUtil.getValidationErrorByField('account_verified', error))
+        );
       }
     }
   );
@@ -112,9 +115,6 @@ export default function FormSignIn(props: IProps) {
     },
     onError: error => {
       checkApolloError(error);
-      setShowVerifyAccountMessage(
-        Boolean(FormUtil.getValidationErrorByField('account_verified', error))
-      );
     }
   });
 

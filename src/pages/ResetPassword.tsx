@@ -1,59 +1,48 @@
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import {makeStyles, Theme} from '@material-ui/core/styles/index';
+import { makeStyles, Theme } from '@material-ui/core/styles/index';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import update from 'immutability-helper';
-import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import HomeHelmet from '../components/home/HomeHelmet';
-import FormUtil, {Fields} from '../utils/FormUtil';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import {useTranslation} from 'react-i18next';
-import {homePath} from '../utils/RouteUtil';
+import { useTranslation } from 'react-i18next';
+import { homePath } from '../utils/RouteUtil';
 import useToast from '../components/_hook/useToast';
-import {useResetUserPasswordMutation} from '../graphql/mutation/authMutation/ResetUserPasswordMutation';
-import {IResetUserPasswordMutationFragmentDefaultFragment} from '../graphql/fragmentType/mutation/authMutation/ResetUserPasswordMutationFragmentInterface';
-import {resetUserPasswordMutationFragments} from '../graphql/fragment/mutation/authMutation/ResetUserPasswordMutationFragment';
+import { useResetUserPasswordMutation } from '../graphql/mutation/authMutation/ResetUserPasswordMutation';
+import { IResetUserPasswordMutationFragmentDefaultFragment } from '../graphql/fragmentType/mutation/authMutation/ResetUserPasswordMutationFragmentInterface';
+import { resetUserPasswordMutationFragments } from '../graphql/fragment/mutation/authMutation/ResetUserPasswordMutationFragment';
 import useRouter from '../components/_hook/useRouter';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    width: '100%',
-    padding: theme.spacing(3)
-  },
-  buttonResetPassword: {
-    marginTop: theme.spacing(2)
-  },
-  buttonResetPasswordProgress: {
-    color: '#fff'
-  }
-}));
+import useForm from '../components/_hook/useForm';
+import ButtonSubmit from '../components/ButtonSubmit';
 
 export default function ResetPassword() {
-  const classes = useStyles();
   const { t } = useTranslation();
   const { toast } = useToast();
 
-  const resetPasswordFields = [
-    {
-      field: 'password',
-      isCheckEmpty: true,
+  const {
+    value,
+    error,
+    setValue,
+    validate,
+    checkApolloError,
+    setError
+  } = useForm({
+    password: {
+      value: '',
       emptyMessage: t('please enter password')
     },
-    {
-      field: 'confirmPassword',
-      isCheckEmpty: true,
+    confirmPassword: {
+      value: '',
       emptyMessage: t('please enter confirm password')
     },
-    { field: 'token' }
-  ];
+    token: {
+      value: ''
+    }
+  });
 
   const [token, setToken] = useState<string>('');
-  const [resetPassword, setResetPassword] = useState<Fields>(
-    FormUtil.generateFieldsState(resetPasswordFields)
-  );
   const [isResetPasswordCompleted, setIsResetPasswordCompleted] = useState<
     boolean
   >(false);
@@ -65,10 +54,6 @@ export default function ResetPassword() {
     IResetUserPasswordMutationFragmentDefaultFragment
   >(resetUserPasswordMutationFragments.DefaultFragment, {
     onCompleted: () => {
-      setResetPassword(
-        update(resetPassword, FormUtil.resetFieldsIsValid(resetPasswordFields))
-      );
-
       setIsResetPasswordCompleted(true);
       toast.default(
         t(
@@ -80,7 +65,7 @@ export default function ResetPassword() {
       );
     },
     onError: error => {
-      checkResetPasswordField(error);
+      checkApolloError(error);
     }
   });
 
@@ -93,40 +78,11 @@ export default function ResetPassword() {
     }
   }, [location.search]);
 
-  async function checkResetPasswordField(error?: any) {
-    let {
-      state: checkedEmptyState,
-      isValid: emptyIsValid
-    } = FormUtil.generateFieldsEmptyErrorHook(
-      resetPasswordFields,
-      resetPassword
-    );
-
-    let {
-      state: checkedErrorState,
-      isValid: validationIsValid
-    } = FormUtil.validationErrorHandlerHook(
-      resetPasswordFields,
-      error,
-      checkedEmptyState
-    );
-
-    setResetPassword(checkedErrorState);
-
-    return emptyIsValid && validationIsValid && isConfirmPasswordValid();
-  }
-
   function isConfirmPasswordValid() {
-    if (resetPassword.password.value !== resetPassword.confirmPassword.value) {
-      setResetPassword(
-        update(resetPassword, {
-          confirmPassword: {
-            feedback: {
-              $set: t('password does not match the confirm password')
-            },
-            is_valid: { $set: false }
-          }
-        })
+    if (value.password !== value.confirmPassword) {
+      setError(
+        'confirmPassword',
+        t('password does not match the confirm password')
       );
       return false;
     }
@@ -134,11 +90,11 @@ export default function ResetPassword() {
   }
 
   async function onClickResetPassword() {
-    if (await checkResetPasswordField()) {
+    if (validate() && isConfirmPasswordValid()) {
       resetUserPasswordMutation({
         variables: {
           token: token,
-          password: resetPassword.password.value
+          password: value.password
         }
       });
     }
@@ -153,7 +109,7 @@ export default function ResetPassword() {
         ogImage="/images/favicon-228.png"
       />
       <Grid container item direction="row" justify={'center'} xs={12}>
-        <Grid container item xs={10} sm={8} md={6} lg={4}>
+        <Grid container item xs={10} sm={8} md={6} lg={4} spacing={1}>
           <Grid item xs={12}>
             <Typography variant="h6" align={'center'}>
               {t('reset password')}
@@ -171,17 +127,13 @@ export default function ResetPassword() {
               <Grid item xs={12}>
                 <TextField
                   type="password"
-                  error={!resetPassword.password.is_valid}
+                  error={Boolean(error.password)}
                   label={t('password')}
-                  value={resetPassword.password.value}
-                  onChange={(e: { target: { value: any } }) => {
-                    setResetPassword(
-                      update(resetPassword, {
-                        password: { value: { $set: e.target.value } }
-                      })
-                    );
+                  value={value.password}
+                  onChange={e => {
+                    setValue('password', e.target.value);
                   }}
-                  helperText={resetPassword.password.feedback}
+                  helperText={error.password}
                   margin={'dense'}
                   fullWidth
                 />
@@ -189,56 +141,33 @@ export default function ResetPassword() {
               <Grid item xs={12}>
                 <TextField
                   type="password"
-                  error={!resetPassword.confirmPassword.is_valid}
+                  error={Boolean(error.confirmPassword)}
                   label={t('confirm password')}
-                  value={resetPassword.confirmPassword.value}
-                  onChange={(e: { target: { value: any } }) => {
-                    setResetPassword(
-                      update(resetPassword, {
-                        confirmPassword: {
-                          value: { $set: e.target.value }
-                        }
-                      })
-                    );
+                  value={value.confirmPassword}
+                  onChange={e => {
+                    setValue('confirmPassword', e.target.value);
                   }}
-                  helperText={resetPassword.confirmPassword.feedback}
+                  helperText={error.confirmPassword}
                   margin={'dense'}
                   fullWidth
                 />
               </Grid>
               <Grid item xs={12}>
-                {!resetPassword.token.is_valid && (
-                  <FormHelperText error>
-                    {resetPassword.token.feedback}
-                  </FormHelperText>
+                {Boolean(error.token) && (
+                  <FormHelperText error>{error.token}</FormHelperText>
                 )}
               </Grid>
               <Grid item xs={12}>
-                {isResetingUserPasswordMutation ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    size={'large'}
-                    className={classes.buttonResetPassword}
-                  >
-                    <CircularProgress
-                      size={20}
-                      className={classes.buttonResetPasswordProgress}
-                    />
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    size={'large'}
-                    className={classes.buttonResetPassword}
-                    onClick={onClickResetPassword}
-                  >
-                    {t('reset password')}
-                  </Button>
-                )}
+                <ButtonSubmit
+                  onClick={onClickResetPassword}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  size={'large'}
+                  loading={isResetingUserPasswordMutation}
+                  loadingLabel={t('resetting')}
+                  label={t('reset password')}
+                />
               </Grid>
             </>
           )}
@@ -257,7 +186,6 @@ export default function ResetPassword() {
                   color="primary"
                   fullWidth
                   size={'large'}
-                  className={classes.buttonResetPassword}
                   {...({ component: Link, to: homePath('home') } as any)}
                 >
                   {t('back to home')}

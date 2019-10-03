@@ -29,7 +29,7 @@ export interface UseForm {
   isValid: boolean;
   resetError: () => void;
   resetValue: () => void;
-  checkApolloError: (error: ApolloError) => void;
+  checkApolloError: (error: ApolloError) => boolean;
 }
 
 type FieldsKey = keyof Fields;
@@ -107,6 +107,7 @@ function useForm(fields: Fields) {
   }
 
   function checkApolloError(error: ApolloError) {
+    let hasError = false;
     if (
       error.graphQLErrors &&
       error.graphQLErrors.length &&
@@ -118,12 +119,14 @@ function useForm(fields: Fields) {
         let validationField = fields[field].validationField || field;
         let fieldError = validationError[validationField];
         if (fieldError && fieldError[0]) {
+          hasError = true;
           setNewError(field, fieldError[0]);
         } else {
           setNewError(field, '');
         }
       });
     }
+    return hasError;
   }
 
   function resetError() {

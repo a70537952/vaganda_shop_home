@@ -266,5 +266,6 @@
   "close": "关闭",
   "signing in": "登录中",
   "signing up": "注册中",
-  "resetting": "重置中"
+  "resetting": "重置中",
+  "creating": "创建中"
 }

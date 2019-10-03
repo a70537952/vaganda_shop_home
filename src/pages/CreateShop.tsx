@@ -1,6 +1,5 @@
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -13,12 +12,11 @@ import Paper from '@material-ui/core/Paper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Stepper from '@material-ui/core/Stepper';
-import {makeStyles, Theme} from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import update from 'immutability-helper';
-import React, {useContext, useState} from 'react';
-import {useApolloClient} from 'react-apollo';
+import React, { useContext, useState } from 'react';
+import { useApolloClient } from 'react-apollo';
 import Geolocation from 'react-geolocation';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CountryPhoneCodeSelect from '../components/_select/CountryPhoneCodeSelect';
@@ -29,19 +27,20 @@ import GoogleMapMarker from '../components/GoogleMapMarker';
 import HomeHelmet from '../components/home/HomeHelmet';
 import ShopCategorySelect from '../components/_select/ShopCategorySelect';
 import UploadImageMutation from '../components/UploadImageMutation';
-import {AppContext} from '../contexts/Context';
-import FormUtil, {Fields} from '../utils/FormUtil';
-import {useTranslation} from 'react-i18next';
+import { AppContext } from '../contexts/Context';
+import FormUtil from '../utils/FormUtil';
+import { useTranslation } from 'react-i18next';
 import Image from '../components/Image';
 import useToast from '../components/_hook/useToast';
-import {shopQuery, ShopVars} from '../graphql/query/ShopQuery';
-import {shopFragments} from '../graphql/fragment/query/ShopFragment';
-import {IShopFragmentCreateShop} from '../graphql/fragmentType/query/ShopFragmentInterface';
-import {WithPagination} from '../graphql/query/Query';
-import {useCreateShopMutation} from '../graphql/mutation/shopMutation/CreateShopMutation';
-import {createShopMutationFragments} from '../graphql/fragment/mutation/shopMutation/CreateShopMutationFragment';
-import {ICreateShopMutationFragmentDefaultFragment} from '../graphql/fragmentType/mutation/shopMutation/CreateShopMutationFragmentInterface';
-
+import { shopQuery, ShopVars } from '../graphql/query/ShopQuery';
+import { shopFragments } from '../graphql/fragment/query/ShopFragment';
+import { IShopFragmentCreateShop } from '../graphql/fragmentType/query/ShopFragmentInterface';
+import { WithPagination } from '../graphql/query/Query';
+import { useCreateShopMutation } from '../graphql/mutation/shopMutation/CreateShopMutation';
+import { createShopMutationFragments } from '../graphql/fragment/mutation/shopMutation/CreateShopMutationFragment';
+import { ICreateShopMutationFragmentDefaultFragment } from '../graphql/fragmentType/mutation/shopMutation/CreateShopMutationFragmentInterface';
+import useForm from '../components/_hook/useForm';
+import ButtonSubmit from '../components/ButtonSubmit';
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -69,9 +68,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   shopBanner: {
     width: '100%'
-  },
-  buttonCreateProgress: {
-    color: '#fff'
   }
 }));
 
@@ -82,127 +78,146 @@ export default function CreateShop() {
   const { toast } = useToast();
   const client = useApolloClient();
 
-  let shopSetupFields = [
-    {
-      field: 'name',
+  const {
+    value: shopSetupValue,
+    error: shopSetupError,
+    setValue: shopSetupSetValue,
+    validate: shopSetupValidate,
+    checkApolloError: shopSetupCheckApolloError,
+    setError: shopSetupSetError
+  } = useForm({
+    name: {
+      value: '',
       validationField: 'shopSetupName',
-      isCheckEmpty: true,
       emptyMessage: t('please enter shop name')
     },
-    {
-      field: 'shop_category',
+    shop_category: {
+      value: '',
       validationField: 'shopSetupShopCategory',
-      isCheckEmpty: true,
       emptyMessage: t('please select shop category')
     },
-    {
-      field: 'shop_currency',
-      validationField: 'shopSetupShopCurrency',
+    shop_currency: {
       value: 'MYR',
-      isCheckEmpty: true,
+      validationField: 'shopSetupShopCurrency',
       emptyMessage: t('please select shop currency')
     },
-    {
-      field: 'has_physical_shop',
+    has_physical_shop: {
       validationField: 'shopSetupHasPhysicalShop',
       value: true
     }
-  ];
+  });
 
-  let shopInfoFields = [
-    { field: 'summary', validationField: 'shopInfoSummary' },
-    { field: 'logo', validationField: 'shopInfoLogo' },
-    { field: 'banner', validationField: 'shopInfoBanner' }
-  ];
+  const {
+    value: shopInfoValue,
+    error: shopInfoError,
+    setValue: shopInfoSetValue,
+    checkApolloError: shopInfoCheckApolloError
+  } = useForm({
+    summary: {
+      value: '',
+      validationField: 'shopInfoSummary'
+    },
+    logo: {
+      value: '',
+      validationField: 'shopInfoLogo'
+    },
+    banner: {
+      value: '',
+      validationField: 'shopInfoBanner'
+    }
+  });
 
-  let shopAddressFields = [
-    {
-      field: 'address_1',
+  const {
+    value: shopAddressValue,
+    error: shopAddressError,
+    setValue: shopAddressSetValue,
+    validate: shopAddressValidate,
+    checkApolloError: shopAddressCheckApolloError
+  } = useForm({
+    address_1: {
+      value: '',
       validationField: 'shopAddressAddress1',
-      isCheckEmpty: true,
       emptyMessage: t('please enter shop address')
     },
-    { field: 'address_2', validationField: 'shopAddressAddress2' },
-    { field: 'address_3', validationField: 'shopAddressAddress3' },
-    {
-      field: 'city',
+    address_2: {
+      value: '',
+      validationField: 'shopAddressAddress2'
+    },
+    address_3: {
+      value: '',
+      validationField: 'shopAddressAddress3'
+    },
+    city: {
+      value: '',
       validationField: 'shopAddressCity',
-      isCheckEmpty: true,
       emptyMessage: t('please enter city')
     },
-    {
-      field: 'state',
+    state: {
+      value: '',
       validationField: 'shopAddressState',
-      isCheckEmpty: true,
       emptyMessage: t('please enter state')
     },
-    {
-      field: 'postal_code',
+    postal_code: {
+      value: '',
       validationField: 'shopAddressPostalCode',
-      isCheckEmpty: true,
       emptyMessage: t('please enter postal code')
     },
-    {
-      field: 'country',
+    country: {
+      value: '',
       validationField: 'shopAddressCountry',
-      isCheckEmpty: true,
       emptyMessage: t('please select country')
     },
-    {
-      field: 'latitude',
+    latitude: {
+      value: '',
       validationField: 'shopAddressLatitude',
-      isCheckEmpty: true,
       emptyMessage: t('please mark your shop location')
     },
-    {
-      field: 'longitude',
+    longitude: {
+      value: '',
       validationField: 'shopAddressLongitude',
-      isCheckEmpty: true,
       emptyMessage: t('please mark your shop location')
     }
-  ];
+  });
 
-  let shopContactFields = [
-    {
-      field: 'email',
+  const {
+    value: shopContactValue,
+    error: shopContactError,
+    setValue: shopContactSetValue,
+    validate: shopContactValidate,
+    checkApolloError: shopContactCheckApolloError
+  } = useForm({
+    email: {
+      value: '',
       validationField: 'shopContactEmail',
-      isCheckEmpty: true,
       emptyMessage: t('please enter shop email')
     },
-    { field: 'website', validationField: 'shopContactWebsite' },
-    {
-      field: 'telephone_country_code',
+    website: {
+      value: '',
+      validationField: 'shopContactWebsite'
+    },
+    telephone_country_code: {
+      value: '',
       validationField: 'shopContactTelephoneCountryCode'
     },
-    { field: 'telephone', validationField: 'shopContactTelephone' },
-    {
-      field: 'phone_country_code',
+    telephone: {
+      value: '',
+      validationField: 'shopContactTelephone'
+    },
+    phone_country_code: {
+      value: '',
       validationField: 'shopContactPhoneCountryCode'
     },
-    {
-      field: 'phone',
+    phone: {
+      value: '',
       validationField: 'shopContactPhone',
-      isCheckEmpty: true,
       emptyMessage: t('please enter shop phone')
     }
-  ];
+  });
 
   const [steps] = useState<
     ['shop setup', 'shop info', 'shop address', 'shop contact']
   >(['shop setup', 'shop info', 'shop address', 'shop contact']);
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [shopSetup, setShopSetup] = useState<Fields>(
-    FormUtil.generateFieldsState(shopSetupFields)
-  );
-  const [shopInfo, setShopInfo] = useState<Fields>(
-    FormUtil.generateFieldsState(shopInfoFields)
-  );
-  const [shopAddress, setShopAddress] = useState<Fields>(
-    FormUtil.generateFieldsState(shopAddressFields)
-  );
-  const [shopContact, setShopContact] = useState<Fields>(
-    FormUtil.generateFieldsState(shopContactFields)
-  );
 
   const [uploadingLogoCount, setUploadingLogoCount] = useState<number>(0);
   const [uploadingBannerCount, setUploadingBannerCount] = useState<number>(0);
@@ -213,34 +228,14 @@ export default function CreateShop() {
     setActiveStep(steps.indexOf(step));
   }
 
-  async function checkSectionSetupField(error?: any) {
-    let {
-      state: checkedEmptyState,
-      isValid: emptyIsValid
-    } = FormUtil.generateFieldsEmptyErrorHook(shopSetupFields, shopSetup);
-
-    let {
-      state: checkedErrorState,
-      isValid: validationIsValid
-    } = FormUtil.validationErrorHandlerHook(
-      shopSetupFields,
-      error,
-      checkedEmptyState
-    );
-
-    let isValid = emptyIsValid && validationIsValid;
+  async function checkSectionSetupField() {
+    let isValid = shopSetupValidate();
 
     if (await isShopNameExist()) {
-      checkedErrorState = update(checkedErrorState, {
-        name: {
-          feedback: { $set: t('this shop name already been used') },
-          is_valid: { $set: false }
-        }
-      });
+      shopSetupSetError('name', t('this shop name already been used'));
       isValid = false;
     }
 
-    setShopSetup(checkedErrorState);
     if (!isValid) await setStep('shop setup');
     return isValid;
   }
@@ -256,50 +251,19 @@ export default function CreateShop() {
     return isValid;
   }
 
-  async function checkSectionAddressField(error?: any) {
-    if (!shopSetup.has_physical_shop.value) {
+  async function checkSectionAddressField() {
+    if (!shopSetupValue.has_physical_shop) {
       return true;
     }
 
-    let {
-      state: checkedEmptyState,
-      isValid: emptyIsValid
-    } = FormUtil.generateFieldsEmptyErrorHook(shopAddressFields, shopAddress);
+    let isValid = shopAddressValidate();
 
-    let {
-      state: checkedErrorState,
-      isValid: validationIsValid
-    } = FormUtil.validationErrorHandlerHook(
-      shopAddressFields,
-      error,
-      checkedEmptyState
-    );
-
-    let isValid = emptyIsValid && validationIsValid;
-
-    setShopAddress(checkedErrorState);
     if (!isValid) await setStep('shop address');
     return isValid;
   }
 
-  async function checkSectionContactField(error?: any) {
-    let {
-      state: checkedEmptyState,
-      isValid: emptyIsValid
-    } = FormUtil.generateFieldsEmptyErrorHook(shopContactFields, shopContact);
-
-    let {
-      state: checkedErrorState,
-      isValid: validationIsValid
-    } = FormUtil.validationErrorHandlerHook(
-      shopContactFields,
-      error,
-      checkedEmptyState
-    );
-
-    let isValid = emptyIsValid && validationIsValid;
-
-    setShopContact(checkedErrorState);
+  async function checkSectionContactField() {
+    let isValid = shopContactValidate();
 
     if (!isValid) await setStep('shop contact');
     return isValid;
@@ -316,45 +280,45 @@ export default function CreateShop() {
     ) {
       createShopMutation({
         variables: {
-          shopSetupName: shopSetup.name.value,
-          shopSetupShopCategory: shopSetup.shop_category.value,
-          shopSetupShopCurrency: shopSetup.shop_currency.value,
-          shopSetupHasPhysicalShop: shopSetup.has_physical_shop.value,
+          shopSetupName: shopSetupValue.name,
+          shopSetupShopCategory: shopSetupValue.shop_category,
+          shopSetupShopCurrency: shopSetupValue.shop_currency,
+          shopSetupHasPhysicalShop: shopSetupValue.has_physical_shop,
 
-          shopInfoSummary: shopInfo.summary.value,
-          shopInfoLogo: shopInfo.logo.value ? shopInfo.logo.value.path : null,
-          shopInfoBanner: shopInfo.banner.value
-            ? shopInfo.banner.value.path
+          shopInfoSummary: shopInfoValue.summary,
+          shopInfoLogo: shopInfoValue.logo ? shopInfoValue.logo.path : null,
+          shopInfoBanner: shopInfoValue.banner
+            ? shopInfoValue.banner.path
             : null,
 
-          shopAddressAddress1: shopAddress.address_1.value,
-          shopAddressAddress2: shopAddress.address_2.value,
-          shopAddressAddress3: shopAddress.address_3.value,
-          shopAddressCity: shopAddress.city.value,
-          shopAddressState: shopAddress.state.value,
-          shopAddressPostalCode: shopAddress.postal_code.value,
-          shopAddressCountry: shopAddress.country.value,
-          shopAddressLatitude: shopAddress.latitude.value,
-          shopAddressLongitude: shopAddress.longitude.value,
+          shopAddressAddress1: shopAddressValue.address_1,
+          shopAddressAddress2: shopAddressValue.address_2,
+          shopAddressAddress3: shopAddressValue.address_3,
+          shopAddressCity: shopAddressValue.city,
+          shopAddressState: shopAddressValue.state,
+          shopAddressPostalCode: shopAddressValue.postal_code,
+          shopAddressCountry: shopAddressValue.country,
+          shopAddressLatitude: shopAddressValue.latitude,
+          shopAddressLongitude: shopAddressValue.longitude,
 
-          shopContactEmail: shopContact.email.value,
-          shopContactWebsite: shopContact.website.value,
+          shopContactEmail: shopContactValue.email,
+          shopContactWebsite: shopContactValue.website,
           shopContactTelephoneCountryCode:
-            shopContact.telephone_country_code.value,
-          shopContactTelephone: shopContact.telephone.value,
-          shopContactPhoneCountryCode: shopContact.phone_country_code.value,
-          shopContactPhone: shopContact.phone.value
+            shopContactValue.telephone_country_code,
+          shopContactTelephone: shopContactValue.telephone,
+          shopContactPhoneCountryCode: shopContactValue.phone_country_code,
+          shopContactPhone: shopContactValue.phone
         }
       });
     }
   }
 
   async function isShopNameExist() {
-    if (shopSetup.name.value.trim() !== '') {
+    if (shopSetupValue.name.trim() !== '') {
       return client
         .query<{ shop: WithPagination<IShopFragmentCreateShop> }, ShopVars>({
           query: shopQuery(shopFragments.CreateShop),
-          variables: { name: shopSetup.name.value }
+          variables: { name: shopSetupValue.name }
         })
         .then(({ data }) => {
           return data.shop.items.length > 0;
@@ -373,10 +337,18 @@ export default function CreateShop() {
         context.getContext();
       },
       onError: async error => {
-        await checkSectionContactField(error);
-        await checkSectionAddressField(error);
-        await checkSectionInfoField();
-        await checkSectionSetupField(error);
+        if (await shopContactCheckApolloError(error)) {
+          setStep('shop contact');
+        }
+        if (await shopAddressCheckApolloError(error)) {
+          setStep('shop address');
+        }
+        if (await shopInfoCheckApolloError(error)) {
+          setStep('shop info');
+        }
+        if (await shopSetupCheckApolloError(error)) {
+          setStep('shop setup');
+        }
       }
     }
   );
@@ -398,13 +370,7 @@ export default function CreateShop() {
       uploadingLogoCount => uploadingLogoCount - tempImageData.length
     );
 
-    setShopInfo(shopInfo =>
-      update(shopInfo, {
-        logo: {
-          value: { $set: tempImageData[0] }
-        }
-      })
-    );
+    shopInfoSetValue('logo', tempImageData[0]);
   }
 
   function uploadLogoErrorHandler(error: any) {
@@ -432,13 +398,7 @@ export default function CreateShop() {
       uploadingBannerCount => uploadingBannerCount - tempImageData.length
     );
 
-    setShopInfo(shopInfo =>
-      update(shopInfo, {
-        banner: {
-          value: { $set: tempImageData[0] }
-        }
-      })
-    );
+    shopInfoSetValue('banner', tempImageData[0]);
   }
 
   function uploadBannerErrorHandler(error: any) {
@@ -450,23 +410,11 @@ export default function CreateShop() {
   }
 
   function removeUploadedLogo() {
-    setShopInfo(
-      update(shopInfo, {
-        logo: {
-          value: { $set: null }
-        }
-      })
-    );
+    shopInfoSetValue('logo', null);
   }
 
   function removeUploadedBanner() {
-    setShopInfo(
-      update(shopInfo, {
-        banner: {
-          value: { $set: null }
-        }
-      })
-    );
+    shopInfoSetValue('banner', null);
   }
 
   return (
@@ -512,17 +460,13 @@ export default function CreateShop() {
                   <Grid container item xs={12} sm={8} md={6} lg={4} spacing={3}>
                     <TextField
                       required
-                      error={!shopSetup.name.is_valid}
+                      error={Boolean(shopSetupError.name)}
                       label={t('shop name')}
-                      value={shopSetup.name.value}
+                      value={shopSetupValue.name}
                       onChange={e => {
-                        setShopSetup(
-                          update(shopSetup, {
-                            name: { value: { $set: e.target.value } }
-                          })
-                        );
+                        shopSetupSetValue('name', e.target.value);
                       }}
-                      helperText={shopSetup.name.feedback}
+                      helperText={shopSetupError.name}
                       margin="normal"
                       fullWidth
                     />
@@ -530,16 +474,12 @@ export default function CreateShop() {
                       margin="normal"
                       fullWidth
                       label={t('shop category')}
-                      error={!shopSetup.shop_category.is_valid}
-                      helperText={shopSetup.shop_category.feedback}
+                      error={Boolean(shopSetupError.shop_category)}
+                      helperText={shopSetupError.shop_category}
                       required
-                      value={shopSetup.shop_category.value}
+                      value={shopSetupValue.shop_category}
                       onChange={(value: unknown) => {
-                        setShopSetup(
-                          update(shopSetup, {
-                            shop_category: { value: { $set: value } }
-                          })
-                        );
+                        shopSetupSetValue('shop_category', value);
                       }}
                     />
                     <FormHelperText error={false}>
@@ -551,16 +491,12 @@ export default function CreateShop() {
                       fullWidth
                       margin={'normal'}
                       label={t('shop currency')}
-                      error={!shopSetup.shop_currency.is_valid}
-                      helperText={shopSetup.shop_currency.feedback}
+                      error={Boolean(shopSetupError.shop_currency)}
+                      helperText={shopSetupError.shop_currency}
                       required
-                      value={shopSetup.shop_currency.value}
+                      value={shopSetupValue.shop_currency}
                       onChange={(value: unknown) => {
-                        setShopSetup(
-                          update(shopSetup, {
-                            shop_currency: { value: { $set: value } }
-                          })
-                        );
+                        shopSetupSetValue('shop_currency', value);
                       }}
                     />
                     <FormHelperText error={false}>
@@ -571,20 +507,17 @@ export default function CreateShop() {
                     <FormControl
                       margin="normal"
                       fullWidth
-                      error={!shopSetup.has_physical_shop.is_valid}
+                      error={Boolean(shopSetupError.has_physical_shop)}
                     >
                       <FormGroup row>
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={shopSetup.has_physical_shop.value}
+                              checked={shopSetupValue.has_physical_shop}
                               onChange={e => {
-                                setShopSetup(
-                                  update(shopSetup, {
-                                    has_physical_shop: {
-                                      value: { $set: e.target.checked }
-                                    }
-                                  })
+                                shopSetupSetValue(
+                                  'has_physical_shop',
+                                  e.target.checked
                                 );
                               }}
                               color="primary"
@@ -593,9 +526,9 @@ export default function CreateShop() {
                           label={t('do you have physical shop?')}
                         />
                       </FormGroup>
-                      {shopSetup.has_physical_shop.feedback && (
+                      {Boolean(shopSetupError.has_physical_shop) && (
                         <FormHelperText>
-                          {shopSetup.has_physical_shop.feedback}
+                          {shopSetupError.has_physical_shop}
                         </FormHelperText>
                       )}
                       <FormHelperText error={false}>
@@ -630,17 +563,13 @@ export default function CreateShop() {
                 <React.Fragment>
                   <Grid container item xs={12} sm={8} md={6} lg={4} spacing={3}>
                     <TextField
-                      error={!shopInfo.summary.is_valid}
+                      error={Boolean(shopInfoError.summary)}
                       label={t('shop summary')}
-                      value={shopInfo.summary.value}
-                      onChange={(e: { target: { value: any } }) => {
-                        setShopInfo(
-                          update(shopInfo, {
-                            summary: { value: { $set: e.target.value } }
-                          })
-                        );
+                      value={shopInfoValue.summary}
+                      onChange={e => {
+                        shopInfoSetValue('summary', e.target.value);
                       }}
-                      helperText={shopInfo.summary.feedback}
+                      helperText={shopInfoError.summary}
                       margin="normal"
                       placeholder={t('describe your shop...')}
                       fullWidth
@@ -652,7 +581,7 @@ export default function CreateShop() {
                       <Grid item>
                         <FormControl
                           margin="normal"
-                          error={!shopInfo.logo.is_valid}
+                          error={Boolean(shopInfoError.logo)}
                         >
                           <UploadImageMutation
                             onCompleted={uploadLogoCompletedHandler}
@@ -672,14 +601,14 @@ export default function CreateShop() {
                               {t('upload shop logo')}
                             </Button>
                           </label>
-                          {shopInfo.logo.feedback && (
+                          {Boolean(shopInfoError.logo) && (
                             <FormHelperText>
-                              {shopInfo.logo.feedback}
+                              {shopInfoError.logo}
                             </FormHelperText>
                           )}
                         </FormControl>
                       </Grid>
-                      {uploadingLogoCount === 0 && shopInfo.logo.value && (
+                      {uploadingLogoCount === 0 && shopInfoValue.logo && (
                         <Grid item>
                           <FormControl margin="normal">
                             <Button
@@ -695,12 +624,12 @@ export default function CreateShop() {
                       )}
                     </Grid>
                     <Paper className={classes.shopLogoContainer} elevation={0}>
-                      {uploadingLogoCount === 0 && shopInfo.logo.value && (
+                      {uploadingLogoCount === 0 && shopInfoValue.logo && (
                         <GridList cols={1} cellHeight={'auto'}>
                           <GridListTile cols={1}>
                             <Image
                               className={classes.shopLogo}
-                              src={shopInfo.logo.value.image_large}
+                              src={shopInfoValue.logo.image_large}
                               title={t('shop logo')}
                             />
                           </GridListTile>
@@ -716,7 +645,7 @@ export default function CreateShop() {
                       <Grid item>
                         <FormControl
                           margin="normal"
-                          error={!shopInfo.banner.is_valid}
+                          error={Boolean(shopInfoError.banner)}
                         >
                           <UploadImageMutation
                             onCompleted={uploadBannerCompletedHandler}
@@ -736,14 +665,14 @@ export default function CreateShop() {
                               {t('upload shop banner')}
                             </Button>
                           </label>
-                          {shopInfo.banner.feedback && (
+                          {Boolean(shopInfoError.banner) && (
                             <FormHelperText>
-                              {shopInfo.banner.feedback}
+                              {shopInfoError.banner}
                             </FormHelperText>
                           )}
                         </FormControl>
                       </Grid>
-                      {uploadingBannerCount === 0 && shopInfo.banner.value && (
+                      {uploadingBannerCount === 0 && shopInfoValue.banner && (
                         <Grid item>
                           <FormControl margin="normal">
                             <Button
@@ -762,12 +691,12 @@ export default function CreateShop() {
                       className={classes.shopBannerContainer}
                       elevation={0}
                     >
-                      {uploadingBannerCount === 0 && shopInfo.banner.value && (
+                      {uploadingBannerCount === 0 && shopInfoValue.banner && (
                         <GridList cols={1} cellHeight={'auto'}>
                           <GridListTile cols={1}>
                             <Image
                               className={classes.shopBanner}
-                              src={shopInfo.banner.value.image_large}
+                              src={shopInfoValue.banner.image_large}
                               title={t('shop banner')}
                             />
                           </GridListTile>
@@ -815,7 +744,7 @@ export default function CreateShop() {
               {activeStep === 2 && (
                 <React.Fragment>
                   <Grid container item xs={12} sm={8} md={6} lg={4} spacing={3}>
-                    {!shopSetup.has_physical_shop.value && (
+                    {!shopSetupValue.has_physical_shop && (
                       <Grid item xs={12}>
                         <Typography component="p">
                           {t(
@@ -826,135 +755,107 @@ export default function CreateShop() {
                     )}
                     <Grid item xs={12}>
                       <TextField
-                        required={shopSetup.has_physical_shop.value}
-                        error={!shopAddress.address_1.is_valid}
+                        required={shopSetupValue.has_physical_shop}
+                        error={Boolean(shopAddressError.address_1)}
                         label={t('address 1')}
-                        value={shopAddress.address_1.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopAddress(
-                            update(shopAddress, {
-                              address_1: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopAddressValue.address_1}
+                        onChange={e => {
+                          shopAddressSetValue('address_1', e.target.value);
                         }}
-                        helperText={shopAddress.address_1.feedback}
+                        helperText={shopAddressError.address_1}
                         margin="normal"
-                        disabled={!shopSetup.has_physical_shop.value}
+                        disabled={!shopSetupValue.has_physical_shop}
                         fullWidth
                       />
                       <TextField
-                        error={!shopAddress.address_2.is_valid}
+                        error={Boolean(shopAddressError.address_2)}
                         label={t('address 2')}
-                        value={shopAddress.address_2.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopAddress(
-                            update(shopAddress, {
-                              address_2: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopAddressValue.address_2}
+                        onChange={e => {
+                          shopAddressSetValue('address_2', e.target.value);
                         }}
-                        helperText={shopAddress.address_2.feedback}
+                        helperText={shopAddressError.address_2}
                         margin="normal"
-                        disabled={!shopSetup.has_physical_shop.value}
+                        disabled={!shopSetupValue.has_physical_shop}
                         fullWidth
                       />
                       <TextField
-                        error={!shopAddress.address_3.is_valid}
+                        error={Boolean(shopAddressError.address_3)}
                         label={t('address 3')}
-                        value={shopAddress.address_3.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopAddress(
-                            update(shopAddress, {
-                              address_3: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopAddressValue.address_3}
+                        onChange={e => {
+                          shopAddressSetValue('address_3', e.target.value);
                         }}
-                        helperText={shopAddress.address_3.feedback}
+                        helperText={shopAddressError.address_3}
                         margin="normal"
-                        disabled={!shopSetup.has_physical_shop.value}
+                        disabled={!shopSetupValue.has_physical_shop}
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
-                        required={shopSetup.has_physical_shop.value}
-                        error={!shopAddress.city.is_valid}
+                        required={shopSetupValue.has_physical_shop}
+                        error={Boolean(shopAddressError.city)}
                         label={t('city')}
-                        value={shopAddress.city.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopAddress(
-                            update(shopAddress, {
-                              city: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopAddressValue.city}
+                        onChange={e => {
+                          shopAddressSetValue('city', e.target.value);
                         }}
-                        helperText={shopAddress.city.feedback}
+                        helperText={shopAddressError.city}
                         margin="normal"
-                        disabled={!shopSetup.has_physical_shop.value}
+                        disabled={!shopSetupValue.has_physical_shop}
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
-                        required={shopSetup.has_physical_shop.value}
-                        error={!shopAddress.state.is_valid}
+                        required={shopSetupValue.has_physical_shop}
+                        error={Boolean(shopAddressError.state)}
                         label={t('state')}
-                        value={shopAddress.state.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopAddress(
-                            update(shopAddress, {
-                              state: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopAddressValue.state}
+                        onChange={e => {
+                          shopAddressSetValue('state', e.target.value);
                         }}
-                        helperText={shopAddress.state.feedback}
+                        helperText={shopAddressError.state}
                         margin="normal"
-                        disabled={!shopSetup.has_physical_shop.value}
+                        disabled={!shopSetupValue.has_physical_shop}
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
-                        required={shopSetup.has_physical_shop.value}
-                        error={!shopAddress.postal_code.is_valid}
+                        required={shopSetupValue.has_physical_shop}
+                        error={Boolean(shopAddressError.postal_code)}
                         label={t('postal code')}
-                        value={shopAddress.postal_code.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopAddress(
-                            update(shopAddress, {
-                              postal_code: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopAddressValue.postal_code}
+                        onChange={e => {
+                          shopAddressSetValue('postal_code', e.target.value);
                         }}
-                        helperText={shopAddress.postal_code.feedback}
+                        helperText={shopAddressError.postal_code}
                         margin="normal"
-                        disabled={!shopSetup.has_physical_shop.value}
+                        disabled={!shopSetupValue.has_physical_shop}
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <CountrySelect
-                        required={shopSetup.has_physical_shop.value}
+                        required={shopSetupValue.has_physical_shop}
                         label={t('country')}
-                        error={!shopAddress.country.is_valid}
-                        helperText={shopAddress.country.feedback}
-                        value={shopAddress.country.value}
+                        error={Boolean(shopAddressError.country)}
+                        helperText={shopAddressError.country}
+                        value={shopAddressValue.country}
                         onChange={(value: unknown) => {
-                          setShopAddress(
-                            update(shopAddress, {
-                              country: { value: { $set: value } }
-                            })
-                          );
+                          shopAddressSetValue('country', value);
                         }}
                         margin="normal"
                         fullWidth
-                        disabled={!shopSetup.has_physical_shop.value}
+                        disabled={!shopSetupValue.has_physical_shop}
                       />
                     </Grid>
                   </Grid>
                   <Grid container item xs={12} spacing={3}>
                     <Grid item xs={12}>
-                      {shopSetup.has_physical_shop.value && (
+                      {shopSetupValue.has_physical_shop && (
                         <FormControl margin="normal" fullWidth>
                           <div style={{ height: '400px', width: '100%' }}>
                             <Geolocation
@@ -982,19 +883,15 @@ export default function CreateShop() {
                                     onClick={(data: any) => {
                                       let { lat, lng } = data;
 
-                                      setShopAddress(
-                                        update(shopAddress, {
-                                          latitude: { value: { $set: lat } },
-                                          longitude: { value: { $set: lng } }
-                                        })
-                                      );
+                                      shopAddressSetValue('latitude', lat);
+                                      shopAddressSetValue('longitude', lng);
                                     }}
                                   >
-                                    {Boolean(shopAddress.latitude.value) &&
-                                      Boolean(shopAddress.longitude.value) && (
+                                    {Boolean(shopAddressValue.latitude) &&
+                                      Boolean(shopAddressValue.longitude) && (
                                         <GoogleMapMarker
-                                          lat={shopAddress.latitude.value}
-                                          lng={shopAddress.longitude.value}
+                                          lat={shopAddressValue.latitude}
+                                          lng={shopAddressValue.longitude}
                                         />
                                       )}
                                   </GoogleMap>
@@ -1005,12 +902,11 @@ export default function CreateShop() {
                         </FormControl>
                       )}
                       <div>
-                        {shopAddress.latitude.is_valid === false &&
-                          shopAddress.latitude.feedback !== '' && (
-                            <FormHelperText error>
-                              {shopAddress.latitude.feedback}
-                            </FormHelperText>
-                          )}
+                        {Boolean(shopAddressError.latitude) && (
+                          <FormHelperText error>
+                            {shopAddressError.latitude}
+                          </FormHelperText>
+                        )}
                       </div>
                     </Grid>
                   </Grid>
@@ -1049,35 +945,29 @@ export default function CreateShop() {
               {activeStep === 3 && (
                 <React.Fragment>
                   <Grid container item xs={12} sm={8} md={6} lg={4} spacing={3}>
-                    <Grid item>
+                    <Grid item xs={12}>
                       <TextField
                         required
-                        error={!shopContact.email.is_valid}
+                        error={Boolean(shopContactError.email)}
                         label={t('shop email')}
-                        value={shopContact.email.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopContact(
-                            update(shopContact, {
-                              email: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopContactValue.email}
+                        onChange={e => {
+                          shopContactSetValue('email', e.target.value);
                         }}
-                        helperText={shopContact.email.feedback}
+                        helperText={shopContactError.email}
                         margin="normal"
                         fullWidth
                       />
+                    </Grid>
+                    <Grid item xs={12}>
                       <TextField
-                        error={!shopContact.website.is_valid}
+                        error={Boolean(shopContactError.website)}
                         label={t('shop website')}
-                        value={shopContact.website.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopContact(
-                            update(shopContact, {
-                              website: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopContactValue.website}
+                        onChange={e => {
+                          shopContactSetValue('website', e.target.value);
                         }}
-                        helperText={shopContact.website.feedback}
+                        helperText={shopContactError.website}
                         margin="normal"
                         fullWidth
                       />
@@ -1085,15 +975,11 @@ export default function CreateShop() {
                     <Grid item xs={12} sm={12} md={6}>
                       <CountryPhoneCodeSelect
                         label={t('shop telephone code')}
-                        error={!shopContact.telephone_country_code.is_valid}
-                        helperText={shopContact.telephone_country_code.feedback}
-                        value={shopContact.telephone_country_code.value}
+                        error={Boolean(shopContactError.telephone_country_code)}
+                        helperText={shopContactError.telephone_country_code}
+                        value={shopContactValue.telephone_country_code}
                         onChange={(value: unknown) => {
-                          setShopContact(
-                            update(shopContact, {
-                              telephone_country_code: { value: { $set: value } }
-                            })
-                          );
+                          shopContactSetValue('telephone_country_code', value);
                         }}
                         margin="normal"
                         fullWidth
@@ -1104,21 +990,17 @@ export default function CreateShop() {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              {shopContact.telephone_country_code.value}
+                              {shopContactValue.telephone_country_code}
                             </InputAdornment>
                           )
                         }}
-                        error={!shopContact.telephone.is_valid}
+                        error={Boolean(shopContactError.telephone)}
                         label={t('shop telephone')}
-                        value={shopContact.telephone.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopContact(
-                            update(shopContact, {
-                              telephone: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopContactValue.telephone}
+                        onChange={e => {
+                          shopContactSetValue('telephone', e.target.value);
                         }}
-                        helperText={shopContact.telephone.feedback}
+                        helperText={shopContactError.telephone}
                         margin="normal"
                         fullWidth
                       />
@@ -1127,15 +1009,11 @@ export default function CreateShop() {
                       <CountryPhoneCodeSelect
                         required
                         label={t('shop phone code')}
-                        error={!shopContact.phone_country_code.is_valid}
-                        helperText={shopContact.phone_country_code.feedback}
-                        value={shopContact.phone_country_code.value}
+                        error={Boolean(shopContactError.phone_country_code)}
+                        helperText={shopContactError.phone_country_code}
+                        value={shopContactValue.phone_country_code}
                         onChange={(value: unknown) => {
-                          setShopContact(
-                            update(shopContact, {
-                              phone_country_code: { value: { $set: value } }
-                            })
-                          );
+                          shopContactSetValue('phone_country_code', value);
                         }}
                         margin="normal"
                         fullWidth
@@ -1147,21 +1025,17 @@ export default function CreateShop() {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              {shopContact.phone_country_code.value}
+                              {shopContactValue.phone_country_code}
                             </InputAdornment>
                           )
                         }}
-                        error={!shopContact.phone.is_valid}
+                        error={Boolean(shopContactError.phone)}
                         label={t('shop phone')}
-                        value={shopContact.phone.value}
-                        onChange={(e: { target: { value: any } }) => {
-                          setShopContact(
-                            update(shopContact, {
-                              phone: { value: { $set: e.target.value } }
-                            })
-                          );
+                        value={shopContactValue.phone}
+                        onChange={e => {
+                          shopContactSetValue('phone', e.target.value);
                         }}
-                        helperText={shopContact.phone.feedback}
+                        helperText={shopContactError.phone}
                         margin="normal"
                         fullWidth
                       />
@@ -1185,25 +1059,14 @@ export default function CreateShop() {
                       </Button>
                     </Grid>
                     <Grid item>
-                      {isCreatingShopMutation ? (
-                        <Button variant="contained" color="primary">
-                          <CircularProgress
-                            size={20}
-                            className={classes.buttonCreateProgress}
-                          />
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={async () => {
-                            if (await checkSectionContactField())
-                              onClickCreateShop();
-                          }}
-                        >
-                          {t('create')}
-                        </Button>
-                      )}
+                      <ButtonSubmit
+                        onClick={onClickCreateShop}
+                        variant="contained"
+                        color="primary"
+                        loading={isCreatingShopMutation}
+                        loadingLabel={t('creating')}
+                        label={t('create')}
+                      />
                     </Grid>
                   </Grid>
                 </React.Fragment>

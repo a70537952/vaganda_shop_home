@@ -17,6 +17,7 @@ export interface ChatMessageVars {
   client_id?: String;
   body?: String;
   type?: String;
+  data?: String;
   sort_created_at?: SortField;
   sort_updated_at?: SortField;
   sort_id?: SortField;
@@ -25,6 +26,7 @@ export interface ChatMessageVars {
   sort_client_id?: SortField;
   sort_body?: SortField;
   sort_type?: SortField;
+  sort_data?: SortField;
   where_like_created_at?: String;
   where_like_updated_at?: String;
   where_like_id?: String;
@@ -33,6 +35,7 @@ export interface ChatMessageVars {
   where_like_client_id?: String;
   where_like_body?: String;
   where_like_type?: String;
+  where_like_data?: String;
   where_not_created_at?: String;
   where_not_updated_at?: String;
   where_not_id?: String;
@@ -41,6 +44,7 @@ export interface ChatMessageVars {
   where_not_client_id?: String;
   where_not_body?: String;
   where_not_type?: String;
+  where_not_data?: String;
 }
 
 export function useChatMessageLazyQuery<TData = any>(
@@ -82,6 +86,7 @@ export function chatMessageQuery(fragment: DocumentNode): DocumentNode {
       $client_id: String
       $body: String
       $type: String
+      $data: String
       $sort_created_at: String
       $sort_updated_at: String
       $sort_id: String
@@ -90,6 +95,7 @@ export function chatMessageQuery(fragment: DocumentNode): DocumentNode {
       $sort_client_id: String
       $sort_body: String
       $sort_type: String
+      $sort_data: String
       $where_like_created_at: String
       $where_like_updated_at: String
       $where_like_id: String
@@ -98,6 +104,7 @@ export function chatMessageQuery(fragment: DocumentNode): DocumentNode {
       $where_like_client_id: String
       $where_like_body: String
       $where_like_type: String
+      $where_like_data: String
       $where_not_created_at: String
       $where_not_updated_at: String
       $where_not_id: String
@@ -106,6 +113,7 @@ export function chatMessageQuery(fragment: DocumentNode): DocumentNode {
       $where_not_client_id: String
       $where_not_body: String
       $where_not_type: String
+      $where_not_data: String
     ) {
       chatMessage(
         offset: $offset
@@ -118,6 +126,7 @@ export function chatMessageQuery(fragment: DocumentNode): DocumentNode {
         client_id: $client_id
         body: $body
         type: $type
+        data: $data
         sort_created_at: $sort_created_at
         sort_updated_at: $sort_updated_at
         sort_id: $sort_id
@@ -126,6 +135,7 @@ export function chatMessageQuery(fragment: DocumentNode): DocumentNode {
         sort_client_id: $sort_client_id
         sort_body: $sort_body
         sort_type: $sort_type
+        sort_data: $sort_data
         where_like_created_at: $where_like_created_at
         where_like_updated_at: $where_like_updated_at
         where_like_id: $where_like_id
@@ -134,6 +144,7 @@ export function chatMessageQuery(fragment: DocumentNode): DocumentNode {
         where_like_client_id: $where_like_client_id
         where_like_body: $where_like_body
         where_like_type: $where_like_type
+        where_like_data: $where_like_data
         where_not_created_at: $where_not_created_at
         where_not_updated_at: $where_not_updated_at
         where_not_id: $where_not_id
@@ -142,6 +153,7 @@ export function chatMessageQuery(fragment: DocumentNode): DocumentNode {
         where_not_client_id: $where_not_client_id
         where_not_body: $where_not_body
         where_not_type: $where_not_type
+        where_not_data: $where_not_data
       ) {
         items {
           ...fragment

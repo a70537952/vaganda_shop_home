@@ -16,6 +16,7 @@ export interface ChatVars {
   chat_type_id?: String;
   title?: String;
   description?: String;
+  last_message_at?: String;
   sort_created_at?: SortField;
   sort_updated_at?: SortField;
   sort_id?: SortField;
@@ -23,6 +24,7 @@ export interface ChatVars {
   sort_chat_type_id?: SortField;
   sort_title?: SortField;
   sort_description?: SortField;
+  sort_last_message_at?: SortField;
   where_like_created_at?: String;
   where_like_updated_at?: String;
   where_like_id?: String;
@@ -30,6 +32,7 @@ export interface ChatVars {
   where_like_chat_type_id?: String;
   where_like_title?: String;
   where_like_description?: String;
+  where_like_last_message_at?: String;
   where_not_created_at?: String;
   where_not_updated_at?: String;
   where_not_id?: String;
@@ -37,6 +40,7 @@ export interface ChatVars {
   where_not_chat_type_id?: String;
   where_not_title?: String;
   where_not_description?: String;
+  where_not_last_message_at?: String;
 }
 
 export function useChatLazyQuery<TData = any>(
@@ -71,6 +75,7 @@ export function chatQuery(fragment: DocumentNode): DocumentNode {
       $chat_type_id: String
       $title: String
       $description: String
+      $last_message_at: String
       $sort_created_at: String
       $sort_updated_at: String
       $sort_id: String
@@ -78,6 +83,7 @@ export function chatQuery(fragment: DocumentNode): DocumentNode {
       $sort_chat_type_id: String
       $sort_title: String
       $sort_description: String
+      $sort_last_message_at: String
       $where_like_created_at: String
       $where_like_updated_at: String
       $where_like_id: String
@@ -85,6 +91,7 @@ export function chatQuery(fragment: DocumentNode): DocumentNode {
       $where_like_chat_type_id: String
       $where_like_title: String
       $where_like_description: String
+      $where_like_last_message_at: String
       $where_not_created_at: String
       $where_not_updated_at: String
       $where_not_id: String
@@ -92,6 +99,7 @@ export function chatQuery(fragment: DocumentNode): DocumentNode {
       $where_not_chat_type_id: String
       $where_not_title: String
       $where_not_description: String
+      $where_not_last_message_at: String
     ) {
       chat(
         offset: $offset
@@ -103,6 +111,7 @@ export function chatQuery(fragment: DocumentNode): DocumentNode {
         chat_type_id: $chat_type_id
         title: $title
         description: $description
+        last_message_at: $last_message_at
         sort_created_at: $sort_created_at
         sort_updated_at: $sort_updated_at
         sort_id: $sort_id
@@ -110,6 +119,7 @@ export function chatQuery(fragment: DocumentNode): DocumentNode {
         sort_chat_type_id: $sort_chat_type_id
         sort_title: $sort_title
         sort_description: $sort_description
+        sort_last_message_at: $sort_last_message_at
         where_like_created_at: $where_like_created_at
         where_like_updated_at: $where_like_updated_at
         where_like_id: $where_like_id
@@ -117,6 +127,7 @@ export function chatQuery(fragment: DocumentNode): DocumentNode {
         where_like_chat_type_id: $where_like_chat_type_id
         where_like_title: $where_like_title
         where_like_description: $where_like_description
+        where_like_last_message_at: $where_like_last_message_at
         where_not_created_at: $where_not_created_at
         where_not_updated_at: $where_not_updated_at
         where_not_id: $where_not_id
@@ -124,6 +135,7 @@ export function chatQuery(fragment: DocumentNode): DocumentNode {
         where_not_chat_type_id: $where_not_chat_type_id
         where_not_title: $where_not_title
         where_not_description: $where_not_description
+        where_not_last_message_at: $where_not_last_message_at
       ) {
         items {
           ...fragment
